@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<Project Version="1" Minor="4" DIGEST="">
+	<TOOL_VERSION Version="2019.2"/>
+	<MODE Name="Post-Synthesis"/>
+	<SYSTEMINFO BOARD="xilinx.com:zcu104:1.1" PART="xczu7ev-ffvc1156-2-e" ARCH="zynquplus" PACKAGE="ffvc1156" DEVICE="xczu7ev" SPEED="-2" LUT="230400" FF="460800" BRAM="312" DSP="1728"/>
+	<HIERARCHY Name="zcu104_min_wrapper"/>
+	<File Type="HW_HANDOFF" Name="zcu104_min.hwh" DESIGN_HIERARCHY="zcu104_min_i" BD_TYPE="DEFAULT_BD">
+	</File>
+	<File Type="BD_TCL" Name="zcu104_min_bd.tcl">
+	</File>
+	<File Type="PS_FSBL_INIT" Name="psu_init.c">
+	</File>
+	<File Type="PS_FSBL_INIT" Name="psu_init.h">
+	</File>
+	<File Type="PS_FSBL_INIT_GPL" Name="psu_init_gpl.c">
+	</File>
+	<File Type="PS_FSBL_INIT_GPL" Name="psu_init_gpl.h">
+	</File>
+	<File Type="PS_INIT_HELP" Name="psu_init.html">
+	</File>
+	<File Type="PS_XMD_INIT" Name="psu_init.tcl">
+	</File>
+	<File Type="BIT" Name="zcu104_min_wrapper.bit">
+	</File>
+	<BOARD Type="NotIntegrated">
+		<BASEBOARD Name="xilinx.com:zcu104:1.1">
+		</BASEBOARD>
+	</BOARD>
+	<USEDRESOURCES LUT="707" FF="990" BRAM="0" DSP="0"/>
+</Project>
+
