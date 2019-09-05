@@ -206,6 +206,7 @@ proc cr_bd_zcu104_min { parentCell } {
 xilinx.com:ip:axi_gpio:*\
 xilinx.com:ip:axi_intc:*\
 xilinx.com:ip:clk_wiz:*\
+xilinx.com:ip:xlconstant:*\
 xilinx.com:ip:xlconcat:*\
 xilinx.com:ip:proc_sys_reset:*\
 xilinx.com:ip:zynq_ultra_ps_e:*\
@@ -280,6 +281,9 @@ xilinx.com:ip:zynq_ultra_ps_e:*\
 
   # Create instance: axi_intc_0, and set properties
   set axi_intc_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_intc axi_intc_0 ]
+  set_property -dict [ list \
+   CONFIG.C_KIND_OF_INTR {0xFFFFFFFF} \
+ ] $axi_intc_0
 
   # Create instance: clk_wiz_0, and set properties
   set clk_wiz_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:clk_wiz clk_wiz_0 ]
@@ -296,6 +300,12 @@ xilinx.com:ip:zynq_ultra_ps_e:*\
    CONFIG.RESET_PORT {resetn} \
    CONFIG.RESET_TYPE {ACTIVE_LOW} \
  ] $clk_wiz_0
+
+  # Create instance: irq_gnd, and set properties
+  set irq_gnd [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlconstant irq_gnd ]
+  set_property -dict [ list \
+   CONFIG.CONST_VAL {0} \
+ ] $irq_gnd
 
   # Create instance: ps8_0_axi_periph, and set properties
   set ps8_0_axi_periph [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_interconnect ps8_0_axi_periph ]
@@ -315,7 +325,7 @@ xilinx.com:ip:zynq_ultra_ps_e:*\
   # Create instance: xlconcat_interrupt_0, and set properties
   set xlconcat_interrupt_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlconcat xlconcat_interrupt_0 ]
   set_property -dict [ list \
-   CONFIG.NUM_PORTS {1} \
+   CONFIG.NUM_PORTS {32} \
  ] $xlconcat_interrupt_0
 
   # Create instance: zynq_ultra_ps_e_0, and set properties
@@ -912,6 +922,7 @@ xilinx.com:ip:zynq_ultra_ps_e:*\
   connect_bd_net -net clk_wiz_0_clk_out1 [get_bd_pins axi_gpio_0/s_axi_aclk] [get_bd_pins axi_intc_0/s_axi_aclk] [get_bd_pins clk_wiz_0/clk_out1] [get_bd_pins ps8_0_axi_periph/ACLK] [get_bd_pins ps8_0_axi_periph/M00_ACLK] [get_bd_pins ps8_0_axi_periph/M01_ACLK] [get_bd_pins ps8_0_axi_periph/S00_ACLK] [get_bd_pins psr_300/slowest_sync_clk] [get_bd_pins zynq_ultra_ps_e_0/maxihpm0_lpd_aclk]
   connect_bd_net -net clk_wiz_0_clk_out2 [get_bd_pins clk_wiz_0/clk_out2] [get_bd_pins psr_600/slowest_sync_clk]
   connect_bd_net -net clk_wiz_0_locked [get_bd_pins clk_wiz_0/locked] [get_bd_pins psr_300/dcm_locked] [get_bd_pins psr_600/dcm_locked]
+  connect_bd_net -net irq_gnd_dout [get_bd_pins irq_gnd/dout] [get_bd_pins xlconcat_interrupt_0/In0] [get_bd_pins xlconcat_interrupt_0/In1] [get_bd_pins xlconcat_interrupt_0/In2] [get_bd_pins xlconcat_interrupt_0/In3] [get_bd_pins xlconcat_interrupt_0/In4] [get_bd_pins xlconcat_interrupt_0/In5] [get_bd_pins xlconcat_interrupt_0/In6] [get_bd_pins xlconcat_interrupt_0/In7] [get_bd_pins xlconcat_interrupt_0/In8] [get_bd_pins xlconcat_interrupt_0/In9] [get_bd_pins xlconcat_interrupt_0/In10] [get_bd_pins xlconcat_interrupt_0/In11] [get_bd_pins xlconcat_interrupt_0/In12] [get_bd_pins xlconcat_interrupt_0/In13] [get_bd_pins xlconcat_interrupt_0/In14] [get_bd_pins xlconcat_interrupt_0/In15] [get_bd_pins xlconcat_interrupt_0/In16] [get_bd_pins xlconcat_interrupt_0/In17] [get_bd_pins xlconcat_interrupt_0/In18] [get_bd_pins xlconcat_interrupt_0/In19] [get_bd_pins xlconcat_interrupt_0/In20] [get_bd_pins xlconcat_interrupt_0/In21] [get_bd_pins xlconcat_interrupt_0/In22] [get_bd_pins xlconcat_interrupt_0/In23] [get_bd_pins xlconcat_interrupt_0/In24] [get_bd_pins xlconcat_interrupt_0/In25] [get_bd_pins xlconcat_interrupt_0/In26] [get_bd_pins xlconcat_interrupt_0/In27] [get_bd_pins xlconcat_interrupt_0/In28] [get_bd_pins xlconcat_interrupt_0/In29] [get_bd_pins xlconcat_interrupt_0/In30] [get_bd_pins xlconcat_interrupt_0/In31]
   connect_bd_net -net rst_clk_wiz_0_300M_peripheral_aresetn [get_bd_pins axi_gpio_0/s_axi_aresetn] [get_bd_pins axi_intc_0/s_axi_aresetn] [get_bd_pins ps8_0_axi_periph/ARESETN] [get_bd_pins ps8_0_axi_periph/M00_ARESETN] [get_bd_pins ps8_0_axi_periph/M01_ARESETN] [get_bd_pins ps8_0_axi_periph/S00_ARESETN] [get_bd_pins psr_300/peripheral_aresetn]
   connect_bd_net -net xlconcat_0_dout [get_bd_pins ps_irq_concat/dout] [get_bd_pins zynq_ultra_ps_e_0/pl_ps_irq0]
   connect_bd_net -net xlconcat_0_dout1 [get_bd_pins axi_intc_0/intr] [get_bd_pins xlconcat_interrupt_0/dout]
