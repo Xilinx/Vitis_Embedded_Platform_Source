@@ -55,5 +55,6 @@ clean:
 ultraclean: clean
 	${RM} -r dsa
 	${RM} -r vivado/$(PLATFORM)
+	${RM} -r vivado/.Xil
 	${RM} -r sw_platform
 	$(MAKE) -C petalinux ultraclean
