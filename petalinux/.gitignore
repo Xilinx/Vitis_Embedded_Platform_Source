@@ -10,3 +10,4 @@ pre-built/linux/
 *.log
 project-spec/meta-plnx-generated/
 /components/plnx_workspace
+ip_cache/

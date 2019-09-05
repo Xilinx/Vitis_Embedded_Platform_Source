@@ -2224,14 +2224,14 @@ CONFIG_run-postinsts=y
 #
 # xrt
 #
-# CONFIG_xrt is not set
-# CONFIG_xrt-dev is not set
+CONFIG_xrt=y
+CONFIG_xrt-dev=y
 # CONFIG_xrt-dbg is not set
 
 #
 # zocl
 #
-# CONFIG_zocl is not set
+CONFIG_zocl=y
 # CONFIG_zocl-dev is not set
 # CONFIG_zocl-dbg is not set
 
@@ -4090,14 +4090,14 @@ CONFIG_packagegroup-petalinux-audio=y
 #
 # packagegroup-petalinux-lmsensors 
 #
-# CONFIG_packagegroup-petalinux-lmsensors is not set
+CONFIG_packagegroup-petalinux-lmsensors=y
 # CONFIG_packagegroup-petalinux-lmsensors-dbg is not set
 # CONFIG_packagegroup-petalinux-lmsensors-dev is not set
 
 #
 # packagegroup-petalinux-matchbox 
 #
-CONFIG_packagegroup-petalinux-matchbox=y
+# CONFIG_packagegroup-petalinux-matchbox is not set
 # CONFIG_packagegroup-petalinux-matchbox-dbg is not set
 # CONFIG_packagegroup-petalinux-matchbox-dev is not set
 
@@ -4153,15 +4153,15 @@ CONFIG_packagegroup-petalinux-opencv-dev=y
 #
 # packagegroup-petalinux-qt 
 #
-# CONFIG_packagegroup-petalinux-qt is not set
-# CONFIG_packagegroup-petalinux-qt-dev is not set
+CONFIG_packagegroup-petalinux-qt=y
+CONFIG_packagegroup-petalinux-qt-dev=y
 # CONFIG_packagegroup-petalinux-qt-dbg is not set
-# CONFIG_inherit-populate-sdk-qt5 is not set
+CONFIG_inherit-populate-sdk-qt5=y
 
 #
 # packagegroup-petalinux-qt-extended 
 #
-# CONFIG_packagegroup-petalinux-qt-extended is not set
+CONFIG_packagegroup-petalinux-qt-extended=y
 # CONFIG_packagegroup-petalinux-qt-extended-dbg is not set
 # CONFIG_packagegroup-petalinux-qt-extended-dev is not set
 
@@ -4196,7 +4196,7 @@ CONFIG_packagegroup-petalinux-v4lutils=y
 #
 # packagegroup-petalinux-x11 
 #
-CONFIG_packagegroup-petalinux-x11=y
+# CONFIG_packagegroup-petalinux-x11 is not set
 # CONFIG_packagegroup-petalinux-x11-dev is not set
 # CONFIG_packagegroup-petalinux-x11-dbg is not set
 
@@ -4225,7 +4225,11 @@ CONFIG_imagefeature-hwcodecs=y
 #
 # user packages 
 #
+CONFIG_dnndk=y
 # CONFIG_gstreamer-vcu-examples is not set
+# CONFIG_opencl is not set
+CONFIG_opencl-clhpp-dev=y
+CONFIG_opencl-headers-dev=y
 
 #
 # PetaLinux RootFS Settings
