@@ -80,7 +80,7 @@ proc wire_cu_to_xlconcat_intr {__cu_inst_intr_pin __intr_pin_num} {
 
     # If the xlconcat pin object exists, disconnect it from ground and connect the CU's interrupt BD pin to it
     if {[llength $__xlconcat_pin] == 1} {
-      disconnect_bd_net /interrupt_concat/xlconstant_gnd_dout $__xlconcat_pin -quiet
+      disconnect_bd_net /irq_gnd_dout $__xlconcat_pin -quiet
       connect_bd_net $__cu_inst_intr_pin $__xlconcat_pin -quiet
     } else {
       puts "(Post-linking DSA Tcl hook) No available xlconcat pins found"
