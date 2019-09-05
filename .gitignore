@@ -6,7 +6,6 @@ vivado/zcu104_min
 .Xil
 /petalinux/dump.dts
 /petalinux/hardware
-/petalinux/.petalinux
 hw_export
 .vscode
 vivado*.str
