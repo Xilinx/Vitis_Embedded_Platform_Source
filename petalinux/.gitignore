@@ -10,3 +10,5 @@ pre-built/linux/
 project-spec/meta-plnx-generated/
 /components/plnx_workspace
 ip_cache/
+.petalinux/usage*
+.petalinux/webtalk_status
