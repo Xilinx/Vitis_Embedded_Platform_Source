@@ -1,5 +1,5 @@
 BOOT_FSBL_IMAGE = images/linux/zynqmp_fsbl.elf
-BOOT_BIT_IMAGE = project-spec/hw-description/zcu104_min_wrapper.bit
+BOOT_BIT_IMAGE = ./bit/zcu104_min_wrapper.bit
 BOOT_UBOOT_IMAGE = images/linux/u-boot.elf
 BOOT_ATF_IMAGE = images/linux/bl31.elf
 BOOT_PMUFW_IMAGE = images/linux/pmufw.elf
