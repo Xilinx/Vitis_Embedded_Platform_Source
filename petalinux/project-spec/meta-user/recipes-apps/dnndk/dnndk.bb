@@ -51,6 +51,7 @@ do_install() {
 
 INSANE_SKIP_${PN} += "ldflags"
 INSANE_SKIP_${PN} += "dev-so"
+INSANE_SKIP_${PN} += "already-stripped"
 
 FILES_SOLIBSDEV = ""
 
