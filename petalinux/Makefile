@@ -33,7 +33,7 @@ clean:
 	$(RM) -r images/linux/*
 
 ultraclean: clean
-	$(RM) -r build
+	$(RM) -r build ip_cache components
 
 linux:
 	petalinux-build
