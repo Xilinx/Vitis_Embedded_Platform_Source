@@ -202,7 +202,7 @@ proc cr_bd_zcu104_min { parentCell } {
   ##################################################################
   set bCheckIPs 1
   if { $bCheckIPs == 1 } {
-     set list_check_ips "\ 
+     set list_check_ips "\
 xilinx.com:ip:axi_gpio:*\
 xilinx.com:ip:axi_intc:*\
 xilinx.com:ip:clk_wiz:*\
@@ -281,9 +281,6 @@ xilinx.com:ip:zynq_ultra_ps_e:*\
 
   # Create instance: axi_intc_0, and set properties
   set axi_intc_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_intc axi_intc_0 ]
-  set_property -dict [ list \
-   CONFIG.C_KIND_OF_INTR {0xFFFFFFFF} \
- ] $axi_intc_0
 
   # Create instance: clk_wiz_0, and set properties
   set clk_wiz_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:clk_wiz clk_wiz_0 ]
@@ -984,12 +981,12 @@ pagesize -pg 1 -db -bbox -sgen 0 0 1740 850
 
   validate_bd_design
   save_bd_design
-  close_bd_design $design_name 
+  close_bd_design $design_name
 }
 # End of cr_bd_zcu104_min()
 cr_bd_zcu104_min ""
-set_property REGISTERED_WITH_MANAGER "1" [get_files zcu104_min.bd ] 
-set_property SYNTH_CHECKPOINT_MODE "Hierarchical" [get_files zcu104_min.bd ] 
+set_property REGISTERED_WITH_MANAGER "1" [get_files zcu104_min.bd ]
+set_property SYNTH_CHECKPOINT_MODE "Hierarchical" [get_files zcu104_min.bd ]
 
 # Create 'synth_1' run (if not found)
 if {[string equal [get_runs -quiet synth_1] ""]} {
