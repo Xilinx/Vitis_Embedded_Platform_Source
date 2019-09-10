@@ -101,8 +101,9 @@ if {[dict exists $config_info kernels]} {
       lappend __cu_inst_list [get_bd_cells -quiet -filter "VLNV=~*:*:${__cu_inst}:*"]
     }
 
+    set __cu_inst_addr_list {}
     # Sort the list of CUs by offset address
-    foreach __cu_bd_cell $kernels {
+    foreach __cu_bd_cell $__cu_inst_list {
       set __cu_bd_cell_sub [string range $__cu_bd_cell 1 [string length $__cu_bd_cell]]
       set __cu_bd_cell_segs [get_bd_addr_segs -of_objects [get_bd_addr_spaces zynq_ultra_ps_e_0*] -filter "NAME =~ *${__cu_bd_cell_sub}_*"]
       if {[llength ${__cu_bd_cell_segs}] > 0} {
