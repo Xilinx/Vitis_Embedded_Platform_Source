@@ -1,6 +1,10 @@
 /include/ "system-conf.dtsi"
 / {
 
+	chosen {
+		bootargs = "console=ttyPS0,115200n8 earlycon clk_ignore_unused cpuidle.off=1";
+	};
+
     zyxclmm_drm {
 		compatible = "xlnx,zocl";
 		status = "okay";
@@ -21,5 +25,10 @@
 };
 
 &axi_intc_0 {
+	#interrupt-cells = <2>;
+	compatible = "xlnx,xps-intc-1.00.a";
+	xlnx,kind-of-intr = <0x0>;
 	xlnx,num-intr-inputs = <0x20>;
+	interrupt-parent = <&gic>;
+	interrupts = <0 89 4>;
 };
