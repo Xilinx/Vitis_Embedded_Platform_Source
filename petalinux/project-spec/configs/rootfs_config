@@ -339,7 +339,7 @@ CONFIG_mtd-utils=y
 #
 # usbutils 
 #
-# CONFIG_usbutils is not set
+CONFIG_usbutils=y
 # CONFIG_usbutils-dev is not set
 # CONFIG_usbutils-dbg is not set
 
@@ -2424,8 +2424,8 @@ CONFIG_udev-extraconf=y
 #
 # gcc-runtime 
 #
-# CONFIG_libstdcPLUSPLUS-dev is not set
-# CONFIG_libstdcPLUSPLUS is not set
+CONFIG_libstdcPLUSPLUS-dev=y
+CONFIG_libstdcPLUSPLUS=y
 
 #
 # gcr 
@@ -2455,10 +2455,10 @@ CONFIG_gdbserver=y
 #
 # glibc 
 #
-# CONFIG_glibc is not set
-# CONFIG_glibc-dev is not set
+CONFIG_glibc=y
+CONFIG_glibc-dev=y
 # CONFIG_glibc-dbg is not set
-# CONFIG_ldd is not set
+CONFIG_ldd=y
 
 #
 # gnome-desktop-testing 
@@ -3295,10 +3295,10 @@ CONFIG_tcf-agent=y
 #
 # v4l-utils 
 #
-# CONFIG_v4l-utils is not set
-# CONFIG_libv4l is not set
-# CONFIG_ir-keytable is not set
-# CONFIG_media-ctl is not set
+CONFIG_v4l-utils=y
+CONFIG_libv4l=y
+CONFIG_ir-keytable=y
+CONFIG_media-ctl=y
 # CONFIG_v4l-utils-dbg is not set
 # CONFIG_rc-keymaps is not set
 # CONFIG_v4l-utils-dev is not set
@@ -3307,7 +3307,7 @@ CONFIG_tcf-agent=y
 #
 # valgrind
 #
-# CONFIG_valgrind is not set
+CONFIG_valgrind=y
 # CONFIG_valgrind-dbg is not set
 # CONFIG_valgrind-dev is not set
 
@@ -3337,7 +3337,7 @@ CONFIG_tcf-agent=y
 #
 # watchdog-init
 #
-CONFIG_watchdog-init=y
+# CONFIG_watchdog-init is not set
 
 #
 # webkitgtk 
@@ -4153,15 +4153,15 @@ CONFIG_packagegroup-petalinux-opencv-dev=y
 #
 # packagegroup-petalinux-qt 
 #
-CONFIG_packagegroup-petalinux-qt=y
-CONFIG_packagegroup-petalinux-qt-dev=y
+# CONFIG_packagegroup-petalinux-qt is not set
+# CONFIG_packagegroup-petalinux-qt-dev is not set
 # CONFIG_packagegroup-petalinux-qt-dbg is not set
-CONFIG_inherit-populate-sdk-qt5=y
+# CONFIG_inherit-populate-sdk-qt5 is not set
 
 #
 # packagegroup-petalinux-qt-extended 
 #
-CONFIG_packagegroup-petalinux-qt-extended=y
+# CONFIG_packagegroup-petalinux-qt-extended is not set
 # CONFIG_packagegroup-petalinux-qt-extended-dbg is not set
 # CONFIG_packagegroup-petalinux-qt-extended-dev is not set
 
