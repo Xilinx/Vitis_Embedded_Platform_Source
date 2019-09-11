@@ -127,7 +127,7 @@ if {[dict exists $config_info kernels]} {
       # Of the BD cells, iterate through those with an interrupt BD pin
       set __intr_pin_num 0
       foreach __cu_inst_intr $__cu_inst_list {
-        set __cu_inst_intr_pin [get_bd_pins -of_objects $__cu_inst_intr -quiet -filter "TYPE=~intr"]
+        set __cu_inst_intr_pin [get_bd_pins -of_objects [get_bd_cells $__cu_inst_intr] -quiet -filter "TYPE=~intr"]
         if {[llength $__cu_inst_intr_pin] == 1} {
           # When a BD cell has an interrupt BD pin, wire it to the next available xlconcat pin
           wire_cu_to_xlconcat_intr $__cu_inst_intr_pin $__intr_pin_num
