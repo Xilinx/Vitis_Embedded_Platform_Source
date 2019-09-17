@@ -155,6 +155,11 @@ CONFIG_system-zynqmp=y
 # CONFIG_formfactor-dev is not set
 
 #
+# haveged 
+#
+# CONFIG_haveged is not set
+
+#
 # i2c-tools 
 #
 # CONFIG_i2c-tools is not set
