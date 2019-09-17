@@ -42,4 +42,10 @@ set_property platform.version                       "1.0" [current_project]
 set_property platform.platform_state                "pre_synth" [current_project]
 set_property platform.ip_cache_dir                  [get_property ip_output_repo [current_project]] [current_project]
 
+set_property platform.default_output_type           "xclbin" [current_project]
+
+set_property STEPS.PHYS_OPT_DESIGN.IS_ENABLED true [get_runs impl_1]
+set_property STEPS.PHYS_OPT_DESIGN.ARGS.DIRECTIVE Explore [get_runs impl_1]
+set_property STEPS.ROUTE_DESIGN.ARGS.DIRECTIVE Explore [get_runs impl_1]
+
 write_hw_platform -force $output_file
