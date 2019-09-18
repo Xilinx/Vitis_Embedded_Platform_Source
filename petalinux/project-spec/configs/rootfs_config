@@ -4230,11 +4230,13 @@ CONFIG_imagefeature-hwcodecs=y
 #
 # user packages 
 #
+
+#
+# utils 
+#
+# CONFIG_htop is not set
 CONFIG_dnndk=y
 # CONFIG_gstreamer-vcu-examples is not set
-# CONFIG_opencl is not set
-CONFIG_opencl-clhpp-dev=y
-CONFIG_opencl-headers-dev=y
 
 #
 # PetaLinux RootFS Settings

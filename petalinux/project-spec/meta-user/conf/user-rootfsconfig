@@ -7,9 +7,4 @@ CONFIG_gstreamer-vcu-examples
 CONFIG_packagegroup-petalinux-v4lutils
 CONFIG_packagegroup-petalinux-audio
 CONFIG_dnndk
-CONFIG_xrt
-CONFIG_xrt-dev
-CONFIG_zocl
-CONFIG_opencl-clhpp-dev
-CONFIG_opencl-headers-dev
-CONFIG_opencl_headers
+CONFIG_htop
