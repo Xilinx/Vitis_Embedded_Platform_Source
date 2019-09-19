@@ -283,6 +283,7 @@ xilinx.com:ip:zynq_ultra_ps_e:*\
   set axi_intc_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_intc axi_intc_0 ]
   set_property -dict [list \
     CONFIG.C_IRQ_CONNECTION {1} \
+    CONFIG.C_IRQ_IS_LEVEL {0} \
     CONFIG.C_KIND_OF_INTR.VALUE_SRC USER \
     CONFIG.C_KIND_OF_INTR {0xFFFFFFFF} \
   ] [get_bd_cells axi_intc_0]
