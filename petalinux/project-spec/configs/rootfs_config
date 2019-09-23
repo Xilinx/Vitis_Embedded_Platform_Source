@@ -4234,7 +4234,7 @@ CONFIG_imagefeature-hwcodecs=y
 #
 # utils 
 #
-# CONFIG_htop is not set
+CONFIG_htop=y
 CONFIG_dnndk=y
 # CONFIG_gstreamer-vcu-examples is not set
 
