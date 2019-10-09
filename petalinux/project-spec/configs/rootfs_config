@@ -4088,8 +4088,8 @@ CONFIG_packagegroup-petalinux-audio=y
 #
 # packagegroup-petalinux-gstreamer 
 #
-# CONFIG_packagegroup-petalinux-gstreamer is not set
-# CONFIG_packagegroup-petalinux-gstreamer-dev is not set
+CONFIG_packagegroup-petalinux-gstreamer=y
+CONFIG_packagegroup-petalinux-gstreamer-dev=y
 # CONFIG_packagegroup-petalinux-gstreamer-dbg is not set
 
 #
@@ -4236,6 +4236,8 @@ CONFIG_imagefeature-hwcodecs=y
 #
 CONFIG_htop=y
 CONFIG_dnndk=y
+CONFIG_glog=y
+CONFIG_glog-dev=y
 # CONFIG_gstreamer-vcu-examples is not set
 
 #

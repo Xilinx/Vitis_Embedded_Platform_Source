@@ -2,7 +2,7 @@
 / {
 
 	chosen {
-		bootargs = "console=ttyPS0,115200n8 earlycon clk_ignore_unused cpuidle.off=1";
+		bootargs = "console=ttyPS0,115200n8 earlycon clk_ignore_unused cpuidle.off=1 root=/dev/ram";
 	};
 
     zyxclmm_drm {

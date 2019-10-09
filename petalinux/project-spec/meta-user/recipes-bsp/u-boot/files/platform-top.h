@@ -1,6 +1,6 @@
 #include <configs/platform-auto.h>
 #undef CONFIG_SYS_BOOTMAPSZ
-#define CONFIG_SYS_BOOTM_LEN 0xF000000
+#define CONFIG_SYS_BOOTM_LEN 0x40000000
 
 #define DFU_ALT_INFO_RAM \
                 "dfu_ram_info=" \

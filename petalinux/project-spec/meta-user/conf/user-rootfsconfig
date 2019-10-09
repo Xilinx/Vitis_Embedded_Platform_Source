@@ -8,3 +8,5 @@ CONFIG_packagegroup-petalinux-v4lutils
 CONFIG_packagegroup-petalinux-audio
 CONFIG_dnndk
 CONFIG_htop
+CONFIG_glog
+CONFIG_glog-dev
