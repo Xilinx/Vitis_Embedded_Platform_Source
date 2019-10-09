@@ -73,3 +73,10 @@ sdx:
 
 sdk:
 	petalinux-build --sdk
+
+update_platform:
+	cp images/linux/image.ub ../../../repo/zcu104_min/sw/zcu104_min/xrt/image
+	cp images/linux/bl31.elf ../../../repo/zcu104_min/sw/zcu104_min/boot
+	cp images/linux/pmufw.elf ../../../repo/zcu104_min/sw/zcu104_min/boot
+	cp images/linux/u-boot.elf ../../../repo/zcu104_min/sw/zcu104_min/boot
+	cp images/linux/zynqmp_fsbl.elf ../../../repo/zcu104_min/sw/zcu104_min/boot
