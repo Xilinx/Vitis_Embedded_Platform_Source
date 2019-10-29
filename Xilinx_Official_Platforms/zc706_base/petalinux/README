@@ -1,0 +1,141 @@
+#################################################################################
+# I.  Main contents of Prebuilt							#
+# II. BSP generation steps 							#
+#       II.a. Create and Configure a project					#
+#	II.b. Get openamp device tree						#
+#	II.c. Enable openamp and its examples in rootfs				#
+#       II.d. Project Build							#
+# 	II.e. Clean up of configurations					#
+# 	II.f. Packageing BSP							#
+# III.Software Images								#
+# IV. Hardware Images								#
+# V  .Software Projects								#
+#################################################################################
+
+Main Contents of Prebuilt
+================================================================================
+|-- pre-built/	# Pre-built images directory
+| |-- linux/	# Pre-built Linux system images
+| | |-- images/
+| | | |-- zynq_fsbl.elf	 	# First stage bootloader
+| | | |-- System.map.linux 	# Linux kernel system map
+| | | |-- zImage 		# kernel zImage
+| | | |-- image.ub 		# FIT image including the kernel and DTB
+| | | |-- image.elf 		# kernel ELF image, not used
+| | | |-- system.dtb 		# DTB used for A9 Linux kernel
+| | | |-- u-boot.elf 		# u-boot ELF
+| | | |-- BOOT.BIN 		# Zynq boot BIN file
+| | | |-- rootfs.cpio.gz 	# Rootfs CPIO image used for FIT image(image.ub)
+| | | |-- rootfs.tar.gz 	# Rootfs tar file which can be used for SD ext4 partition
+| | | |-- rootfs.jffs2		# Rootfs jffs2 file which can be used for mounting rootfs on jffs2 file system
+| | | |-- rootfs.manifest	# Rootfs manifest file will have list of packages and version details
+| | |-- implementation/
+| | | |-- download.bit 		# FPGA bitstream
+
+II. BSP generation steps
+================================================================================
+This section explain about BSP generation steps.
+
+Note:	While building bsps, we use some openAMP files from internal repos when configuring and
+	packaging the root file system of the target,if you want to use openamp on your target
+	Please copy files from published bsp's. While copying files please maintain same directory structure
+
+	II.a. Create and Configure a project
+		$ petalinux-create -t project --template microblaze --force -n <name of the project>
+		$ petalinux-config --get-hw-description=<path to hdf directory> --silentconfig
+		$ petalinux-config -c kernel
+			Select following configs and save it.
+				I2C_XILINX
+				I2C_MUX
+				I2C_MUX_PCA954x
+				I2C_CHARDEV
+
+		Choose any desired board and follow steps in it.
+
+		1.zc702 board
+			$ petalinux-config
+				Add zynq_zc702_config to SUBSYSTEM_UBOOT_CONFIG_TARGET
+				Enter zc702 for MACHINE_NAME option ( DTG board parameter)
+				Enter zc702-zynq7 for YOCTO_MACHINE_NAME option
+
+		2.zc706 board
+			$ petalinux-config
+				Add zynq_zc706_config to SUBSYSTEM_UBOOT_CONFIG_TARGET
+				Enter zc706 for MACHINE_NAME option ( DTG board parameter)
+				Enter zc706-zynq7 for YOCTO_MACHINE_NAME option
+
+	II.b Get openamp device tree
+
+		$ cp <any-zynq-BSP>/project-spec/meta-user/recipes-bsp/device-tree/files/openamp-overlay.dtsi  <project root>/project-spec/meta-user/recipes-bsp/device-tree/files
+
+		$ echo '/include/ "openamp-overlay.dtsi"' >>  <project root>/project-spec/meta-user/recipes-bsp/device-tree/files/system-user.dtsi
+
+		$ echo 'SRC_URI += "file://openamp-overlay.dtsi"' >> project-spec/meta-user/recipes-bsp/device-tree/device-tree_%.bbappend
+
+	II.c Enable openamp and its examples in rootfs
+
+		$ petalinux-config -c rootfs
+			Select following packages and save it
+				openamp-fw-echo-testd
+				openamp-fw-mat-muld
+				openamp-fw-rpc-demo
+				packagegroup-petalinux-openamp
+	II.d. Project Build
+		$ petalinux-build
+		$ mkdir -p pre-built/linux/images
+		$ cp <project root>/images/linux/* <project root>/pre-built/linux/images
+
+	II.e. Clean up of configurations
+
+		Bydefault few configurations are enabled to generate prebuilt images. These configurations are cleaned up while packaging a bsp. However you can keep them if you needed them in project.
+		$ petalinux-config -c rootfs
+			disable following packages and save it
+			openamp-fw-echo-testd
+			openamp-fw-mat-muld
+			openamp-fw-rpc-demo
+			packagegroup-petalinux-openamp
+
+	II.f. Packageing BSP
+		Package the BSP with files generated with following command
+		$  petalinux-package --bsp -p <plnx-proj-root> --hwsource <hw-project-root> --output <name of the BSP>
+
+		NOTE: --hwsource is optional and can be removed
+
+III. Software Images
+================================================================================
+You can run the following command to rebuild the software images:
+ * zynq_fsbl.elf
+ * image.ub
+ * zImage
+ * u-boot.elf
+ * system.dtb
+
+   $ petalinux-build
+
+You can also rebuild some of the images alone as follows:
+ * zynq_fsbl.elf
+   $ petalinux-build -c bootloader
+
+ * u-boot.elf
+   $ petalinux-build -c u-boot
+
+ * system.dtb
+   $ petalinux-build -c device-tree
+
+For more info regarding how to build images run "petalinux-build --help" command
+
+You can generate BOOT.BIN file with "petalinux-package --boot" command:
+ $ petalinux-package --boot --fpga pre-built/linux/implementation/download.bit \
+   --fsbl pre-built/linux/images/zynq_fsbl.elf \
+   --u-boot pre-built/linux/images/u-boot.elf
+
+IV. Hardware Images
+================================================================================
+ * download.bit
+   The hardware project source files are in "hardware/" directory. You can
+   open the hardware project with vivado, and rebuild it.
+
+V. Software Projects
+================================================================================
+ * fsbl, device-tree
+   DTG xsct software components can be found at "components/plnx_workspace/" directory

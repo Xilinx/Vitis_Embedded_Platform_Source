@@ -1,0 +1,7 @@
+#Virtual Providers
+
+
+
+#defconfigs
+
+UBOOT_DEFAULT_DEFCONFIG="zynq_zc702_config"
