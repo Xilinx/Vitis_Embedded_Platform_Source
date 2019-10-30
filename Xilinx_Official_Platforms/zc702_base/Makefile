@@ -1,4 +1,4 @@
-PLATFORM ?= zc706_base
+PLATFORM ?= zc702_base
 CWD=$(shell pwd)
 XSA_DIR ?= $(CWD)/vivado
 XSCT = $(XILINX_VITIS)/bin/xsct

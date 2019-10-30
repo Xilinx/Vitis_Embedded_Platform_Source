@@ -9,5 +9,5 @@ hw:
 	$(VIVADO) -mode batch -notrace -source $(PLATFORM)_xsa.tcl
 
 clean:
-	$(RM) -r vivado.* vivado_* ${PLATFORM}_vivado $(PLATFORM).xsa .Xil
-
+	$(RM) -r vivado.* $(PLATFORM) $(PLATFORM).xsa .Xil
+	
