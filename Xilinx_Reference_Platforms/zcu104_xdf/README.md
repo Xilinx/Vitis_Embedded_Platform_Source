@@ -2,7 +2,7 @@
 
 This platform comes with Qt, OpenCV, and gstreamer. It does not support DFX, the VCU,
 or any external interfaces. It is intended for exercising the DPU and other PL-only
-kernels for XDF labs for Vitis 2019.2.
+kernels for testing Vitis 2019.2.
 
 # Building the Platform
 
@@ -21,22 +21,22 @@ Xilinx internal network servers have a /scratch or /tmp area for this purpose).
 After cloning the platform source, and with both Vivado and PetaLinux set up, run
 `make` from the top-level platform directory.
 
-Note that by default this Makefile will install the platform to **../../repo/<Platform Name>**.
+Note that by default this Makefile will install the platform to **../platform_repo/<Platform Name>**.
 To change that location edit the `REPO_DIR=...` line in the make.inc.
 
 # Installing the Yocto SDK
 
 To build non-trivial Linux software for this platform we bundle a Yocto SDK "sysroot"
-package. It is by default installed to \$(REPO_DIR)/\$(PLATFORM)/sysroot. Before use it
+package. It is by default installed to \$(REPO_DIR)/tmp/sw_components. Before use it
 needs to be extracted.
 
 ```
-cd $REPO_DIR/$PLATFORM/sysroot
+cd $REPO_DIR/tmp/sw_components
 ./sdk.sh
 ```
 
-Choose your install directory. It is strongly recommended to use the same sysroot
-directory you're currently in.
+Choose your install directory. It is strongly recommended to use the same 
+directory you are currently in.
 
 To cross-compile against this platform from the command line, source the
 `environment-setup-aarch64-xilinx-linux` script to set up your environment (cross

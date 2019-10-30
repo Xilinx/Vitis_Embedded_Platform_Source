@@ -9,52 +9,49 @@ HW_PLATFORM=$(PLATFORM).xsa
 
 all: $(PLATFORM)
 
-$(PLATFORM): ./dsa/$(HW_PLATFORM) ./scripts/pfm.tcl ./sw_platform/image/image.ub
-	xsct -sdx ./scripts/pfm.tcl
+$(PLATFORM): $(HW_PLATFORM) ./scripts/pfm.tcl $(REPO_DIR)/tmp/sw_components/image/image.ub
+	xsct ./scripts/pfm.tcl
 ifeq (, $(wildcard $(REPO_DIR)))
 	mkdir -p $(REPO_DIR)
 else
 	${RM} -r $(REPO_DIR)/$(PLATFORM)
 endif
-	#mkdir -p sw_platform/prebuilt
-	#sds++ -sds-pf output/${PLATFORM}/export/${PLATFORM} -sds-sys-config linux \
-	#	-c generics/sw/hello.cpp -o hello.o
-	#sds++ -sds-pf output/${PLATFORM}/export/${PLATFORM} -verbose \
-	#	-sds-sys-config linux hello.o -o hello.elf
-	#cp _sds/.llvm/apsys_0.xml sw_platform/prebuilt
-	#cp _sds/p0/vpl/system.bit sw_platform/prebuilt/bitstream.bit
-	#cp _sds/.llvm/partitions.xml sw_platform/prebuilt
-	#cp _sds/swstubs/portinfo.c sw_platform/prebuilt
-	#cp _sds/swstubs/portinfo.h sw_platform/prebuilt
-	#cp _sds/p0/vpl/system.hdf sw_platform/prebuilt/${PLATFORM}.hdf
-	#${RM} -r _sds
-	#${RM} hello.*
-	#${RM} -r output
-	#${RM} -r sd_card
-	#xsct -sdx ./scripts/pfm_prebuilt.tcl
 	mv output/$(PLATFORM)/export/$(PLATFORM) $(REPO_DIR)/$(PLATFORM)
-	mkdir -p $(REPO_DIR)/$(PLATFORM)/sysroot
-	cp petalinux/images/linux/sdk.sh $(REPO_DIR)/$(PLATFORM)/sysroot
+	mv petalinux/images/linux/sdk.sh $(REPO_DIR)/tmp/sw_components
+	#rm output -rf
 
-./dsa/$(HW_PLATFORM) : ./scripts/gen_hw_platform.tcl ./vivado/$(PLATFORM)/$(PLATFORM).xpr
+
+xsa: $(HW_PLATFORM)
+
+$(HW_PLATFORM) : ./scripts/gen_hw_platform.tcl ./vivado/$(PLATFORM)/$(PLATFORM).xpr
+
+
 	vivado -nojournal -nolog -mode batch -source ./scripts/gen_hw_platform.tcl \
 		vivado/$(PLATFORM)/$(PLATFORM).xpr
+
+vivado: ./vivado/$(PLATFORM)/$(PLATFORM).xpr
 
 ./vivado/$(PLATFORM)/$(PLATFORM).xpr: ./vivado/project.tcl
 	vivado -nojournal -nolog -mode batch -source ./vivado/project.tcl
 
-./sw_platform/image/image.ub:
+petalinux_proj: $(REPO_DIR)/tmp/sw_components/image/image.ub
+
+$(REPO_DIR)/tmp/sw_components/image/image.ub:
 	$(MAKE) -C petalinux refresh-hw
 	$(MAKE) -C petalinux
-	$(MAKE) -C petalinux sdx
+	$(MAKE) -C petalinux sw_comp
+	$(MAKE) -C petalinux sd
 	$(MAKE) -C petalinux sdk
 
+sysroot: 
+	@echo  " sdk.sh is under $(REPO_DIR)/tmp/sw_components. You may execute the sdk.sh script from that directory."
+
+
 clean:
-	${RM} -r output
+	${RM} -r $(REPO_DIR)
 
 ultraclean: clean
-	${RM} -r dsa
+	${RM} -r output
 	${RM} -r vivado/$(PLATFORM)
 	${RM} -r vivado/.Xil
-	${RM} -r sw_platform
 	$(MAKE) -C petalinux ultraclean

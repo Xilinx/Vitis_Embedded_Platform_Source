@@ -1,13 +1,11 @@
 */.Xil
-sw_platform
-dsa/
 output/
+platform_repo/
 vivado/zcu104_xdf
 .Xil
 /petalinux/dump.dts
 /petalinux/hardware
-hw_export
 .vscode
 vivado*.str
 _sds/
-hello.o
+*/hello.o
