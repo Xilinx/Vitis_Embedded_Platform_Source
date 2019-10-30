@@ -2,7 +2,7 @@
 sw_platform
 dsa/
 output/
-vivado/zcu104_min
+vivado/zcu104_xdf
 .Xil
 /petalinux/dump.dts
 /petalinux/hardware

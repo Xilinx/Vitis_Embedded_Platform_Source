@@ -1,4 +1,4 @@
-set name zcu104_min
+set name zcu104_xdf
 
 platform -name $name -desc "ZCU104 minimum platform" -hw [format ./dsa/%s.dsa $name] -out ./output
 

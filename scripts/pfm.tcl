@@ -1,4 +1,4 @@
-set name zcu104_min
+set name zcu104_xdf
 
 platform create -name $name -desc "ZCU104 minimum platform" -hw [format [pwd]/dsa/%s.xsa $name] -prebuilt -out [pwd]/output
 

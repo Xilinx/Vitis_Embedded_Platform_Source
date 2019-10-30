@@ -1,6 +1,6 @@
 set name [get_property NAME [current_project]]
 set output_file [format %s/../../dsa/%s.xsa [get_property DIRECTORY [current_project]] $name]
-set bd zcu104_min.bd
+set bd zcu104_xdf.bd
 
 open_bd_design [get_files $bd]
 

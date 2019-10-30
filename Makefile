@@ -1,4 +1,4 @@
-PLATFORM=zcu104_min
+PLATFORM=zcu104_xdf
 
 # Output Directory is defined in make.inc
 include make.inc
