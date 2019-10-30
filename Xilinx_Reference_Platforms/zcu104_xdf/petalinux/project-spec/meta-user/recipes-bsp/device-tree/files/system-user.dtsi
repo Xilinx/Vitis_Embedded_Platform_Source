@@ -1,0 +1,57 @@
+#include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/leds/common.h>
+/include/ "system-conf.dtsi"
+/ {
+
+	chosen {
+		bootargs = "console=ttyPS0,115200n8 earlycon clk_ignore_unused cpuidle.off=1 root=/dev/ram";
+	};
+
+    zyxclmm_drm {
+		compatible = "xlnx,zocl";
+		status = "okay";
+		interrupt-parent = <&axi_intc_0>;
+		interrupts = <0  1>, <1  1>, <2  1>, <3  1>,
+			     <4  1>, <5  1>, <6  1>, <7  1>,
+			     <8  1>, <9  1>, <10 1>, <11 1>,
+			     <12 1>, <13 1>, <14 1>, <15 1>,
+			     <16 1>, <17 1>, <18 1>, <19 1>,
+			     <20 1>, <21 1>, <22 1>, <23 1>,
+			     <24 1>, <25 1>, <26 1>, <27 1>,
+			     <28 1>, <29 1>, <30 1>, <31 1>;
+	};
+
+	leds {
+		compatible = "gpio-leds";
+
+		led0 {
+			gpios = <&gpio 78 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+		led1 {
+			gpios = <&gpio 79 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+		led2 {
+			gpios = <&gpio 80 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+		led3 {
+			gpios = <&gpio 81 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+	};
+};
+
+&sdhci1 {
+	no-1-8-v;
+};
+
+&axi_intc_0 {
+	#interrupt-cells = <2>;
+	compatible = "xlnx,xps-intc-1.00.a";
+	xlnx,kind-of-intr = <0xffffffff>;
+	xlnx,num-intr-inputs = <0x20>;
+	interrupt-parent = <&gic>;
+	interrupts = <0 89 1>;
+};
