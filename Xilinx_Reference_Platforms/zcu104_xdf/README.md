@@ -1,8 +1,8 @@
-# Vitis Minimal HW Test Platform for the ZCU104 Board
+# Vitis XDF Lab Platform for the ZCU104 Board
 
 This platform comes with Qt, OpenCV, and gstreamer. It does not support DFX, the VCU,
 or any external interfaces. It is intended for exercising the DPU and other PL-only
-kernels for testing Vitis 2019.2.
+kernels for XDF labs for Vitis 2019.2.
 
 # Building the Platform
 
