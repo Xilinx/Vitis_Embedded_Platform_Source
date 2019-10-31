@@ -3,6 +3,8 @@ OUTPUT=../platform_repo/tmp/sw_components/
 SYSROOT=../platform_repo/sysroot
 all: refresh_hw xrt zocl kernel_config rootfs_config linux sw_comp bootimage
 
+.phony: all
+
 refresh_hw:
 	petalinux-config --get-hw-description=${XSA_DIR} --silentconfig
 
@@ -33,6 +35,8 @@ sw_comp:
 
 bootimage:
 	@echo "No BOOT image for non-PR platforms"
+	petalinux-package --boot --fsbl images/linux/zynq_fsbl.elf --fpga project-spec/hw-description/$(PLATFORM).bit --u-boot images/linux/u-boot.elf
+	cp -rf images/linux/BOOT.BIN ${OUTPUT}/src/${CPU_ARCH}/
 
 sysroot:
 	mkdir -p ${SYSROOT}

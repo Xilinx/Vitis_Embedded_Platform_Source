@@ -845,13 +845,17 @@ add_files -norecurse ./zc706_base_vivado/zc706_base.srcs/sources_1/bd/zc706_base
 generate_target all [get_files ./zc706_base_vivado/zc706_base.srcs/sources_1/bd/zc706_base/zc706_base.bd]
 set_property platform.post_sys_link_tcl_hook        ./dynamic_postlink.tcl       [current_project]
 
+launch_runs impl_1 -to_step write_bitstream -jobs 16
+wait_on_run impl_1
+
 set_property platform.default_output_type "sd_card" [current_project]
 set_property platform.design_intent.embedded "true" [current_project]
 set_property platform.design_intent.server_managed "false" [current_project]
 set_property platform.design_intent.external_host "false" [current_project]
 set_property platform.design_intent.datacenter "false" [current_project]
 
-write_hw_platform -force ./zc706_base.xsa
+write_hw_platform -force -unified -include_bit ./zc706_base.xsa
+#write_hw_platform -force ./zc706_base.xsa
 
 #generate hdf
 write_hwdef -force  -file ./zc706_base_vivado/zc706_base.hdf
