@@ -35,10 +35,12 @@ sw_comp:
 
 bootimage:
 	@echo "No BOOT image for non-PR platforms"
+	petalinux-package --boot --fsbl images/linux/zynq_fsbl.elf --fpga project-spec/hw-description/$(PLATFORM).bit --u-boot images/linux/u-boot.elf
+	cp -rf images/linux/BOOT.BIN ${OUTPUT}/src/${CPU_ARCH}/
 
 sysroot:
 	mkdir -p ${SYSROOT}
-	petalinux --sdk
+	petalinux-build --sdk
 	petalinux-package --sysroot -d ${SYSROOT}
 
 clean:
