@@ -2,6 +2,7 @@ PLATFORM ?= zcu104_base
 CWD=$(shell pwd)
 XSA_DIR ?= $(CWD)/vivado
 XSCT = $(XILINX_VITIS)/bin/xsct
+CPU_ARCH=a53
 
 .phony: all
 
@@ -22,6 +23,8 @@ peta_sysroot:
 
 pfm:
 	$(XSCT) -sdx scripts/${PLATFORM}_pfm.tcl ${PLATFORM} ${XSA_DIR}
+	mkdir platform_repo/${PLATFORM}/export/${PLATFORM}/sw/${PLATFORM}/pre-built/
+	cp -rf platform_repo/tmp/sw_components/src/${CPU_ARCH}/BOOT.BIN platform_repo/${PLATFORM}/export/${PLATFORM}/sw/${PLATFORM}/pre-built/
 
 cleanall:
 	${RM} -r platform_repo

@@ -1906,15 +1906,15 @@ set_property platform.design_intent.server_managed "false" [current_project]
 set_property platform.design_intent.external_host "false" [current_project]
 set_property platform.design_intent.datacenter "false" [current_project]
 
-#launch_runs impl_1 -to_step write_bitstream -jobs 16
-#wait_on_run impl_1
+launch_runs impl_1 -to_step write_bitstream -jobs 16
+wait_on_run impl_1
 
 file mkdir ./zcu104_base/zcu104_base.sdk
 write_hwdef -force  -file ./zcu104_base/zcu104_base.sdk/zcu104_base_wrapper.hdf
 
 set_property platform.post_sys_link_tcl_hook ./dynamic_postlink.tcl [current_project]
 
-#write_hw_platform -unified -include_bit ./zcu104_base.xsa
-write_hw_platform -force  ./zcu104_base.xsa
+write_hw_platform -unified -include_bit ./zcu104_base.xsa
+#write_hw_platform -force  ./zcu104_base.xsa
 
 validate_hw_platform ./zcu104_base.xsa

@@ -34,7 +34,9 @@ sw_comp:
 	cp -f images/linux/zynqmp_fsbl.elf ${OUTPUT}/src/boot/fsbl.elf
 
 bootimage:
-	@echo "No BOOT image for non-PR platforms"
+	@echo "BOOT image for base platforms"
+	petalinux-package --force --boot --fsbl images/linux/zynqmp_fsbl.elf --fpga project-spec/hw-description/$(PLATFORM).bit --u-boot images/linux/u-boot.elf --pmufw images/linux/pmufw.elf --atf images/linux/bl31.elf
+	cp -rf images/linux/BOOT.BIN ${OUTPUT}/src/${CPU_ARCH}/
 
 sysroot:
 	mkdir -p ${SYSROOT}

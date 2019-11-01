@@ -1969,8 +1969,9 @@ add_files -norecurse ./zcu102_base/zcu102_base.srcs/sources_1/bd/zcu102_base/hdl
 update_compile_order -fileset sources_1
 update_compile_order -fileset sim_1
 
-#launch_runs impl_1 -to_step write_bitstream -jobs 16
-#wait_on_run impl_1
+launch_runs impl_1 -to_step write_bitstream -jobs 16
+wait_on_run impl_1
+
 set_property platform.default_output_type "sd_card" [current_project]
 set_property platform.design_intent.embedded "true" [current_project]
 set_property platform.design_intent.server_managed "false" [current_project]
@@ -1983,6 +1984,6 @@ write_hwdef -force  -file ./zcu102_base/zcu102_base.sdk/zcu102_base_wrapper.hdf
 
 set_property platform.post_sys_link_tcl_hook ./dynamic_postlink.tcl [current_project]
 
-#write_hw_platform -unified -include_bit ./zcu102_base.xsa
-write_hw_platform -force ./zcu102_base.xsa
+write_hw_platform -unified -include_bit ./zcu102_base.xsa
+#write_hw_platform -force ./zcu102_base.xsa
 validate_hw_platform ./zcu102_base.xsa
