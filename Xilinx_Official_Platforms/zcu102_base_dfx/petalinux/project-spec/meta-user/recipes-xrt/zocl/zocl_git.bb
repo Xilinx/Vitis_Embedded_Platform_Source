@@ -9,7 +9,7 @@ SRC_URI = "git://github.com/Xilinx/XRT.git;protocol=https;branch=2019.2"
 PV = "2.2.0+git${SRCPV}"
 
 # Use latest version
-SRCREV = "d3756849645e1e28d0f705bc57972620021ab189"
+SRCREV = "1eb61547b241c1a5a7aaee4645d6d481fb0f25d6"
 
 S = "${WORKDIR}/git/src/runtime_src/core/edge/drm/zocl"
 
