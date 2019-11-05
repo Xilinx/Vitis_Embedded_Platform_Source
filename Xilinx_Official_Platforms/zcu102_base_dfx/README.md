@@ -34,14 +34,29 @@ To cross-compile against this platform from the command line, source the
 `environment-setup-aarch64-xilinx-linux` script to set up your environment (cross
 compiler, build tools, libraries, etc).
 
-# Build instructions:
-#Build platform from scratch:
+# Build instructions
+
+This packages comes with sources to generate hardware specification file (xsa) from Vivado,
+petlainux sources to generate the image.ub and platform sources to generate the Vitis platform.
+
+Build platform from scratch:
 	make all
 
-#Build a platform without modifying hardware?
+Build a platform without modifying hardware:
 	make petalinux_proj XSA_DIR=<xsa dir path>
-	make pfm <xsa dir path>
+	make pfm XSA_DIR=<xsa dir path>
 
 	example:
 		make petalinux_proj XSA_DIR=/home/user/zcu102_base_dfx/vivado
 		make pfm /home/user/zcu102_base_dfx/vivado
+
+# Notes
+
+By default the rootfs is packaged in image.ub in the generated platform. The zcu102 board is having limited
+4GB DDR4 memory for PS. In case of adding more rootfs packages or running the applications that require larger
+CMA memory, the recommended solution is to load the rootfs from SD card instead of from DDR.
+Refer section "Configuring SD Card ext File System Boot" in page 65 of ug1144 for Petalinux 2019.2:
+"https://www.xilinx.com/support/documentation/sw_manuals/xilinx2019_2/ug1144-petalinux-tools-reference-guide.pdf"
+
+Once the Vitis platform is ready, some example applications to build with these platforms can be found here:
+https://github.com/Xilinx/Vitis_Accel_Examples
