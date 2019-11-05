@@ -1,7 +1,7 @@
-# Vitis Base Platform for the zc706 board
+# Vitis Base Platform for the zc702 board
 
 This platform comes with PetaLinux and includes OpenCV. It is useful
-as a base platform for exercising Vitis capabilities and topologies on the zc706 board.
+as a base platform for exercising Vitis capabilities and topologies on the zc702 board.
 
 # Building the Platform
 
@@ -20,7 +20,7 @@ Xilinx internal network servers have a /scratch or /tmp area for this purpose).
 After cloning the platform source, and with both Vivado and PetaLinux set up, run
 `make` from the top-level platform directory.
 
-Note that by default this Makefile will install the platform to "platform_repo/zc706_base/export/zc706_base/"
+Note that by default this Makefile will install the platform to "platform_repo/zc702_base/export/zc702_base/"
 
 # Installing the Yocto SDK
 
@@ -46,12 +46,12 @@ Build a platform without modifying hardware:
 	make pfm XSA_DIR=<xsa dir path>
 
 	example:
-		make petalinux_proj XSA_DIR=/home/user/zc706_base/vivado
-		make pfm /home/user/zc706_base/vivado
+		make petalinux_proj XSA_DIR=/home/user/zc702_base/vivado
+		make pfm /home/user/zc702_base/vivado
 
 # Notes
 
-By default the rootfs is packaged in image.ub in the generated platform. The zc706 board is having limited
+By default the rootfs is packaged in image.ub in the generated platform. The zc702 board is having limited
 1GB DDR3 memory. In case of adding more rootfs packages or running the applications that require larger CMA
 memory, the recommended solution is to load the rootfs from SD card instead of from DDR.
 Refer section "Configuring SD Card ext File System Boot" in page 65 of ug1144 for Petalinux 2019.2:
