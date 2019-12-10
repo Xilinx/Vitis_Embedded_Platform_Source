@@ -1,5 +1,3 @@
-Vitis Embedded Platform Source Repository
-=========================================
 
 Welcome to the Vitis embedded platform source repository. This repository contains the
 source code needed to recreate, modify, and extend the Xilinx-provided Vitis embedded
@@ -24,3 +22,5 @@ This repository is generally divided into two sections:
 
 For build instructions on any particular platform, please refer to the README in the root
 directory of the platform source.
+=======
+# Vitis_Embedded_Platform_Source
