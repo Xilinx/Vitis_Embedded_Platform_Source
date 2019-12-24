@@ -42,9 +42,10 @@ Build platform from scratch:
 	make all
 
 Build a platform without modifying hardware:
+
 	make petalinux_proj XSA_DIR=<xsa dir path>
 	make pfm XSA_DIR=<xsa dir path>
-
+	
 	example:
 		make petalinux_proj XSA_DIR=/home/user/zc702_base/vivado
 		make pfm /home/user/zc702_base/vivado
@@ -60,8 +61,9 @@ Refer section "Configuring SD Card ext File System Boot" in page 65 of ug1144 fo
 This platform is built with 2019.2 XRT tag: https://github.com/Xilinx/XRT/tree/2019.2_RC1.
 To build the platforms with latest 2019.2 XRT branch, change the commit id in the following files by taking it
 from https://github.com/Xilinx/XRT/tree/2019.2 and build the platform:
-	Xilinx_Official_Platforms/zc702_base/petalinux/project-spec/meta-user/recipes-xrt/xrt/xrt_git.bb
-	Xilinx_Official_Platforms/zc702_base/petalinux/project-spec/meta-user/recipes-xrt/zocl/zocl_git.bb
+
+Xilinx_Official_Platforms/zc702_base/petalinux/project-spec/meta-user/recipes-xrt/xrt/xrt_git.bb
+Xilinx_Official_Platforms/zc702_base/petalinux/project-spec/meta-user/recipes-xrt/zocl/zocl_git.bb
 
 Once the Vitis platform is ready, some example applications to build with these platforms can be found here:
 https://github.com/Xilinx/Vitis_Accel_Examples
