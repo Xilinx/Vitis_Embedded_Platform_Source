@@ -1,3 +1,34 @@
+# From StackOverflow
+# https://stackoverflow.com/questions/29482303/how-to-find-the-number-of-cpus-in-tcl
+
+proc numberOfCPUs {} {
+    # Windows puts it in an environment variable
+    global tcl_platform env
+    if {$tcl_platform(platform) eq "windows"} {
+        return $env(NUMBER_OF_PROCESSORS)
+    }
+
+    # Check for sysctl (OSX, BSD)
+    set sysctl [auto_execok "sysctl"]
+    if {[llength $sysctl]} {
+        if {![catch {exec {*}$sysctl -n "hw.ncpu"} cores]} {
+            return $cores
+        }
+    }
+
+    # Assume Linux, which has /proc/cpuinfo, but be careful
+    if {![catch {open "/proc/cpuinfo"} f]} {
+        set cores [regexp -all -line {^processor\s} [read $f]]
+        close $f
+        if {$cores > 0} {
+            return $cores
+        }
+    }
+
+    # No idea what the actual number of cores is; exhausted all our options
+    # Fall back to returning 1; there must be at least that because we're running on it!
+    return 1
+}
 
 ################################################################
 # This is a generated script based on design: zcu104_base
@@ -1906,7 +1937,8 @@ set_property platform.design_intent.server_managed "false" [current_project]
 set_property platform.design_intent.external_host "false" [current_project]
 set_property platform.design_intent.datacenter "false" [current_project]
 
-launch_runs impl_1 -to_step write_bitstream -jobs 16
+# added sub call to allow script to auto-determine best number of jobs to call
+launch_runs impl_1 -to_step write_bitstream -jobs [numberOfCPUs]
 wait_on_run impl_1
 
 file mkdir ./zcu104_base/zcu104_base.sdk
