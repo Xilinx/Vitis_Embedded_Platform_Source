@@ -1,0 +1,13 @@
+#Note: Mention Each package in individual line
+#These packages will get added into rootfs menu entry
+
+CONFIG_gpio-demo
+CONFIG_peekpoke
+CONFIG_mnt-sd
+CONFIG_opencl-clhpp-dev
+CONFIG_opencl-headers-dev
+CONFIG_xrt
+CONFIG_xrt-dev
+CONFIG_zocl
+CONFIG_packagegroup-petalinux-xlnx-ai
+CONFIG_irps5401

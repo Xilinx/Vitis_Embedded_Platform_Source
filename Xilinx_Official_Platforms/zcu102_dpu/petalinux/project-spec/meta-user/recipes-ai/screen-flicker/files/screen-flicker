@@ -1,0 +1,201 @@
+ #!/bin/bash
+### BEGIN INIT INFO
+# Provides:          screen-flicker
+# Required-Start:
+# Required-Stop:
+# Default-Start:
+# Default-Stop:      0
+# Short-Description: Execute the command.
+# Description:       avoid screen flicker through QOS/ISSUE
+### END INIT INFO
+
+#export VERBOSE=yes
+
+PATH="/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin"
+
+[ ! -x /sbin/devmem ] && exit 0
+
+msg() {
+    test "$VERBOSE" != no && printf "[%s]  0x%x:    0x%x => " "$1" $2 $(/sbin/devmem $2 32) 
+}
+
+dbg() {
+    test "$VERBOSE" != no && printf "0x%x\n" $(/sbin/devmem $1 32) 
+}
+
+# DDR port type set
+# Set Port 5 Type - 00 - Best Effort
+# Set Port 4 Type - 00 - Best Effort
+# Set Port 3 Type - 10 - Video traffic
+port_type_set()
+{
+    local ddr_qos_ctrl=0xfd090000
+    test "$VERBOSE" != no && printf "\nDDR_PORT_TYPE\n=====================================\n"
+    msg "PORT_TYPE" "$ddr_qos_ctrl"  
+    /sbin/devmem "$ddr_qos_ctrl" 32 0x845 
+    dbg "$ddr_qos_ctrl"
+}
+
+S_AXI_HP0_FPD()
+{
+    local hp0_rdissue=0xfd380004
+    local hp0_rdqos=0xfd380008
+    local hp0_wrissue=0xfd380018
+    local hp0_wrqos=0xfd38001c
+    test "$VERBOSE" != no && printf "\nS_AXI_HP0_FPD (0-low f-high)\n=====================================\n"
+
+    msg "RDISSUE" "$hp0_rdissue" 
+    /sbin/devmem "$hp0_rdissue" 32 $1 
+    dbg "$hp0_rdissue"
+
+    msg "RDQoS  " "$hp0_rdqos"
+    /sbin/devmem "$hp0_rdqos" 32 $2
+    dbg "$hp0_rdqos"
+
+    msg "WRISSUE" "$hp0_wrissue"
+    /sbin/devmem "$hp0_wrissue" 32 $3 
+    dbg "$hp0_wrissue"
+
+    msg "WRQoS  " "$hp0_wrqos"
+    /sbin/devmem "$hp0_wrqos" 32 $4
+    dbg "$hp0_wrqos"
+}
+
+S_AXI_HP1_FPD()
+{
+    local hp1_rdissue=0xfd390004
+    local hp1_rdqos=0xfd390008
+    local hp1_wrissue=0xfd390018
+    local hp1_wrqos=0xfd39001c
+    test "$VERBOSE" != no && printf "\nS_AXI_HP1_FPD (0-low f-high)\n=====================================\n"
+
+    msg "RDISSUE" "$hp1_rdissue" 
+    /sbin/devmem "$hp1_rdissue" 32 $1 
+    dbg "$hp1_rdissue"
+
+    msg "RDQoS  " "$hp1_rdqos"
+    /sbin/devmem "$hp1_rdqos" 32 $2
+    dbg "$hp1_rdqos"
+
+    msg "WRISSUE" "$hp1_wrissue"
+    /sbin/devmem "$hp1_wrissue" 32 $3 
+    dbg "$hp1_wrissue"
+
+    msg "WRQoS  " "$hp1_wrqos"
+    /sbin/devmem "$hp1_wrqos" 32 $4
+    dbg "$hp1_wrqos"
+}
+
+S_AXI_HP2_FPD()
+{
+    local hp2_rdissue=0xfd3a0004
+    local hp2_rdqos=0xfd3a0008
+    local hp2_wrissue=0xfd3a0018
+    local hp2_wrqos=0xfd3a001c
+    test "$VERBOSE" != no && printf "\nS_AXI_HP2_FPD (0-low f-high)\n=====================================\n"
+
+    msg "RDISSUE" "$hp2_rdissue" 
+    /sbin/devmem "$hp2_rdissue" 32 $1 
+    dbg "$hp2_rdissue"
+
+    msg "RDQoS  " "$hp2_rdqos"
+    /sbin/devmem "$hp2_rdqos" 32 $2
+    dbg "$hp2_rdqos"
+
+    msg "WRISSUE" "$hp2_wrissue"
+    /sbin/devmem "$hp2_wrissue" 32 $3 
+    dbg "$hp2_wrissue"
+
+    msg "WRQoS  " "$hp2_wrqos"
+    /sbin/devmem "$hp2_wrqos" 32 $4
+    dbg "$hp2_wrqos"
+}
+
+S_AXI_HP3_FPD()
+{
+    local hp3_rdissue=0xfd3b0004
+    local hp3_rdqos=0xfd3b0008
+    local hp3_wrissue=0xfd3b0018
+    local hp3_wrqos=0xfd3b001c
+    test "$VERBOSE" != no && printf "\nS_AXI_HP3_FPD (0-low f-high)\n=====================================\n"
+
+    msg "RDISSUE" "$hp3_rdissue" 
+    /sbin/devmem "$hp3_rdissue" 32 $1 
+    dbg "$hp3_rdissue"
+
+    msg "RDQoS  " "$hp3_rdqos"
+    /sbin/devmem "$hp3_rdqos" 32 $2
+    dbg "$hp3_rdqos"
+
+    msg "WRISSUE" "$hp3_wrissue"
+    /sbin/devmem "$hp3_wrissue" 32 $3 
+    dbg "$hp3_wrissue"
+
+    msg "WRQoS  " "$hp3_wrqos"
+    /sbin/devmem "$hp3_wrqos" 32 $4
+    dbg "$hp3_wrqos"
+}
+
+S_AXI_HPC0_FPD()
+{
+    local hpc0_rdissue=0xfd360004
+    local hpc0_rdqos=0xfd360008
+    local hpc0_wrissue=0xfd360018
+    local hpc0_wrqos=0xfd36001c
+    test "$VERBOSE" != no && printf "\nS_AXI_HPC0_FPD (0-low f-high)\n=====================================\n"
+
+    msg "RDISSUE" "$hpc0_rdissue" 
+    /sbin/devmem "$hpc0_rdissue" 32 $1 
+    dbg "$hpc0_rdissue"
+
+    msg "RDQoS  " "$hpc0_rdqos"
+    /sbin/devmem "$hpc0_rdqos" 32 $2
+    dbg "$hpc0_rdqos"
+
+    msg "WRISSUE" "$hpc0_wrissue"
+    /sbin/devmem "$hpc0_wrissue" 32 $3 
+    dbg "$hpc0_wrissue"
+
+    msg "WRQoS  " "$hpc0_wrqos"
+    /sbin/devmem "$hpc0_wrqos" 32 $4
+    dbg "$hpc0_wrqos"
+}
+
+S_AXI_HPC1_FPD()
+{
+    local hpc1_rdissue=0xfd370004
+    local hpc1_rdqos=0xfd370008
+    local hpc1_wrissue=0xfd370018
+    local hpc1_wrqos=0xfd37001c
+    test "$VERBOSE" != no && printf "\nS_AXI_HPC1_FPD (0-low f-high)\n=====================================\n"
+
+    msg "RDISSUE" "$hpc1_rdissue" 
+    /sbin/devmem "$hpc1_rdissue" 32 $1 
+    dbg "$hpc1_rdissue"
+
+    msg "RDQoS  " "$hpc1_rdqos"
+    /sbin/devmem "$hpc1_rdqos" 32 $2
+    dbg "$hpc1_rdqos"
+
+    msg "WRISSUE" "$hpc1_wrissue"
+    /sbin/devmem "$hpc1_wrissue" 32 $3 
+    dbg "$hpc1_wrissue"
+
+    msg "WRQoS  " "$hpc1_wrqos"
+    /sbin/devmem "$hpc1_wrqos" 32 $4
+    dbg "$hpc1_wrqos"
+}
+
+main()
+{
+port_type_set
+S_AXI_HP0_FPD	2  15 15  2
+S_AXI_HP1_FPD	15 15 15  2
+S_AXI_HP2_FPD   15 15 15  2
+S_AXI_HP3_FPD   15 15 15  2
+S_AXI_HPC0_FPD	15 15 15  2
+S_AXI_HPC1_FPD	15 15 15  2
+}
+
+main "$@"
+: exit 0
