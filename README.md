@@ -1,4 +1,4 @@
-# Vitis_Embedded_Platform_Source
+# Vitis Embedded Platform Source
 
 Welcome to the Vitis embedded platform source repository. This repository contains the
 source code needed to recreate, modify, and extend the Xilinx-provided Vitis embedded
