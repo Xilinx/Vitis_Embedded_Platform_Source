@@ -1,0 +1,29 @@
+From 4fcfc43013db4b7092316246d07c1a46f29bc9f5 Mon Sep 17 00:00:00 2001
+From: Vishal Sagar <vishal.sagar@xilinx.com>
+Date: Mon, 21 Oct 2019 10:38:31 +0530
+Subject: [LINUX PATCH 1/2] dt-bindings: display: xlnx: Add support for v2.2 of
+ IP
+
+Add support for IP v2.2 which changes HPhase register base address.
+
+Signed-off-by: Vishal Sagar <vishal.sagar@xilinx.com>
+---
+ Documentation/devicetree/bindings/xlnx,ctrl-vpss.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Documentation/devicetree/bindings/xlnx,ctrl-vpss.txt b/Documentation/devicetree/bindings/xlnx,ctrl-vpss.txt
+index 04e6426f4e9b..985a219c7bff 100644
+--- a/Documentation/devicetree/bindings/xlnx,ctrl-vpss.txt
++++ b/Documentation/devicetree/bindings/xlnx,ctrl-vpss.txt
+@@ -4,7 +4,7 @@ resolution values between 0 to 4096.
+ 
+ Required properties:
+ 
+-- compatible: Must be "xlnx,ctrl-xvpss-1.0".
++- compatible: Must be "xlnx,ctrl-xvpss-1.1" for IP version 2.2 or "xlnx,ctrl-xvpss-1.0".
+ - reg: Base address and size of the IP core.
+ - reset-gpios: gpio to reset the framebuffer IP
+ - xlnx,vpss-taps: number of taps
+-- 
+2.21.0
+
