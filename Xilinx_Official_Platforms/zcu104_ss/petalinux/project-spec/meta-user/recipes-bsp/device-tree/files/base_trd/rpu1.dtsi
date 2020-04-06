@@ -1,0 +1,65 @@
+/ {
+	/*
+	 * Reserve 16MB of DDR memory for RPU1 application toward the top of the
+	 * 1GB address range (DDR_LOW).
+	 */
+	reserved-memory {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		ranges;
+		rpu1_reserved: rpu1_reserved@4f000000 {
+			no-map;
+			reg = <0x0 0x4f000000 0x0 0x1000000>;
+		};
+	};
+
+	power-domains {
+		pd_r5_1: pd_r5_1 {
+			#power-domain-cells = <0x0>;
+			pd-id = <0x8>;
+		};
+		pd_tcm_1_a: pd_tcm_1_a {
+			#power-domain-cells = <0x0>;
+			pd-id = <0x11>;
+		};
+		pd_tcm_1_b: pd_tcm_1_b {
+			#power-domain-cells = <0x0>;
+			pd-id = <0x12>;
+		};
+	};
+
+	amba {
+		/* firmware memory nodes */
+		r5_1_tcm_a: tcm@ffe90000 {
+			compatible = "mmio-sram";
+			reg = <0x0 0xffe90000 0x0 0x10000>;
+			pd-handle = <&pd_tcm_1_a>;
+		};
+		r5_1_tcm_b: tcm@ffeb0000 {
+			compatible = "mmio-sram";
+			reg = <0x0 0xffeb0000 0x0 0x10000>;
+			pd-handle = <&pd_tcm_1_b>;
+		};
+
+		/* Take out 1mb memory for vrings from above reserved 16mb */
+		/* 0x1000000 - 0x100000 = 0xf00000 */
+		elf_ddr_1: ddr@4f000000 {
+			compatible = "mmio-sram";
+			reg = <0x0 0x4f000000 0x0 0xf00000>;
+		};
+
+		rpu1_rproc: rpu1_rproc@1 {
+			compatible = "xlnx,zynqmp-r5-remoteproc-1.0";
+			reg = <0x0 0xff9a0200 0x0 0x100>,
+			      <0x0 0xff340000 0x0 0x100>,
+			      <0x0 0xff9a0000 0x0 0x100>;
+			reg-names = "rpu_base", "ipi", "rpu_glbl_base";
+			dma-ranges;
+			core_conf = "split1";
+			srams = <&r5_1_tcm_a &r5_1_tcm_b &elf_ddr_1>;
+			pd-handle = <&pd_r5_1>;
+			interrupt-parent = <&gic>;
+			interrupts = <0 29 4>;
+		};
+	};
+};

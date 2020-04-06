@@ -1,0 +1,199 @@
+&amba {
+#ifdef PLATFORM_ZCU102
+	/* 114.285MHz reference crystal (X9 on ZCU102 rev. D1) for Si5324 clock for HDMI */
+	/* IIC controller with Si5324 clock generator and DP159 retimer for HDMI TX */
+	refhdmi: refhdmi {
+		compatible = "fixed-clock";
+		#clock-cells = <0>;
+		clock-frequency = <114285000>;
+	};
+#endif
+#ifdef PLATFORM_ZCU104
+	/* 40.000MHz reference crystal (X14 on ZCU104 rev. C) for 8t49n241 clock for HDMI */
+	/* IIC controller with 8t49n24x clock generator and DP159 retimer for HDMI TX */
+	refhdmi: refhdmi {
+		compatible = "fixed-clock";
+		#clock-cells = <0>;
+		clock-frequency = <40000000>;
+	};
+#endif
+	axi_iic_0: i2c@a2020000 {
+		status = "okay";
+		compatible = "xlnx,xps-iic-2.00.a";
+		interrupt-parent = <&axi_intc>;
+		interrupts = <5 2>;
+		reg = <0x0 0xa2020000 0x0 0x10000>;
+		clocks = <&axi_lite_clk>;
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+#ifdef PLATFORM_ZCU102
+		/* Si5324 i2c clock generator */
+		si5324: clock-generator@68 {
+			status = "okay";
+			compatible = "silabs,si5324";
+			reg = <0x68>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+			#clock-cells = <1>;
+
+			/* input clock(s); the XTAL is hard-wired on the ZCU102 board */
+			clocks = <&refhdmi>;
+			clock-names = "xtal";
+
+			/* output clock */
+			clk0 {
+				reg = <0>;
+				/* HDMI TX reference clock output frequency */
+				clock-frequency = <27000000>;
+			};
+		};
+#endif /* PLATFORM_ZCU102 */
+#ifdef PLATFORM_ZCU104
+		/* idt8t49n241 i2c clock generator */
+		idt8t49n24x: clock-generator@6c {
+			status = "okay";
+			compatible = "idt,idt8t49n24x";
+			#clock-cells = <1>;
+			reg = <0x6c>;
+
+			/* input clock(s); the XTAL is hard-wired on the ZCU104 board */
+			clocks = <&refhdmi>;
+			clock-names = "input-xtal";
+
+			settings = [
+				09 50 00 60 67 c5 6c 01 03 00 31 00 01 40 00 01 40 00 74 04 00 74 04 77 6d 00 00 00 00 00 00 ff
+				ff ff ff 01 3f 00 2e 00 0d 00 00 00 01 00 00 d0 08 00 00 00 00 00 08 00 00 00 00 00 00 44 44 00
+				00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+				00 00 00 00 00 00 00 00 e9 0a 2b 20 00 00 00 0f 00 00 00 0e 00 00 0e 00 00 00 27 00 00 00 00 00
+				00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+				00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+				00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+				00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+				00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+				00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+				00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+				00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+				00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+				00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+				00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+				00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+				e3 00 08 01 00 00 00 00 00 00 00 00 00 b0 00 00 00 0a 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+				00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+				00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+				00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+				00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+				00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+				00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+				00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+				00 00 00 00 85 00 00 9c 01 d4 02 71 07 00 00 00 00 83 00 10 02 08 8c
+				];
+		};
+#endif /* PLATFORM_ZCU104 */
+
+		/* DP159 exposes a virtual CCF clock. Upon .set_rate(), it adapts its retiming/driving behaviour */
+		dp159: hdmi-retimer@5e {
+			status = "okay";
+			compatible = "ti,dp159";
+			reg = <0x5e>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+			#clock-cells = <0>;
+		};
+	};
+
+	v_mix_0: v_mix@b00c0000 {
+		compatible = "xlnx,mixer-3.0";
+		interrupt-parent = <&axi_intc>;
+		interrupts = <9 2>;
+		reg = <0x0 0xb00c0000 0x0 0x40000>;
+		reset-gpios = <&gpio 83 1>;
+#ifdef PLATFORM_ZCU102
+		clocks = <&si5324 0>;
+#endif
+#ifdef PLATFORM_ZCU104
+		clocks = <&idt8t49n24x 2>;
+#endif
+		xlnx,dma-addr-width = <32>;
+		xlnx,bpc = <8>;
+		xlnx,ppc = <2>;
+		xlnx,num-layers = <5>;
+
+		crtc_mixer_port: port@0 {
+			reg = <0>;
+			mixer_crtc: endpoint {
+				remote-endpoint = <&hdmi_encoder>;
+			};
+		};
+		mixer_master_layer: layer_0 {
+			xlnx,layer-id = <0>;
+			xlnx,vformat = "BG24";
+			xlnx,layer-max-width = <3840>;
+			xlnx,layer-max-height = <2160>;
+		};
+		mixer_overlay_1: layer_1 {
+			xlnx,layer-id = <1>;
+			xlnx,vformat = "YUYV";
+			xlnx,layer-alpha;
+			xlnx,layer-max-width = <3840>;
+		};
+		mixer_overlay_2: layer_2 {
+			xlnx,layer-id = <2>;
+			xlnx,vformat = "YUYV";
+			xlnx,layer-alpha;
+			xlnx,layer-max-width = <3840>;
+		};
+		mixer_overlay_3: layer_3 {
+			xlnx,layer-id = <3>;
+			xlnx,vformat = "UYVY";
+			xlnx,layer-alpha;
+			xlnx,layer-max-width = <3840>;
+		};
+		mixer_overlay_4: layer_4 {
+			xlnx,layer-id = <4>;
+			xlnx,vformat = "AR24";
+			xlnx,layer-alpha;
+			xlnx,layer-max-width = <3840>;
+			xlnx,layer-primary;
+		};
+		mixer_logo: logo {
+			xlnx,layer-id = <5>;
+			xlnx,logo-height = <64>;
+			xlnx,logo-width = <64>;
+		};
+	};
+
+	hdmi_txss: hdmi_txss@a2080000 {
+		compatible = "xlnx,v-hdmi-tx-ss-3.1";
+		reg = <0x0 0xa2080000 0x0 0x20000>;
+		reg-names = "hdmi-txss";
+		interrupt-parent = <&axi_intc>;
+		interrupts = <4 2>;
+		interrupt-names = "hdmitx";
+#ifdef PLATFORM_ZCU102
+		clocks = <&axi_lite_clk>, <&axi_stream_clk>, <&si5324 0>, <&dp159>;
+#endif
+#ifdef PLATFORM_ZCU104
+		clocks = <&axi_lite_clk>, <&axi_stream_clk>, <&idt8t49n24x 2>, <&dp159>;
+#endif
+		clock-names = "s_axi_cpu_aclk", "s_axis_video_aclk", "txref-clk", "retimer-clk";
+		phys = <&vphy_lane0 0 1 1 1>, <&vphy_lane1 0 1 1 1>, <&vphy_lane2 0 1 1 1>;
+		phy-names = "hdmi-phy0", "hdmi-phy1", "hdmi-phy2";
+
+		xlnx,input-pixels-per-clock = <2>;
+		xlnx,max-bits-per-component = <8>;
+		xlnx,output-fmt = "rgb";
+
+		ports {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			encoder_hdmi_port: port@0 {
+				reg = <0>;
+				hdmi_encoder: endpoint {
+					remote-endpoint = <&mixer_crtc>;
+				};
+
+			};
+		};
+	};
+};

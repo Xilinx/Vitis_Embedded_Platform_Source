@@ -1,0 +1,21 @@
+#include "zcu102/zcu102-rev1.0.dtsi"
+#include "zcu102/pcw.dtsi"
+/ {
+};
+#include "zcu102/system-conf.dtsi"
+
+/* Define design */
+#define DESIGN_BASE_TRD
+
+/* Define configuration */
+#define CONFIG_USE_TPG
+#define CONFIG_USE_CSI
+#define CONFIG_USE_HDMI_RX
+#define CONFIG_USE_HDMI_TX
+#define CONFIG_USE_SDSOC
+
+/* Includes */
+#include "base_trd/pl.dtsi"
+#include "base_trd/qos.dtsi"
+#include "base_trd/rpu0.dtsi"
+#include "base_trd/rpu1.dtsi"

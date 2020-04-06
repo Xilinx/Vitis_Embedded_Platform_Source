@@ -1,0 +1,14 @@
+#include "zcu102/zcu102-rev1.0.dtsi"
+#include "zcu102/pcw.dtsi"
+/ {
+};
+#include "zcu102/system-conf.dtsi"
+
+/* Define design */
+#define DESIGN_RV_MIN
+
+/* Define configuration */
+#define CONFIG_USE_SDSOC
+
+/* Includes */
+#include "base_trd/pl.dtsi"
