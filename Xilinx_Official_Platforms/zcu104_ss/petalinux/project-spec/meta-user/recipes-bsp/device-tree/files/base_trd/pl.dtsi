@@ -1,0 +1,116 @@
+#ifdef CONFIG_USE_HDMI_RX
+#include "base_trd/vcap-hdmi.dtsi"
+#endif
+#ifdef CONFIG_USE_CSI
+#include "base_trd/vcap-csi.dtsi"
+#include "common/li-imx274mipi-fmc.dtsi"
+#endif
+#ifdef CONFIG_USE_TPG
+/* #include "base_trd/vcap-tpg.dtsi" */
+#endif
+#ifdef CONFIG_USE_HDMI_TX
+#include "base_trd/drm-hdmi.dtsi"
+#endif
+#ifdef CONFIG_USE_SDSOC
+#include "common/xlnk.dtsi"
+#endif
+
+&amba {
+
+#ifndef DESIGN_RV_MIN
+	axi_intc: interrupt-controller@a2010000 {
+		#interrupt-cells = <2>;
+		compatible = "xlnx,xps-intc-1.00.a";
+		interrupt-controller;
+		reg = <0x0 0xa2010000 0x0 0x10000>;
+		xlnx,kind-of-intr = <0x1>;
+		xlnx,num-intr-inputs = <0xa>;
+		interrupt-parent = <&gic>;
+		interrupts = <0 104 4>;
+	};
+#endif
+
+/*
+	axi_stream_clk: axi_stream_clk {
+		compatible = "fixed-factor-clock";
+		clocks = <&zynqmp_clk 71>;
+		#clock-cells = <0>;
+		clock-div = <1>;
+		clock-mult = <6>;
+	};
+
+	axi_lite_clk: axi_lite_clk {
+		compatible = "fixed-factor-clock";
+		clocks = <&zynqmp_clk 71>;
+		#clock-cells = <0>;
+		clock-div = <1>;
+		clock-mult = <1>;
+	};
+*/
+
+	axi_stream_clk: axi_stream_clk {
+		compatible = "fixed-clock";
+		#clock-cells = <0>;
+		clock-frequency = <300000000>;
+	};
+
+	axi_lite_clk: axi_lite_clk {
+		compatible = "fixed-clock";
+		#clock-cells = <0>;
+		clock-frequency = <50000000>;
+	};
+
+#if defined(CONFIG_USE_HDMI_RX) || defined(CONFIG_USE_HDMI_TX)
+
+#ifdef PLATFORM_ZCU104
+	hdmi_dru_clk: clock-generator-hdmi-dru-clk {
+		compatible = "fixed-clock";
+		#clock-cells = <0>;
+		clock-frequency = <156250000>;
+	};
+#endif
+
+	vphy: vphy@a2000000 {
+		compatible = "xlnx,vid-phy-controller-2.2";
+		reg = <0x0 0xa2000000 0x0 0x10000>;
+		interrupts = <3 2>;
+		interrupt-parent = <&axi_intc>;
+#ifdef PLATFORM_ZCU102
+		clocks = <&axi_lite_clk>, <&si570_2>;
+#endif
+#ifdef PLATFORM_ZCU104
+		clocks = <&axi_lite_clk>, <&hdmi_dru_clk>;
+#endif
+		clock-names = "vid_phy_axi4lite_aclk", "dru-clk";
+		xlnx,input-pixels-per-clock = <0x2>;
+		xlnx,nidru = <0x1>;
+		xlnx,nidru-refclk-sel = <0x4>;
+		xlnx,rx-no-of-channels = <0x3>;
+		xlnx,rx-pll-selection = <0x0>;
+		xlnx,rx-protocol = <0x1>;
+		xlnx,rx-refclk-sel = <0x1>;
+		xlnx,tx-no-of-channels = <0x3>;
+		xlnx,tx-pll-selection = <0x6>;
+		xlnx,tx-protocol = <0x1>;
+		xlnx,tx-refclk-sel = <0x0>;
+		xlnx,hdmi-fast-switch = <0x1>;
+		xlnx,transceiver-type = <0x5>;
+		xlnx,tx-buffer-bypass = <0x1>;
+		xlnx,transceiver-width = <0x2>;
+		xlnx,use-gt-ch4-hdmi = <0>;
+
+		vphy_lane0: vphy_lane@0 {
+			#phy-cells = <4>;
+		};
+		vphy_lane1: vphy_lane@1 {
+			#phy-cells = <4>;
+		};
+		vphy_lane2: vphy_lane@2 {
+			#phy-cells = <4>;
+		};
+		vphy_lane3: vphy_lane@3 {
+			#phy-cells = <4>;
+		};
+	};
+#endif
+};
