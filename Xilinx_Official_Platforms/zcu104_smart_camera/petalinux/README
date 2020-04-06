@@ -1,0 +1,323 @@
+#################################################################################
+# I.   Main Contents of Prebuilt						#
+# II.  BSP generation steps 							#
+# 	II.a Create and Configure a project					#
+#	II.b Get openamp,qemu and xen device tree				#
+#	II.c Enable openamp and its examples in rootfs				#
+#	II.d Configuring BSP							#
+#	II.e Project Build							#
+#	II.f Clean up of configurations						#
+#	II.g Packageing a BSP							#
+# III. Software Images								#
+# IV.  Hardware Images								#
+# V.   Software Projects							#
+#################################################################################
+
+I. Main Contents of Prebuilt
+================================================================================
+|-- pre-built/ 	# Pre-built images directory
+| |-- linux/ 	# Pre-built Linux system images
+| | |-- images/
+| | | |-- zynqmp_fsbl.elf		# First stage bootloader ELF
+| | | |-- System.map.linux		# Linux kernel system map
+| | | |-- pmufw.elf			# pmu firmware ELF
+| | | |-- system.dtb			# Device-tree Blob(DTB) used for Linux kernel
+| | | |-- image.ub			# FIT image including the kernel, DTB and rootfs
+| | | |-- Image				# FIT image including the kernel
+| | | |-- u-boot.elf			# U-boot ELF
+| | | |-- u-boot.bin                    # U-boot bin
+| | | |-- BOOT.BIN			# ZynqMP boot BIN file
+| | | |-- bl31.elf			# Arm trusted firmware ELF file
+| | | |-- bl31.bin			# Arm trusted firmware BIN file
+| | | |-- rootfs.cpio.gz		# Rootfs CPIO image used for FIT image(image.ub)
+| | | |-- rootfs.tar.gz			# Rootfs tar file which can be used for SD ext4 partition
+| | | |-- rootfs.jffs2			# Rootfs jffs2 file which can be used for mounting rootfs on jffs2 file system
+| | | |-- rootfs.manifest		# Rootfs manifest file will have list of packages and version details
+| | | |-- pmu_rom_qemu_sha3.elf		# Pre-built pmu-rom ELF need for qemu boot(mandatory for both template and bsp projects
+| | | |                                     # Note: pmu_rom_qemu_sha3.elf is never generated from petalinux build,
+| | | |                                     # this needs to be copied from BSP project
+| | | |-- system.bit			# FPGA bitstream used in BSP HW design(same as below download.bit)
+| | | |-- vmlinux			# Statically linked kernel executable file used for kernel debugging
+| | | |-- xen.dtb			# Xen device-tree blob file
+| | | |-- xen-Image			# Xen kernel image
+| | | |-- xen-openamp.dtb               # Xen openamp device-tree blob file
+| | | |-- xen-qemu.dtb                  # Xen qemu device-tree blob file
+| | | |-- xen-rootfs.cpio.gz.u-boot     # Xen rootfs CPIO image
+| | | |-- xen.ub                        # Xen FIT image
+| | | |-- openamp.dtb                   # Openamp device-tree blob file
+| | | |-- zynqmp-qemu-arm.dtb           # qemu device-tree blob file for single arch
+| | | |-- zynqmp-qemu-multiarch-arm.dtb # qemu device-tree blob file for multi arch and it has information of a53 and other devices
+| | | |-- zynqmp-qemu-multiarch-pmu.dtb # qemu device-tree blob file for multi arch and it has information of microblaze nodes
+| | |-- implementation/
+| | | |-- download.bit			# FPGA bitstream
+
+II. BSP generation steps
+================================================================================
+This section explain about BSP generation steps.
+
+Note:	While building bsps, we use some openAMP, Xen and QEMU files from internal repos
+	If you want to use openAMP, Xen or QEMU, Please copy the files from published bsp's
+	While copying files please maintain same directory structure.
+
+	II.a Creation and configuration of project
+
+		$ petalinux-create -t project --template zynqMP --force -n <name of project>
+		$ petalinux-config --get-hw-description=<path to hdf directory> --silentconfig
+
+	II.b Get openamp,qemu and xen device trees
+
+		$ cp -r <any-zynqMP-BSP>/project-spec/meta-user/recipes-bsp/device-tree/files/{openamp.dtsi,xen.dtsi,zynqmp-qemu-arm.dts,multi-arch/} <project root>/project-spec/meta-user/recipes-bsp/device-tree/files
+
+		$ echo '/include/ "openamp.dtsi"' >>  <project root>/project-spec/meta-user/recipes-bsp/device-tree/files/system-user.dtsi
+
+		$ echo 'SRC_URI += "file://openamp.dtsi"' >> project-spec/meta-user/recipes-bsp/device-tree/device-tree.bbappend
+
+	II.c Enable openamp and its examples in rootfs
+
+		$ petalinux-config -c rootfs
+			Select following packages and save it
+				openamp-fw-echo-testd
+				openamp-fw-mat-muld
+				openamp-fw-rpc-demo
+				packagegroup-petalinux-openamp
+	II.d Configuring BSP
+
+		1. zcu102 rev1.0 boards
+		2. zcu106 and zcu104 boards
+		3. ultra96 board.
+		4. zcu111 board
+		5. zcu1275 and zc1285 boards
+		Choose any desired board and follow steps in it.
+
+		1.zcu102 rev1.0 board
+			$ petalinux-config
+				Add  xilinx_zynqmp_zcu102_rev1_0_defconfig to SUBSYSTEM_UBOOT_CONFIG_TARGET
+				Enter zcu102-rev1.0 for MACHINE_NAME option ( ZCU102 DTG board parameter for rev1.0)
+				Enter zcu102-zynqmp for YOCTO_MACHINE_NAME option
+			$ petalinux-config -c rootfs
+				Select following packages and save it
+					libmali-xlnx
+					package-management
+
+		2.zcu106 and zcu104 boards
+			$ echo 'CONFIG_gstreamer-vcu-examples' >> <project root>/project-spec/meta-user/conf/user-rootfsconfig
+			$ petalinux-config --silentconfig
+			$ petalinux-config -c rootfs
+				Select following packages and save it
+					packagegroup-petalinux-gstreamer
+					packagegroup-petalinux-matchbox
+					packagegroup-petalinux-x11
+					libdrm
+					libdrm-kms
+					libdrm-tests
+					gstreamer-vcu-examples
+					libmali-xlnx
+					package-management
+
+			$ petalinux-config
+				Add xilinx_zynqmp_zcu106_revA_defconfig to SUBSYSTEM_UBOOT_CONFIG_TARGET for zcu106 boards
+				Enter zcu106-reva for MACHINE_NAME option for zcu106 boards (ZCU106 DTG board parameter )
+				Enter zcu106-zynqmp for YOCTO_MACHINE_NAME option for zcu106 boards
+
+				Add xilinx_zynqmp_zcu104_revC_defconfig to SUBSYSTEM_UBOOT_CONFIG_TARGET for zcu104 board
+				Enter zcu104-revc for MACHINE_NAME option for zcu104 board ( ZCU104 DTG board parameter)
+				Enter zcu104-zynqmp for YOCTO_MACHINE_NAME option for zcu104 board
+		3. ultra96 board
+			$ cat >>  project-spec/meta-user/conf/user-rootfsconfig <<EOF
+CONFIG_peekpoke
+CONFIG_gpio-demo
+CONFIG_packagegroup-base-extended
+CONFIG_cmake
+CONFIG_lmsensors-sensorsdetect
+CONFIG_python-pyserial
+CONFIG_libftdi
+CONFIG_python3-pip
+CONFIG_iperf3
+CONFIG_packagegroup-petalinux-ultra96-webapp
+CONFIG_packagegroup-petalinux-v4lutils
+CONFIG_packagegroup-petalinux-96boards-sensors
+CONFIG_packagegroup-petalinux-x11
+CONFIG_packagegroup-petalinux-matchbox
+CONFIG_ultra96-ap-setup
+EOF
+
+			$ petalinux-config -c rootfs
+				Select following packages and save it
+				packagegroup-base-extended
+				cmake
+				lmsensors-sensorsdetect
+				packagegroup-petalinux-self-hosted
+				packagegroup-petalinux
+				git
+				python-pyserial
+				libftdi
+				python3-pip
+				iperf3
+				packagegroup-petalinux-ultra96-webapp
+				packagegroup-petalinux-v4lutils
+				packagegroup-petalinux-96boards-sensors
+				packagegroup-petalinux-x11
+				packagegroup-petalinux-matchbox
+				ultra96-ap-setup
+				libmali-xlnx
+				package-management
+			$petalinux-config
+				Select CONFIG_SUBSYSTEM_SERIAL_PSU_UART_1_SELECT
+				Select CONFIG_SUBSYSTEM_ROOTFS_EXT
+				Enter avnet_ultra96_rev1_defconfig to SUBSYSTEM_UBOOT_CONFIG_TARGET for ultra96 boards
+				Enter avnet-ultra96-rev1 for MACHINE_NAME option  ( Ultra96 DTG board parameter)
+				Enter "ultra96-zynqmp" for YOCTO_MACHINE_NAME option.
+			$ petalinux-config -c u-boot
+				Change CONFIG_BOOTDELAY to 2 and then enable below configs and save.
+				CONFIG_NET
+				CONFIG_NET_TFTP_VARS
+				CONFIG_NET_RANDOM_ETHADDR
+				CONFIG_CMD_NET
+				CONFIG_CMD_PING
+				CONFIG_CMD_DHCP
+				CONFIG_CMD_TFTPPUT
+				CONFIG_CMD_NFS
+
+		4.zcu111 board
+			$ cat >> project-spec/meta-user/conf/user-rootfsconfig << EOF
+CONFIG_peekpoke
+CONFIG_gpio-demo
+CONFIG_rfdc
+CONFIG_rfdc-read-write
+CONFIG_rfdc-selftest
+CONFIG_libsdfecusrintf
+CONFIG_sdfec-demo
+EOF
+			$ petalinux-config -c rootfs
+                                Select following packages and save it
+                                rfdc
+				rfdc-read-write
+				rfdc-selftest
+				libsdfecusrintf
+				sdfec-demo
+                        $ petalinux-config
+				Enter xilinx_zynqmp_zcu111_revA_defconfig to SUBSYSTEM_UBOOT_CONFIG_TARGET for ZCU111 board
+                                Enter zcu111-reva for MACHINE_NAME option  ( ZCU111 DTG board parameter)
+                                Enter "zcu111-zynqmp" for YOCTO_MACHINE_NAME option.
+
+		5.zcu1275 and zc1285 boards
+			$ cat >> project-spec/meta-user/conf/user-rootfsconfig << EOF
+CONFIG_peekpoke
+CONFIG_gpio-demo
+CONFIG_rfdc
+CONFIG_rfdc-read-write
+CONFIG_rfdc-selftest
+EOF
+                        $ petalinux-config -c rootfs
+                                Select following packages and save it
+                                rfdc
+                                rfdc-read-write
+                                rfdc-selftest
+                        $ petalinux-config
+                                Enter xilinx_zynqmp_zc1275_revB_defconfig to SUBSYSTEM_UBOOT_CONFIG_TARGET for ZCU1275 board
+				Enter zc1275-revb for MACHINE_NAME option  ( ZC1275 DTG board parameter)
+				Enter zc1285-reva for MACHINE_NAME option  ( ZC1285 DTG board parameter)
+				Enter zc1275-zynqmp for YOCTO_MACHINE_NAME option for zc1275 board
+				Enter zc1285-zynqmp for YOCTO_MACHINE_NAME option for zc1285 board
+
+	$ Optional configurations.
+				If prebuilt kernel image is more than 128M, jtag boot command "petalinux-boot --jtag/--qemu --prebuilt 3 would not work due to overlap between kernel image & linux-boot.elf (bl33 used in jtag mode). So, to overcome this issue, BL33 entry address (U-boot and linux-boot.elf start/load address) is changed to 0x10080000. This is done through:
+				$petalinux-config
+					Enter 0x10080000 to CONFIG_SUBSYSTEM_PRELOADED_BL33_BASE.
+				$petalinux-config -c u-boot
+					Enter 0x10080000 to CONFIG_SYS_TEXT_BASE.
+
+
+	II.e. Project Build
+
+		1. Build regular images
+			$ petalinux-build
+			$ mkdir -p pre-built/linux/images
+			$ cp <project root>/images/linux/* <project root>/pre-built/linux/images/
+
+		2. Build xen images
+			$ echo '/include/ "xen.dtsi"' >> <project root>/project-spec/meta-user/recipes-bsp/device-tree/files/system-user.dtsi
+			$ echo 'SRC_URI += "file://xen.dtsi \"' >> project-spec/meta-user/recipes-bsp/device-tree/device-tree.bbappend
+			$ petalinux-config
+				Select following config and save it.
+					Image Packaging Configuration
+						Root filesystem type (INITRD)
+			$ petalinux-config -c rootfs
+				Select following package and save it
+					packagegroup-petalinux-xen
+			$ petalinux-build
+			$ cp -L <project root>/images/linux/Image <project root>/pre-built/linux/images/xen-Image
+			$ cp -L <project root>/images/linux/system.dtb <project root>/pre-built/linux/images/xen.dtb
+			$ cp -L <project root>/images/linux/xen.ub <project root>/pre-built/linux/images/xen.ub
+			$ cp -L <project root>/images/linux/rootfs.cpio.gz.u-boot <project root>/pre-built/linux/images/xen-rootfs.cpio.gz.u-boot
+
+	II.f. Clean up of configurations
+
+		Bydefault few configurations are enabled to generate prebuilt images. These configurations are cleaned up while packaging a bsp. However you can keep them if you need them in project.
+
+		$ petalinux-config -c rootfs
+			disable following packages and save it
+				openamp-fw-echo-testd
+				openamp-fw-mat-muld
+				openamp-fw-rpc-demo
+				packagegroup-petalinux-openamp
+				packagegroup-petalinux-xen
+				libmali-xlnx
+
+		$ petalinux-config
+			Select following config and save it.
+				Image Packaging Configuration
+					Root filesystem type (INITRAMFS)
+
+
+	II.g. Packageing a BSP
+		Package the BSP with files generated with following command
+		$  petalinux-package --bsp -p <plnx-proj-root> --hwsource <hw-project-root> --output <name of the BSP>
+
+                NOTE: --hwsource is optional and can be removed
+
+III. Software Images
+================================================================================
+You can run the following command to rebuild the software images:
+ * zynqmp_fsbl.elf
+ * image.ub
+ * Image
+ * u-boot.elf
+ * system.dtb
+ * pmufw.elf
+ * bl31.elf
+
+   $ petalinux-build
+
+You can also rebuild some of the images alone as follows:
+ * zynqmp_fsbl.elf
+   $ petalinux-build -c bootloader
+
+ * u-boot.elf
+   $ petalinux-build -c u-boot
+
+ * system.dtb
+   $ petalinux-build -c device-tree
+
+ * kernel only:
+   $ petalinux-build -c kernel
+
+For more info regarding how to build images run "petalinux-build --help" command
+
+You can generate BOOT.BIN file with "petalinux-package --boot" command:
+ $ petalinux-package --boot --fpga pre-built/linux/images/system.bit \
+   --fsbl pre-built/linux/images/zynqmp_fsbl.elf \
+   --u-boot pre-built/linux/images/u-boot.elf	\
+   --pmufw prebuilt/linux/images/pmufw.elf	\
+   --atf pre-built/linux/images/bl31.elf
+
+IV. Hardware Images
+================================================================================
+ * design_1_wrapper.bit
+   The hardware project source files are in "hardware/" directory. You can
+   open the hardware project with vivado, and rebuild it.
+
+V. Software Projects
+================================================================================
+ * device-tree
+   DTG xsct software components can be found at "components/plnx_workspace/" directory
