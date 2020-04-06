@@ -1,0 +1,5 @@
+&amba {
+	xlnk {
+		compatible = "xlnx,xlnk-1.0";
+	};
+};

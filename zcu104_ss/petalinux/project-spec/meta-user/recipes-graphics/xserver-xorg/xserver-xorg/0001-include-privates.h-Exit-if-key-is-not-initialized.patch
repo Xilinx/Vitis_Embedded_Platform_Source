@@ -1,0 +1,32 @@
+From be3bc1d91908e38f2596bc2b1d64ece3d6c07a80 Mon Sep 17 00:00:00 2001
+From: Madhurkiran Harikrishnan <madhurkiran.harikrishnan@xilinx.com>
+Date: Tue, 26 Mar 2019 15:22:30 -0700
+Subject: [PATCH] include/privates.h: Exit if key is not initialized
+
+While performing a cleanup, pixmap is not destroyed but the
+corresponding key is, which results in failure of assert. This
+exit will not print the otherwise backtrace log. Remember, it
+is always advised to use the window manager for X11.
+
+Signed-off-by: Madhurkiran Harikrishnan <madhurkiran.harikrishnan@xilinx.com>
+---
+ include/privates.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/include/privates.h b/include/privates.h
+index e89c3e4..f3ac4d5 100644
+--- a/include/privates.h
++++ b/include/privates.h
+@@ -118,6 +118,8 @@ dixPrivateKeyRegistered(DevPrivateKey key)
+ static inline void *
+ dixGetPrivateAddr(PrivatePtr *privates, const DevPrivateKey key)
+ {
++    if (!key->initialized)
++	exit(1);
+     assert(key->initialized);
+     return (char *) (*privates) + key->offset;
+ }
+-- 
+2.7.4
+
+
