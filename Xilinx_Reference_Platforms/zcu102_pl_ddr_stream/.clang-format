@@ -1,0 +1,35 @@
+---
+AccessModifierOffset: -4
+AlignConsecutiveAssignments: true
+AlignConsecutiveDeclarations: false
+SortIncludes: true
+AlignTrailingComments: true
+AllowAllParametersOfDeclarationOnNextLine: false
+ColumnLimit: 0
+IndentWidth: 4
+SpaceAfterCStyleCast: false
+BreakBeforeBraces: Custom
+BraceWrapping:
+    AfterClass: true
+    AfterControlStatement: false
+    AfterFunction: true
+    AfterStruct: true
+    AfterUnion: true
+    AfterExternBlock: true
+    BeforeElse: true
+    BeforeCatch: true
+    IndentBraces: false
+BinPackParameters: false
+BinPackArguments: true
+PointerAlignment: Right
+TabWidth: 4
+UseTab: Never
+DerivePointerAlignment: false
+MaxEmptyLinesToKeep: 2
+SpaceBeforeAssignmentOperators: true
+IncludeBlocks: Regroup
+AlignAfterOpenBracket: Align
+AlignEscapedNewlines: Left
+SortUsingDeclarations: true
+SpaceBeforeParens: ControlStatements
+...

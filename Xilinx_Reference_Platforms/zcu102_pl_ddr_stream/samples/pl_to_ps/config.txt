@@ -1,0 +1,2 @@
+[connectivity]
+stream_connect=COUNTER:krnl_pl_to_ps_1.stream_in
