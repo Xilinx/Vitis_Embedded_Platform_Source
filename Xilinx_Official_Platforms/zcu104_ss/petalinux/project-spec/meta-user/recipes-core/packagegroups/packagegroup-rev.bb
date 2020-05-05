@@ -4,7 +4,6 @@ inherit packagegroup
 
 APP_PACKAGES = " \
 	gst-plugins-xlnx \
-	gst-sdx \
 	trd-files \
 	"
 

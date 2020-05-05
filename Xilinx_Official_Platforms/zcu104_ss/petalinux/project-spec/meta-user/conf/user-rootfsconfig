@@ -7,7 +7,6 @@ CONFIG_kernel-module-hdmi
 CONFIG_packagegroup-rev
 CONFIG_packagegroup-trd
 CONFIG_perfapm-client
-CONFIG_sds-lib
 CONFIG_trd-files
 CONFIG_video-qt2
 CONFIG_xrt-dev
