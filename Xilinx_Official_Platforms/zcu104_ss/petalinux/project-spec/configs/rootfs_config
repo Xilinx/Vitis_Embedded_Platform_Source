@@ -4226,7 +4226,6 @@ CONFIG_imagefeature-hwcodecs=y
 #
 # user packages
 #
-# CONFIG_gst-sdx is not set
 CONFIG_opencl-clhpp-dev=y
 CONFIG_opencl-headers-dev=y
 CONFIG_packagegroup-rev=y
