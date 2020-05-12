@@ -58,6 +58,8 @@ CMA memory, the recommended solution is to load the rootfs from SD card instead 
 Refer section "Configuring SD Card ext File System Boot" in page 65 of ug1144 for Petalinux 2019.2:
 "https://www.xilinx.com/support/documentation/sw_manuals/xilinx2019_2/ug1144-petalinux-tools-reference-guide.pdf"
 
+The boot script at zcu104_vcu_ml/scripts/UENV.TXT is mandatory to be copied to SD card before booting
+
 This platform is built with 2019.2 XRT tag: https://github.com/Xilinx/XRT/tree/2019.2_RC1.
 To build the platforms with latest 2019.2 XRT branch, change the commit id in the following files by taking it
 from https://github.com/Xilinx/XRT/tree/2019.2 and build the platform:
