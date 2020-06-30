@@ -1,1 +1,1 @@
-zc706_base
+xilinx_zc706_base_202010_1

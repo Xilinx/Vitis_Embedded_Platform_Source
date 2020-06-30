@@ -1,4 +1,4 @@
-# *************************************************************************
+# -------------------------------------------------------------------------
 # Copyright 2019 Xilinx Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,13 +12,16 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-# *************************************************************************
-
+# -------------------------------------------------------------------------
 # Assign the AXI-Lite control interface apertures for the dynamic region
 set __ctrl_addr_space_user [get_bd_addr_space -of_object [get_bd_intf_port /regslice_control_userpf_M_AXI]]
 set_property range  {8M}        $__ctrl_addr_space_user
 set_property offset {0x80800000} $__ctrl_addr_space_user
-#assign_bd_address -boundary -combine_segments
+set __data_addr_space_user [get_bd_addr_space -of_object [get_bd_intf_port /regslice_data_hpm0fpd_M_AXI1]]
+set_property range  {8M}        $__data_addr_space_user
+set_property offset {0xA0000000} $__data_addr_space_user
+
+assign_bd_address -boundary -combine_segments
 validate_bd_design
 assign_bd_address [get_bd_addr_segs {interconnect_aximm_ddrmem2_M00_AXI/Reg }] -range  2G -offset 0x00000000
 assign_bd_address [get_bd_addr_segs {interconnect_aximm_ddrmem3_M00_AXI/Reg }] -range  2G -offset 0x00000000

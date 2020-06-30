@@ -4,4 +4,8 @@
 
 #defconfigs
 
-UBOOT_DEFAULT_DEFCONFIG="xilinx_zynqmp_zcu102_revB_defconfig"
+UBOOT_DEFAULT_DEFCONFIG="xilinx_zynqmp_virt_defconfig"
+
+#atf
+
+CONFIG_SUBSYSTEM_PRELOADED_BL33_BASE=0x10080000

@@ -1,4 +1,4 @@
-# *************************************************************************
+# -------------------------------------------------------------------------
 # Copyright 2019 Xilinx Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,8 +12,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-# *************************************************************************
-
+# -------------------------------------------------------------------------
 # Get current directory, used throughout script
 set launchDir [file dirname [file normalize [info script]]]
 set sourcesDir ${launchDir}/sources
@@ -50,14 +49,14 @@ update_compile_order -fileset sim_1
 set_property platform.vendor                        "xilinx"     [current_project]
 set_property platform.board_id                      "zcu102"    [current_project]
 set_property platform.name                          "dynamic"    [current_project]
-set_property platform.version                       "0.1"        [current_project]
+set_property platform.version                       "1.0"        [current_project]
 set_property platform.description                   "This platform targets the ZCU102 Development Board. This platform features one PL and one PS channels of DDR4 SDRAM which are instantiated as required by the user kernels for high fabric resource availability ." [current_project]
 set_property platform.platform_state                "impl"       [current_project]
 set_property platform.uses_pr                       true         [current_project]
 set_property platform.ocl_inst_path                 {pfm_top_i/dynamic_region}                                              [current_project]
 set_property platform.board_memories                { {mem0 ddr4 2GB}} [current_project]
 set_property platform.pre_sys_link_tcl_hook         ${sourcesDir}/misc/dynamic_prelink.tcl                                  [current_project]
-set_property platform.post_sys_link_tcl_hook        ${sourcesDir}/misc/dynamic_postlink.tcl                                 [current_project]
+#set_property platform.post_sys_link_tcl_hook        ${sourcesDir}/misc/dynamic_postlink.tcl                                 [current_project]
 set_property platform.run.steps.opt_design.tcl.post ${sourcesDir}/misc/dynamic_postopt.tcl                                  [current_project]
 
 set_property platform.ip_cache_dir                  ${launchDir}/${projName}/${projName}.cache/ip                           [current_project]
@@ -68,6 +67,9 @@ set_property platform.design_intent.external_host "false" [current_project]
 set_property platform.design_intent.embedded "true" [current_project]
 set_property platform.design_intent.datacenter "false" [current_proj]
 set_property platform.default_output_type "xclbin" [current_project]
+set_property platform.host_interface "axi" [current_project]
+#set_property platform.num_compute_units 31 [current_project]
+
 
 # Set any other project properties
 set_property STEPS.OPT_DESIGN.TCL.POST ${sourcesDir}/misc/dynamic_postopt.tcl [get_runs impl_1]

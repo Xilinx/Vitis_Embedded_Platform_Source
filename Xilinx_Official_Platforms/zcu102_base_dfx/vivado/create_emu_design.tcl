@@ -1,4 +1,4 @@
-# *************************************************************************
+# -------------------------------------------------------------------------
 # Copyright 2019 Xilinx Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,7 +12,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-# *************************************************************************
+# -------------------------------------------------------------------------
 
 # Get current directory, used throughout script
 if {[file exists emu_overlay]} {
@@ -69,9 +69,15 @@ source ${sourcesDir}/bd/dynamic.tcl
 source ${sourcesDir}/misc/gen_hpfm_cmd_file.tcl
 source ${sourcesDir}/emulation_sources/dynamic_bd_settings.tcl
 
+#Project properties that need to be set for platform
+set_property platform.emu.post_sys_link_tcl_hook        ${sourcesDir}/misc/dynamic_postlink.tcl                                 [current_project]
+set_property platform.emu.pre_sys_link_tcl_hook         ${sourcesDir}/misc/dynamic_prelink.tcl                                  [current_project]
+
 validate_bd_design
 save_bd_design
 bd::utils::generate_hw_pfm_from_bd emu.hpfm
+set_property platform.emu.hpfm_file                     emu.hpfm                                                                [current_project]
+
 set_property generate_synth_checkpoint 0 [get_files pfm_dynamic.bd]
 #Construct static region BD
 create_bd_design pfm_top
@@ -89,26 +95,16 @@ update_compile_order -fileset sim_1
 regenerate_bd_layout
 validate_bd_design -force
 save_bd_design
-close_project
 
-
-##Create the overlay directory
-set overlay_dir emu_generated
-file delete -force $overlay_dir
-file mkdir $overlay_dir
-file mkdir $overlay_dir/emu
-file copy -force  $projName/$projName.srcs/sources_1/bd/pfm_top     $overlay_dir/emu
-file copy -force  $projName/$projName.srcs/sources_1/bd/pfm_dynamic $overlay_dir/emu
-file copy -force  ${sourcesDir}/misc/dynamic_prelink.tcl $overlay_dir/emu
-file copy -force  ${sourcesDir}/emulation_sources/emu.xml $overlay_dir/emu
-# Move in created HPFM
-file copy -force  emu.hpfm $overlay_dir/emu/emu.hpfm
-file copy -force  ${sourcesDir}/misc/dynamic_postlink.tcl $overlay_dir/emu
-exec chmod 755 ${overlay_dir}/emu/dynamic_postlink.tcl
-set fid [open "${overlay_dir}/emu/dynamic_postlink.tcl" a ]
+#From the Vivado project, write the contents of hw_emu dir which are ready to be packaged into the platform
+write_hw_emu_dir -verbose
+set overlay_dir hw_emu
+exec chmod 755 ${overlay_dir}/dynamic_postlink.tcl
+set fid [open "${overlay_dir}/dynamic_postlink.tcl" a ]
 puts $fid "set_property generate_synth_checkpoint 0 \[get_files pfm_dynamic.bd\]"
 puts $fid "set_property offset 0x00000000 \[get_bd_addr_segs {axi_vip_3/Master_AXI/SEG_interconnect_aximm_ddrmem3_M00_AXI_Reg}\]"
 puts $fid "set_property range 2G \[get_bd_addr_segs {axi_vip_3/Master_AXI/SEG_interconnect_aximm_ddrmem3_M00_AXI_Reg}\]"
+puts $fid "assign_bd_address -boundary -combine_segments"
 close $fid
-exec chmod 555 ${overlay_dir}/emu/dynamic_postlink.tcl
+close_project
 cd ../

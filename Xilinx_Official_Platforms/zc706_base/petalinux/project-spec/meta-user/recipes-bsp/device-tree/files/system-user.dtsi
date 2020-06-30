@@ -14,7 +14,7 @@
 		interrupts = <0 29 1>;
 		reg = <0x70000000 0x10000>;
 		xlnx,kind-of-intr = <0x1>;
-		xlnx,num-intr-inputs = <0x1>;
+		xlnx,num-intr-inputs = <0x20>;
 	};
 
 	misc_clk_0: misc_clk_0 {

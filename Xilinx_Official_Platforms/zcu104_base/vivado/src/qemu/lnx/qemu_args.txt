@@ -22,3 +22,5 @@ user
 loader,file=<bl31.elf>,cpu-num=0
 -device
 loader,file=<u-boot.elf>
+-boot
+mode=5

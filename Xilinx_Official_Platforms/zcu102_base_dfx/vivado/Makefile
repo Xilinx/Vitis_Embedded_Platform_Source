@@ -9,5 +9,5 @@ hw:
 	$(VIVADO) -mode batch -notrace -source $(PLATFORM)_xsa.tcl
 
 clean:
-	$(RM) -r vivado.* $(PLATFORM) $(PLATFORM).xsa .Xil
+	$(RM) -r vivado.* $(PLATFORM) xilinx_zcu102_dynamic_0_1 $(PLATFORM).xsa .Xil
 	

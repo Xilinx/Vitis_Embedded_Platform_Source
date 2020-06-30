@@ -20,14 +20,14 @@ set script_folder [_tcl::get_script_folder]
 ################################################################
 # Check if script is running in correct Vivado version.
 ################################################################
-set scripts_vivado_version 2019.1
-set current_vivado_version [version -short]
-
-if { [string first $scripts_vivado_version $current_vivado_version] == -1 } {
-   puts ""
-   common::send_msg_id "BD_TCL-1002" "WARNING" "This script was generated using Vivado <$scripts_vivado_version> without IP versions in the create_bd_cell commands, but is now being run in <$current_vivado_version> of Vivado. There may have been major IP version changes between Vivado <$scripts_vivado_version> and <$current_vivado_version>, which could impact the parameter settings of the IPs."
-
-}
+#set scripts_vivado_version 2019.1
+#set current_vivado_version [version -short]
+#
+#if { [string first $scripts_vivado_version $current_vivado_version] == -1 } {
+#   puts ""
+#   common::send_msg_id "BD_TCL-1002" "WARNING" "This script was generated using Vivado <$scripts_vivado_version> without IP versions in the create_bd_cell commands, but is now being run in <$current_vivado_version> of Vivado. There may have been major IP version changes between Vivado <$scripts_vivado_version> and <$current_vivado_version>, which could impact the parameter settings of the IPs."
+#
+#}
 
 ################################################################
 # START
@@ -336,15 +336,15 @@ proc create_hier_cell_interrupt_concat { parentCell nameHier } {
    CONFIG.NUM_PORTS {32} \
  ] $xlconcat_interrupt_0
 
-  # Create instance: xlconstant_gnd, and set properties
-  set xlconstant_gnd [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlconstant xlconstant_gnd ]
-  set_property -dict [ list \
-   CONFIG.CONST_VAL {0} \
- ] $xlconstant_gnd
-
-  # Create port connections
+#  # Create instance: xlconstant_gnd, and set properties
+#  set xlconstant_gnd [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlconstant xlconstant_gnd ]
+#  set_property -dict [ list \
+#   CONFIG.CONST_VAL {0} \
+# ] $xlconstant_gnd
+#
+#  # Create port connections
   connect_bd_net -net xlconcat_interrupt_0_dout [get_bd_pins xlconcat_interrupt_dout] [get_bd_pins xlconcat_interrupt_0/dout]
-  connect_bd_net -net xlconstant_gnd_dout [get_bd_pins xlconcat_interrupt_0/In0] [get_bd_pins xlconcat_interrupt_0/In1] [get_bd_pins xlconcat_interrupt_0/In2] [get_bd_pins xlconcat_interrupt_0/In3] [get_bd_pins xlconcat_interrupt_0/In4] [get_bd_pins xlconcat_interrupt_0/In5] [get_bd_pins xlconcat_interrupt_0/In6] [get_bd_pins xlconcat_interrupt_0/In7] [get_bd_pins xlconcat_interrupt_0/In8] [get_bd_pins xlconcat_interrupt_0/In9] [get_bd_pins xlconcat_interrupt_0/In10] [get_bd_pins xlconcat_interrupt_0/In11] [get_bd_pins xlconcat_interrupt_0/In12] [get_bd_pins xlconcat_interrupt_0/In13] [get_bd_pins xlconcat_interrupt_0/In14] [get_bd_pins xlconcat_interrupt_0/In15] [get_bd_pins xlconcat_interrupt_0/In16] [get_bd_pins xlconcat_interrupt_0/In17] [get_bd_pins xlconcat_interrupt_0/In18] [get_bd_pins xlconcat_interrupt_0/In19] [get_bd_pins xlconcat_interrupt_0/In20] [get_bd_pins xlconcat_interrupt_0/In21] [get_bd_pins xlconcat_interrupt_0/In22] [get_bd_pins xlconcat_interrupt_0/In23] [get_bd_pins xlconcat_interrupt_0/In24] [get_bd_pins xlconcat_interrupt_0/In25] [get_bd_pins xlconcat_interrupt_0/In26] [get_bd_pins xlconcat_interrupt_0/In27] [get_bd_pins xlconcat_interrupt_0/In28] [get_bd_pins xlconcat_interrupt_0/In29] [get_bd_pins xlconcat_interrupt_0/In30] [get_bd_pins xlconcat_interrupt_0/In31] [get_bd_pins xlconstant_gnd/dout]
+ # connect_bd_net -net xlconstant_gnd_dout [get_bd_pins xlconcat_interrupt_0/In0] [get_bd_pins xlconcat_interrupt_0/In1] [get_bd_pins xlconcat_interrupt_0/In2] [get_bd_pins xlconcat_interrupt_0/In3] [get_bd_pins xlconcat_interrupt_0/In4] [get_bd_pins xlconcat_interrupt_0/In5] [get_bd_pins xlconcat_interrupt_0/In6] [get_bd_pins xlconcat_interrupt_0/In7] [get_bd_pins xlconcat_interrupt_0/In8] [get_bd_pins xlconcat_interrupt_0/In9] [get_bd_pins xlconcat_interrupt_0/In10] [get_bd_pins xlconcat_interrupt_0/In11] [get_bd_pins xlconcat_interrupt_0/In12] [get_bd_pins xlconcat_interrupt_0/In13] [get_bd_pins xlconcat_interrupt_0/In14] [get_bd_pins xlconcat_interrupt_0/In15] [get_bd_pins xlconcat_interrupt_0/In16] [get_bd_pins xlconcat_interrupt_0/In17] [get_bd_pins xlconcat_interrupt_0/In18] [get_bd_pins xlconcat_interrupt_0/In19] [get_bd_pins xlconcat_interrupt_0/In20] [get_bd_pins xlconcat_interrupt_0/In21] [get_bd_pins xlconcat_interrupt_0/In22] [get_bd_pins xlconcat_interrupt_0/In23] [get_bd_pins xlconcat_interrupt_0/In24] [get_bd_pins xlconcat_interrupt_0/In25] [get_bd_pins xlconcat_interrupt_0/In26] [get_bd_pins xlconcat_interrupt_0/In27] [get_bd_pins xlconcat_interrupt_0/In28] [get_bd_pins xlconcat_interrupt_0/In29] [get_bd_pins xlconcat_interrupt_0/In30] [get_bd_pins xlconcat_interrupt_0/In31] [get_bd_pins xlconstant_gnd/dout]
 
   # Restore current instance
   current_bd_instance $oldCurInst
@@ -745,6 +745,7 @@ proc create_root_design { parentCell } {
    CONFIG.NUM_MI {1} \
    CONFIG.S00_HAS_REGSLICE {4} \
  ] $axi_interconnect_hpm0fpd
+ set_property SELECTED_SIM_MODEL tlm $axi_interconnect_hpm0fpd
   # Create instance: axi_mmu_2, and set properties
   set axi_mmu_2 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_mmu axi_mmu_2 ]
   set_property -dict [ list \
@@ -778,6 +779,8 @@ proc create_root_design { parentCell } {
   set_property -dict [ list \
    CONFIG.DATA_WIDTH {128} \
  ] $axi_register_slice_hpm0fpd
+create_bd_cell -type ip -vlnv xilinx.com:ip:axi_vip:1.1 axi_vip_0
+set_property -dict [list CONFIG.INTERFACE_MODE {SLAVE}] [get_bd_cells axi_vip_0]
 
   # Create instance: axi_vip_2, and set properties
   set axi_vip_2 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_vip axi_vip_2 ]
@@ -896,6 +899,7 @@ proc create_root_design { parentCell } {
 
   # Create instance: axi_vip_hpm0fpd, and set properties
   set axi_vip_hpm0fpd [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_vip axi_vip_hpm0fpd ]
+  set_property SELECTED_SIM_MODEL tlm $axi_vip_hpm0fpd
 
   # Create instance: debug_bridge_xsdbm, and set properties
   set debug_bridge_xsdbm [ create_bd_cell -type ip -vlnv xilinx.com:ip:debug_bridge debug_bridge_xsdbm ]
@@ -1146,10 +1150,11 @@ proc create_root_design { parentCell } {
   connect_bd_intf_net -intf_net interconnect_axilite_user_M00_AXI [get_bd_intf_pins axi_gpio_null/S_AXI] [get_bd_intf_pins interconnect_axilite_user_slr1/M00_AXI]
   connect_bd_intf_net -intf_net regslice_control_userpf_M_AXI_1 [get_bd_intf_ports regslice_control_userpf_M_AXI] [get_bd_intf_pins axi_vip_ctrl_userpf/S_AXI]
   connect_bd_intf_net -intf_net regslice_data_hpm0fpd_M_AXI1_1 [get_bd_intf_ports regslice_data_hpm0fpd_M_AXI1] [get_bd_intf_pins axi_vip_hpm0fpd/S_AXI]
+  connect_bd_intf_net [get_bd_intf_pins axi_register_slice_hpm0fpd/M_AXI] [get_bd_intf_pins axi_vip_0/S_AXI]
 
   # Create port connections
   connect_bd_net -net ARESETN_1 [get_bd_pins axi_gpio_null/s_axi_aresetn] [get_bd_pins interconnect_axilite_user_slr1/ARESETN] [get_bd_pins interconnect_axilite_user_slr1/M00_ARESETN] [get_bd_pins interconnect_axilite_user_slr1/S00_ARESETN] [get_bd_pins reset_controllers/psreset_gate_pr_control_interconnect_aresetn]
-  connect_bd_net -net M01_ACLK_1 [get_bd_ports clkwiz_kernel2_clk_out1] [get_bd_pins axi_interconnect_0/ACLK] [get_bd_pins axi_interconnect_0/M00_ACLK] [get_bd_pins axi_interconnect_0/S00_ACLK] [get_bd_pins axi_interconnect_1/ACLK] [get_bd_pins axi_interconnect_1/M00_ACLK] [get_bd_pins axi_interconnect_1/S00_ACLK] [get_bd_pins axi_interconnect_hpm0fpd/ACLK] [get_bd_pins axi_interconnect_hpm0fpd/M00_ACLK] [get_bd_pins axi_interconnect_hpm0fpd/S00_ACLK] [get_bd_pins axi_mmu_2/aclk] [get_bd_pins axi_mmu_3/aclk] [get_bd_pins axi_mmu_4/aclk] [get_bd_pins axi_mmu_5/aclk] [get_bd_pins axi_register_slice_hpm0fpd/aclk] [get_bd_pins axi_vip_2/aclk] [get_bd_pins axi_vip_3/aclk] [get_bd_pins axi_vip_4/aclk] [get_bd_pins axi_vip_5/aclk] [get_bd_pins axi_vip_hpm0fpd/aclk] [get_bd_pins interconnect_axifull_1_user_slr1/ACLK] [get_bd_pins interconnect_axifull_1_user_slr1/M00_ACLK] [get_bd_pins interconnect_axifull_1_user_slr1/S00_ACLK] [get_bd_pins interconnect_axifull_2_user_slr1/ACLK] [get_bd_pins interconnect_axifull_2_user_slr1/M00_ACLK] [get_bd_pins interconnect_axifull_2_user_slr1/S00_ACLK] [get_bd_pins reset_controllers/clkwiz_kernel2_clk_out1]
+  connect_bd_net -net M01_ACLK_1 [get_bd_ports clkwiz_kernel2_clk_out1] [get_bd_pins axi_vip_0/aclk] [get_bd_pins axi_interconnect_0/ACLK] [get_bd_pins axi_interconnect_0/M00_ACLK] [get_bd_pins axi_interconnect_0/S00_ACLK] [get_bd_pins axi_interconnect_1/ACLK] [get_bd_pins axi_interconnect_1/M00_ACLK] [get_bd_pins axi_interconnect_1/S00_ACLK] [get_bd_pins axi_interconnect_hpm0fpd/ACLK] [get_bd_pins axi_interconnect_hpm0fpd/M00_ACLK] [get_bd_pins axi_interconnect_hpm0fpd/S00_ACLK] [get_bd_pins axi_mmu_2/aclk] [get_bd_pins axi_mmu_3/aclk] [get_bd_pins axi_mmu_4/aclk] [get_bd_pins axi_mmu_5/aclk] [get_bd_pins axi_register_slice_hpm0fpd/aclk] [get_bd_pins axi_vip_2/aclk] [get_bd_pins axi_vip_3/aclk] [get_bd_pins axi_vip_4/aclk] [get_bd_pins axi_vip_5/aclk] [get_bd_pins axi_vip_hpm0fpd/aclk] [get_bd_pins interconnect_axifull_1_user_slr1/ACLK] [get_bd_pins interconnect_axifull_1_user_slr1/M00_ACLK] [get_bd_pins interconnect_axifull_1_user_slr1/S00_ACLK] [get_bd_pins interconnect_axifull_2_user_slr1/ACLK] [get_bd_pins interconnect_axifull_2_user_slr1/M00_ACLK] [get_bd_pins interconnect_axifull_2_user_slr1/S00_ACLK] [get_bd_pins reset_controllers/clkwiz_kernel2_clk_out1]
   connect_bd_net -net bscanid_en_1 [get_bd_ports bscanid_en] [get_bd_pins debug_bridge_xsdbm/S_BSCAN_bscanid_en]
   connect_bd_net -net capture_1 [get_bd_ports capture] [get_bd_pins debug_bridge_xsdbm/S_BSCAN_capture]
   connect_bd_net -net clkwiz_kernel3_clk_out_1 [get_bd_ports clkwiz_kernel3_clk_out] [get_bd_pins reset_controllers/clkwiz_kernel3_clk_out]
@@ -1165,7 +1170,7 @@ proc create_root_design { parentCell } {
   connect_bd_net -net interrupt_concat_xlconcat_interrupt_dout [get_bd_ports xlconcat_interrupt_dout] [get_bd_pins interrupt_concat/xlconcat_interrupt_dout]
   connect_bd_net -net logic_reset_op_Res_1 [get_bd_ports clkwiz_sysclks_locked] [get_bd_pins reset_controllers/clkwiz_sysclks_locked]
   connect_bd_net -net reset_1 [get_bd_ports reset] [get_bd_pins debug_bridge_xsdbm/S_BSCAN_reset]
-  connect_bd_net -net reset_controllers_interconnect_aresetn [get_bd_pins axi_interconnect_0/ARESETN] [get_bd_pins axi_interconnect_0/M00_ARESETN] [get_bd_pins axi_interconnect_0/S00_ARESETN] [get_bd_pins axi_interconnect_1/ARESETN] [get_bd_pins axi_interconnect_1/M00_ARESETN] [get_bd_pins axi_interconnect_1/S00_ARESETN] [get_bd_pins axi_interconnect_hpm0fpd/ARESETN] [get_bd_pins axi_interconnect_hpm0fpd/M00_ARESETN] [get_bd_pins axi_interconnect_hpm0fpd/S00_ARESETN] [get_bd_pins axi_mmu_2/aresetn] [get_bd_pins axi_mmu_3/aresetn] [get_bd_pins axi_mmu_4/aresetn] [get_bd_pins axi_mmu_5/aresetn] [get_bd_pins axi_register_slice_hpm0fpd/aresetn] [get_bd_pins axi_vip_2/aresetn] [get_bd_pins axi_vip_3/aresetn] [get_bd_pins axi_vip_4/aresetn] [get_bd_pins axi_vip_5/aresetn] [get_bd_pins axi_vip_hpm0fpd/aresetn] [get_bd_pins interconnect_axifull_1_user_slr1/ARESETN] [get_bd_pins interconnect_axifull_1_user_slr1/M00_ARESETN] [get_bd_pins interconnect_axifull_1_user_slr1/S00_ARESETN] [get_bd_pins interconnect_axifull_2_user_slr1/ARESETN] [get_bd_pins interconnect_axifull_2_user_slr1/M00_ARESETN] [get_bd_pins interconnect_axifull_2_user_slr1/S00_ARESETN] [get_bd_pins reset_controllers/psreset_gate_pr_kernel2_interconnect_aresetn_0]
+  connect_bd_net -net reset_controllers_interconnect_aresetn [get_bd_pins axi_interconnect_0/ARESETN] [get_bd_pins axi_vip_0/aresetn] [get_bd_pins axi_interconnect_0/M00_ARESETN] [get_bd_pins axi_interconnect_0/S00_ARESETN] [get_bd_pins axi_interconnect_1/ARESETN] [get_bd_pins axi_interconnect_1/M00_ARESETN] [get_bd_pins axi_interconnect_1/S00_ARESETN] [get_bd_pins axi_interconnect_hpm0fpd/ARESETN] [get_bd_pins axi_interconnect_hpm0fpd/M00_ARESETN] [get_bd_pins axi_interconnect_hpm0fpd/S00_ARESETN] [get_bd_pins axi_mmu_2/aresetn] [get_bd_pins axi_mmu_3/aresetn] [get_bd_pins axi_mmu_4/aresetn] [get_bd_pins axi_mmu_5/aresetn] [get_bd_pins axi_register_slice_hpm0fpd/aresetn] [get_bd_pins axi_vip_2/aresetn] [get_bd_pins axi_vip_3/aresetn] [get_bd_pins axi_vip_4/aresetn] [get_bd_pins axi_vip_5/aresetn] [get_bd_pins axi_vip_hpm0fpd/aresetn] [get_bd_pins interconnect_axifull_1_user_slr1/ARESETN] [get_bd_pins interconnect_axifull_1_user_slr1/M00_ARESETN] [get_bd_pins interconnect_axifull_1_user_slr1/S00_ARESETN] [get_bd_pins interconnect_axifull_2_user_slr1/ARESETN] [get_bd_pins interconnect_axifull_2_user_slr1/M00_ARESETN] [get_bd_pins interconnect_axifull_2_user_slr1/S00_ARESETN] [get_bd_pins reset_controllers/psreset_gate_pr_kernel2_interconnect_aresetn_0]
   connect_bd_net -net runtest_1 [get_bd_ports runtest] [get_bd_pins debug_bridge_xsdbm/S_BSCAN_runtest]
   connect_bd_net -net sel_1 [get_bd_ports sel] [get_bd_pins debug_bridge_xsdbm/S_BSCAN_sel]
   connect_bd_net -net shift_1 [get_bd_ports shift] [get_bd_pins debug_bridge_xsdbm/S_BSCAN_shift]
@@ -1183,6 +1188,8 @@ proc create_root_design { parentCell } {
   create_bd_addr_seg -range 0x80000000 -offset 0x00000000 [get_bd_addr_spaces axi_vip_5/Master_AXI] [get_bd_addr_segs interconnect_aximm_ddrmem5_M00_AXI/Reg] SEG_interconnect_aximm_ddrmem5_M00_AXI_Reg
   
   create_bd_addr_seg -range 0x00010000 -offset 0x80800000 [get_bd_addr_spaces regslice_control_userpf_M_AXI] [get_bd_addr_segs axi_gpio_null/S_AXI/Reg] SEG_axi_gpio_null_Reg
+  create_bd_addr_seg -range 0x00010000 -offset 0xA0000000 [get_bd_addr_spaces regslice_data_hpm0fpd_M_AXI1] [get_bd_addr_segs axi_vip_0/S_AXI/Reg] SEG_axi_vip_0_Reg
+
 
   set_property HDL_ATTRIBUTE.DPA_AXILITE_MASTER fallback [get_bd_cells /interconnect_axilite_user_slr1]
   set_property HDL_ATTRIBUTE.DPA_TRACE_SLAVE true [get_bd_cells /interconnect_axifull_2_user_slr1]
