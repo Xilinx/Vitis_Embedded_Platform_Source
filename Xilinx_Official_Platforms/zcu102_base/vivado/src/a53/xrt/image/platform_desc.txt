@@ -1,1 +1,1 @@
-zcu102_base
+xilinx_zcu102_base_202010_1

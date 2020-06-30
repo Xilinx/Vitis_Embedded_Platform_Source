@@ -304,6 +304,7 @@ proc create_hier_cell_pr_isolation_expanded { parentCell nameHier } {
    CONFIG.REG_AW {1} \
    CONFIG.REG_B {1} \
  ] $regslice_data_periph_1
+ set_property SELECTED_SIM_MODEL tlm $regslice_data_periph_1
 
   # Create instance: regslice_ddrmem_2, and set properties
   set regslice_ddrmem_2 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_register_slice regslice_ddrmem_2 ]
@@ -1504,17 +1505,17 @@ proc create_root_design { parentCell } {
   connect_bd_net -net static_region_slice_reset_kernel_pr_Dout [get_bd_pins dynamic_region/pr_reset_n] [get_bd_pins static_region/slice_reset_kernel_pr_Dout]
 
   # Create address segments
-  create_bd_addr_seg -range 0x80000000 -offset 0x00000000 [get_bd_addr_spaces dynamic_region/interconnect_aximm_ddrmem3_M00_AXI] [get_bd_addr_segs static_region/zynq_ultra_ps_e_0/SAXIGP2/HP0_DDR_LOW] SEG_zynq_ultra_ps_e_0_HP0_DDR_LOW
-  create_bd_addr_seg -range 0x80000000 -offset 0x00000000 [get_bd_addr_spaces dynamic_region/interconnect_aximm_ddrmem2_M00_AXI] [get_bd_addr_segs static_region/zynq_ultra_ps_e_0/SAXIGP5/HP3_DDR_LOW] SEG_zynq_ultra_ps_e_0_HP3_DDR_LOW
-  create_bd_addr_seg -range 0x80000000 -offset 0x00000000 [get_bd_addr_spaces dynamic_region/interconnect_aximm_ddrmem4_M00_AXI] [get_bd_addr_segs static_region/zynq_ultra_ps_e_0/SAXIGP3/HP1_DDR_LOW] SEG_zynq_ultra_ps_e_0_HP1_DDR_LOW
-  create_bd_addr_seg -range 0x80000000 -offset 0x00000000 [get_bd_addr_spaces dynamic_region/interconnect_aximm_ddrmem5_M00_AXI] [get_bd_addr_segs static_region/zynq_ultra_ps_e_0/SAXIGP4/HP2_DDR_LOW] SEG_zynq_ultra_ps_e_0_HP2_DDR_LOW
-  create_bd_addr_seg -range 0x00010000 -offset 0x80020000 [get_bd_addr_spaces static_region/zynq_ultra_ps_e_0/Data] [get_bd_addr_segs static_region/axi_intc_0/S_AXI/Reg] SEG_axi_intc_0_Reg
- # create_bd_addr_seg -range 0x00010000 -offset 0x80090000 [get_bd_addr_spaces static_region/zynq_ultra_ps_e_0/Data] [get_bd_addr_segs static_region/debug_bridge_xvc/S_AXI/Reg0] SEG_debug_bridge_xvc_Reg0
-  create_bd_addr_seg -range 0x00800000 -offset 0x80800000 [get_bd_addr_spaces static_region/zynq_ultra_ps_e_0/Data] [get_bd_addr_segs dynamic_region/regslice_control_userpf_M_AXI/Reg0] SEG_dynamic_region_Reg
-  assign_bd_address -offset 0xA0000000 -range 0x00010000 -target_address_space [get_bd_addr_spaces static_region/zynq_ultra_ps_e_0/Data] [get_bd_addr_segs dynamic_region/regslice_data_hpm0fpd_M_AXI1/Reg] -force
-  create_bd_addr_seg -range 0x00010000 -offset 0x80070000 [get_bd_addr_spaces static_region/zynq_ultra_ps_e_0/Data] [get_bd_addr_segs static_region/pr_isolation_expanded/gate_pr/S_AXI/Reg] SEG_gate_pr_Reg
-
-
+    
+  assign_bd_address -offset 0x80070000 -range 0x00010000 -target_address_space [get_bd_addr_spaces static_region/zynq_ultra_ps_e_0/Data] [get_bd_addr_segs static_region/pr_isolation_expanded/gate_pr/S_AXI/Reg] -force
+  assign_bd_address -offset 0x00000000 -range 0x80000000 -target_address_space [get_bd_addr_spaces dynamic_region/interconnect_aximm_ddrmem3_M00_AXI] [get_bd_addr_segs static_region/zynq_ultra_ps_e_0/SAXIGP2/HP0_DDR_LOW] -force
+  assign_bd_address -offset 0x00000000 -range 0x80000000 -target_address_space [get_bd_addr_spaces dynamic_region/interconnect_aximm_ddrmem4_M00_AXI] [get_bd_addr_segs static_region/zynq_ultra_ps_e_0/SAXIGP3/HP1_DDR_LOW] -force
+  assign_bd_address -offset 0x00000000 -range 0x80000000 -target_address_space [get_bd_addr_spaces dynamic_region/interconnect_aximm_ddrmem5_M00_AXI] [get_bd_addr_segs static_region/zynq_ultra_ps_e_0/SAXIGP4/HP2_DDR_LOW] -force
+  assign_bd_address -offset 0x00000000 -range 0x80000000 -target_address_space [get_bd_addr_spaces dynamic_region/interconnect_aximm_ddrmem2_M00_AXI] [get_bd_addr_segs static_region/zynq_ultra_ps_e_0/SAXIGP5/HP3_DDR_LOW] -force
+  assign_bd_address -offset 0x80020000 -range 0x00010000 -target_address_space [get_bd_addr_spaces static_region/zynq_ultra_ps_e_0/Data] [get_bd_addr_segs static_region/axi_intc_0/S_AXI/Reg] -force
+  #assign_bd_address -offset 0x80090000 -range 0x00010000 -target_address_space [get_bd_addr_spaces static_region/zynq_ultra_ps_e_0/Data] [get_bd_addr_segs static_region/debug_bridge_xvc/S_AXI/Reg0] -force
+  assign_bd_address -offset 0x80800000 -range 0x00800000 -target_address_space [get_bd_addr_spaces static_region/zynq_ultra_ps_e_0/Data] [get_bd_addr_segs dynamic_region/regslice_control_userpf_M_AXI/Reg] -force
+  assign_bd_address -offset 0xA0000000 -range 0x00800000 -target_address_space [get_bd_addr_spaces static_region/zynq_ultra_ps_e_0/Data] [get_bd_addr_segs dynamic_region/regslice_data_hpm0fpd_M_AXI1/Reg] -force
+  
   # Restore current instance
   current_bd_instance $oldCurInst
 

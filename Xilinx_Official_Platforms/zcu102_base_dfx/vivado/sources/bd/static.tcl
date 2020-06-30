@@ -20,14 +20,14 @@ set script_folder [_tcl::get_script_folder]
 ################################################################
 # Check if script is running in correct Vivado version.
 ################################################################
-set scripts_vivado_version 2019.2
-set current_vivado_version [version -short]
-
-if { [string first $scripts_vivado_version $current_vivado_version] == -1 } {
-   puts ""
-   common::send_msg_id "BD_TCL-1002" "WARNING" "This script was generated using Vivado <$scripts_vivado_version> without IP versions in the create_bd_cell commands, but is now being run in <$current_vivado_version> of Vivado. There may have been major IP version changes between Vivado <$scripts_vivado_version> and <$current_vivado_version>, which could impact the parameter settings of the IPs."
-
-}
+#set scripts_vivado_version 2019.2
+#set current_vivado_version [version -short]
+#
+#if { [string first $scripts_vivado_version $current_vivado_version] == -1 } {
+#   puts ""
+#   common::send_msg_id "BD_TCL-1002" "WARNING" "This script was generated using Vivado <$scripts_vivado_version> without IP versions in the create_bd_cell commands, but is now being run in <$current_vivado_version> of Vivado. There may have been major IP version changes between Vivado <$scripts_vivado_version> and <$current_vivado_version>, which could impact the parameter settings of the IPs."
+#
+#}
 
 ################################################################
 # START
@@ -567,6 +567,11 @@ proc create_hier_cell_static_region { parentCell nameHier } {
 
   # Create instance: axi_intc_0, and set properties
   set axi_intc_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_intc axi_intc_0 ]
+  set_property -dict [ list \
+   CONFIG.C_IRQ_IS_LEVEL {1} \
+   CONFIG.C_ASYNC_INTR  {0xFFFFFFFF} \
+  ] $axi_intc_0
+
 
   # Create instance: axi_interconnect_0, and set properties
   set axi_interconnect_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_interconnect axi_interconnect_0 ]
@@ -1504,6 +1509,7 @@ proc create_root_design { parentCell } {
 
 
   # Create address segments
+  assign_bd_address -offset 0x80070000 -range 0x00010000 -target_address_space [get_bd_addr_spaces static_region/zynq_ultra_ps_e_0/Data] [get_bd_addr_segs static_region/pr_isolation_expanded/gate_pr/S_AXI/Reg] -force
   assign_bd_address -offset 0x00000000 -range 0x80000000 -target_address_space [get_bd_addr_spaces dynamic_region/interconnect_aximm_ddrmem3_M00_AXI] [get_bd_addr_segs static_region/zynq_ultra_ps_e_0/SAXIGP2/HP0_DDR_LOW] -force
   assign_bd_address -offset 0x00000000 -range 0x80000000 -target_address_space [get_bd_addr_spaces dynamic_region/interconnect_aximm_ddrmem4_M00_AXI] [get_bd_addr_segs static_region/zynq_ultra_ps_e_0/SAXIGP3/HP1_DDR_LOW] -force
   assign_bd_address -offset 0x00000000 -range 0x80000000 -target_address_space [get_bd_addr_spaces dynamic_region/interconnect_aximm_ddrmem5_M00_AXI] [get_bd_addr_segs static_region/zynq_ultra_ps_e_0/SAXIGP4/HP2_DDR_LOW] -force
@@ -1511,9 +1517,7 @@ proc create_root_design { parentCell } {
   assign_bd_address -offset 0x80020000 -range 0x00010000 -target_address_space [get_bd_addr_spaces static_region/zynq_ultra_ps_e_0/Data] [get_bd_addr_segs static_region/axi_intc_0/S_AXI/Reg] -force
   assign_bd_address -offset 0x80090000 -range 0x00010000 -target_address_space [get_bd_addr_spaces static_region/zynq_ultra_ps_e_0/Data] [get_bd_addr_segs static_region/debug_bridge_xvc/S_AXI/Reg0] -force
   assign_bd_address -offset 0x80800000 -range 0x00800000 -target_address_space [get_bd_addr_spaces static_region/zynq_ultra_ps_e_0/Data] [get_bd_addr_segs dynamic_region/regslice_control_userpf_M_AXI/Reg] -force
-  assign_bd_address -offset 0xA0000000 -range 0x00010000 -target_address_space [get_bd_addr_spaces static_region/zynq_ultra_ps_e_0/Data] [get_bd_addr_segs dynamic_region/regslice_data_hpm0fpd_M_AXI1/Reg] -force
-  assign_bd_address -offset 0x80070000 -range 0x00010000 -target_address_space [get_bd_addr_spaces static_region/zynq_ultra_ps_e_0/Data] [get_bd_addr_segs static_region/pr_isolation_expanded/gate_pr/S_AXI/Reg] -force
-
+  assign_bd_address -offset 0xA0000000 -range 0x00800000 -target_address_space [get_bd_addr_spaces static_region/zynq_ultra_ps_e_0/Data] [get_bd_addr_segs dynamic_region/regslice_data_hpm0fpd_M_AXI1/Reg] -force
 
   # Restore current instance
   current_bd_instance $oldCurInst

@@ -3,10 +3,12 @@
 
 CONFIG_gpio-demo
 CONFIG_peekpoke
+#CONFIG_gstreamer-vcu-examples
+CONFIG_packagegroup-petalinux-v4lutils
+CONFIG_packagegroup-petalinux-audio
+#CONFIG_gstreamer-vcu-notebooks
 CONFIG_xrt
-CONFIG_mnt-sd
 CONFIG_xrt-dev
 CONFIG_zocl
 CONFIG_opencl-clhpp-dev
 CONFIG_opencl-headers-dev
-CONFIG_packagegroup-petalinux-opencv

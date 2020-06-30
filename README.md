@@ -6,8 +6,8 @@ platforms. To use this source code, you will need to have the following tools in
 
 - A Linux-based host OS supported by Vitis and PetaLinux
 - Standard GNU build tools (make, etc)
-- Vitis 2019.2
-- PetaLinux 2019.2
+- Vitis 2020.1
+- PetaLinux 2020.1
 
 This repository is generally divided into two sections:
 

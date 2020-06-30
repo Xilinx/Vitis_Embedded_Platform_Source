@@ -1,6 +1,8 @@
 /include/ "system-conf.dtsi"
-/ {
+/{
 };
+
+
 &amba {
 	axi_intc_0: axi-interrupt-ctrl {
 		#interrupt-cells = <2>;
@@ -27,3 +29,4 @@
 			     <28 4>, <29 4>, <30 4>, <31 4>;
 	};
 };
+

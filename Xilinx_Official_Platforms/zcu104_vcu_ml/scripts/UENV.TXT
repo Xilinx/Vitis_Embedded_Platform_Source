@@ -1,2 +1,0 @@
-bootargs=console=ttyPS0,115200 root=/dev/mmcblk0p2 rw rootwait earlyprintk consoleblank=0 cma=1100M cpuidle.off=1 clk_ignore_unused loglevel=8
-

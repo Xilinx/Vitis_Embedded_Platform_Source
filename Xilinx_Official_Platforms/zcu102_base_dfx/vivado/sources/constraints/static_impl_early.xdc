@@ -1,4 +1,4 @@
-# *************************************************************************
+# -------------------------------------------------------------------------
 # Copyright 2019 Xilinx Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,8 +12,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-# *************************************************************************
-
+# -------------------------------------------------------------------------
 # Clock domain priority
 # ------------------------------------------------------------------------------
 set_property HIGH_PRIORITY true [get_nets pfm_top_i/static_region/base_clocking/clkwiz_sysclks/inst/clk_out1]

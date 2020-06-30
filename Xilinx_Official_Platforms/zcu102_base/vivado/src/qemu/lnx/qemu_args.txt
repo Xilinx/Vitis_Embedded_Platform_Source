@@ -22,3 +22,5 @@ user
 loader,file=<xrt/qemu/bl31.elf>,cpu-num=0
 -device
 loader,file=<xrt/qemu/u-boot.elf>
+-boot
+mode=5

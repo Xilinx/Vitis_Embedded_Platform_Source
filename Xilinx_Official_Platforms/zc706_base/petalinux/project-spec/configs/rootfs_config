@@ -5,33 +5,33 @@
 CONFIG_system-zynq=y
 
 #
-# Filesystem Packages 
+# Filesystem Packages
 #
 
 #
-# admin 
+# admin
 #
 
 #
-# sudo 
+# sudo
 #
 # CONFIG_sudo is not set
 # CONFIG_sudo-dbg is not set
 # CONFIG_sudo-dev is not set
 
 #
-# base 
+# base
 #
 
 #
-# base-files 
+# base-files
 #
 # CONFIG_base-files is not set
 # CONFIG_base-files-dbg is not set
 # CONFIG_base-files-dev is not set
 
 #
-# base-passwd 
+# base-passwd
 #
 # CONFIG_base-passwd is not set
 # CONFIG_base-passwd-dev is not set
@@ -39,14 +39,14 @@ CONFIG_system-zynq=y
 # CONFIG_base-passwd-update is not set
 
 #
-# bc 
+# bc
 #
 # CONFIG_bc is not set
 # CONFIG_bc-dev is not set
 # CONFIG_bc-dbg is not set
 
 #
-# busybox 
+# busybox
 #
 # CONFIG_busybox is not set
 # CONFIG_busybox-udhcpd is not set
@@ -59,7 +59,7 @@ CONFIG_system-zynq=y
 # CONFIG_busybox-syslog is not set
 
 #
-# cpio 
+# cpio
 #
 # CONFIG_cpio is not set
 # CONFIG_cpio-dbg is not set
@@ -67,7 +67,7 @@ CONFIG_system-zynq=y
 # CONFIG_cpio-rmt is not set
 
 #
-# dbus 
+# dbus
 #
 # CONFIG_dbus is not set
 # CONFIG_dbus-lib is not set
@@ -75,7 +75,7 @@ CONFIG_system-zynq=y
 # CONFIG_dbus-dbg is not set
 
 #
-# dbus-glib 
+# dbus-glib
 #
 # CONFIG_dbus-glib is not set
 # CONFIG_dbus-glib-bash-completion is not set
@@ -84,14 +84,14 @@ CONFIG_system-zynq=y
 # CONFIG_dbus-glib-dev is not set
 
 #
-# dbus-wait 
+# dbus-wait
 #
 # CONFIG_dbus-wait is not set
 # CONFIG_dbus-wait-dbg is not set
 # CONFIG_dbus-wait-dev is not set
 
 #
-# diffutils 
+# diffutils
 #
 # CONFIG_diffutils is not set
 # CONFIG_diffutils-dbg is not set
@@ -100,13 +100,13 @@ CONFIG_system-zynq=y
 #
 # dnf
 #
-# CONFIG_dnf is not set
+CONFIG_dnf=y
 
 #
-# e2fsprogs 
+# e2fsprogs
 #
 # CONFIG_e2fsprogs is not set
-# CONFIG_e2fsprogs-resize2fs is not set
+CONFIG_e2fsprogs-resize2fs=y
 # CONFIG_e2fsprogs-badblocks is not set
 # CONFIG_e2fsprogs-e2fsck is not set
 # CONFIG_libss is not set
@@ -119,14 +119,14 @@ CONFIG_system-zynq=y
 # CONFIG_e2fsprogs-dbg is not set
 
 #
-# ed 
+# ed
 #
 # CONFIG_ed is not set
 # CONFIG_ed-dev is not set
 # CONFIG_ed-dbg is not set
 
 #
-# elfutils 
+# elfutils
 #
 # CONFIG_elfutils is not set
 # CONFIG_libdw is not set
@@ -137,19 +137,24 @@ CONFIG_system-zynq=y
 # CONFIG_elfutils-dbg is not set
 
 #
-# formfactor 
+# formfactor
 #
 # CONFIG_formfactor is not set
 # CONFIG_formfactor-dbg is not set
 # CONFIG_formfactor-dev is not set
 
 #
-# haveged 
+# fpga-manager-script
+#
+CONFIG_fpga-manager-script=y
+
+#
+# haveged
 #
 CONFIG_haveged=y
 
 #
-# i2c-tools 
+# i2c-tools
 #
 # CONFIG_i2c-tools is not set
 # CONFIG_i2c-tools-dev is not set
@@ -157,14 +162,14 @@ CONFIG_haveged=y
 # CONFIG_i2c-tools-misc is not set
 
 #
-# init-ifupdown 
+# init-ifupdown
 #
 # CONFIG_init-ifupdown is not set
 # CONFIG_init-ifupdown-dev is not set
 # CONFIG_init-ifupdown-dbg is not set
 
 #
-# initscripts 
+# initscripts
 #
 # CONFIG_initscripts is not set
 # CONFIG_initscripts-dev is not set
@@ -172,7 +177,7 @@ CONFIG_haveged=y
 # CONFIG_initscripts-functions is not set
 
 #
-# iproute2 
+# iproute2
 #
 # CONFIG_iproute2 is not set
 # CONFIG_iproute2-tc is not set
@@ -187,7 +192,7 @@ CONFIG_haveged=y
 # CONFIG_iproute2-dbg is not set
 
 #
-# kmod 
+# kmod
 #
 # CONFIG_kmod is not set
 # CONFIG_kmod-dbg is not set
@@ -196,21 +201,21 @@ CONFIG_haveged=y
 # CONFIG_kmod-bash-completion is not set
 
 #
-# lsbinitscripts 
+# linuxptp
 #
-# CONFIG_lsbinitscripts is not set
-# CONFIG_lsbinitscripts-dev is not set
-# CONFIG_lsbinitscripts-dbg is not set
+# CONFIG_linuxptp is not set
+# CONFIG_linuxptp-dev is not set
+# CONFIG_linuxptp-dbg is not set
 
 #
-# modutils-initscripts 
+# modutils-initscripts
 #
 # CONFIG_modutils-initscripts is not set
 # CONFIG_modutils-initscripts-dev is not set
 # CONFIG_modutils-initscripts-dbg is not set
 
 #
-# mtd-utils 
+# mtd-utils
 #
 CONFIG_mtd-utils=y
 # CONFIG_mtd-utils-ubifs is not set
@@ -220,14 +225,14 @@ CONFIG_mtd-utils=y
 # CONFIG_mtd-utils-misc is not set
 
 #
-# netbase 
+# netbase
 #
 # CONFIG_netbase is not set
 # CONFIG_netbase-dbg is not set
 # CONFIG_netbase-dev is not set
 
 #
-# opkg 
+# opkg
 #
 # CONFIG_opkg is not set
 # CONFIG_opkg-dev is not set
@@ -235,28 +240,28 @@ CONFIG_mtd-utils=y
 # CONFIG_opkg-dbg is not set
 
 #
-# opkg-utils 
+# opkg-utils
 #
 # CONFIG_opkg-utils is not set
 # CONFIG_update-alternatives-opkg is not set
 # CONFIG_opkg-utils-dbg is not set
 
 #
-# procps 
+# procps
 #
 # CONFIG_procps is not set
 # CONFIG_procps-dbg is not set
 # CONFIG_procps-dev is not set
 
 #
-# pseudo 
+# pseudo
 #
 # CONFIG_pseudo is not set
 # CONFIG_pseudo-dbg is not set
 # CONFIG_pseudo-dev is not set
 
 #
-# psplash 
+# psplash
 #
 # CONFIG_psplash is not set
 # CONFIG_psplash-dbg is not set
@@ -264,14 +269,14 @@ CONFIG_mtd-utils=y
 # CONFIG_psplash-dev is not set
 
 #
-# quota 
+# quota
 #
 # CONFIG_quota is not set
 # CONFIG_quota-dev is not set
 # CONFIG_quota-dbg is not set
 
 #
-# shared-mime-info 
+# shared-mime-info
 #
 # CONFIG_shared-mime-info is not set
 # CONFIG_shared-mime-info-dev is not set
@@ -279,18 +284,18 @@ CONFIG_mtd-utils=y
 # CONFIG_shared-mime-info-data is not set
 
 #
-# shell 
+# shell
 #
 
 #
-# bash 
+# bash
 #
 # CONFIG_bash is not set
 # CONFIG_bash-dev is not set
 # CONFIG_bash-dbg is not set
 
 #
-# sysvinit 
+# sysvinit
 #
 # CONFIG_sysvinit is not set
 # CONFIG_sysvinit-pidof is not set
@@ -299,7 +304,7 @@ CONFIG_mtd-utils=y
 # CONFIG_sysvinit-sulogin is not set
 
 #
-# tar 
+# tar
 #
 # CONFIG_tar is not set
 # CONFIG_tar-dev is not set
@@ -307,7 +312,7 @@ CONFIG_mtd-utils=y
 # CONFIG_tar-dbg is not set
 
 #
-# tzdata 
+# tzdata
 #
 # CONFIG_tzdata is not set
 # CONFIG_tzdata-asia is not set
@@ -324,21 +329,21 @@ CONFIG_mtd-utils=y
 # CONFIG_tzdata-australia is not set
 
 #
-# update-rc.d 
+# update-rc.d
 #
 # CONFIG_update-rc.d is not set
 # CONFIG_update-rc.d-dev is not set
 # CONFIG_update-rc.d-dbg is not set
 
 #
-# usbutils 
+# usbutils
 #
 # CONFIG_usbutils is not set
 # CONFIG_usbutils-dbg is not set
 # CONFIG_usbutils-dev is not set
 
 #
-# util-linux 
+# util-linux
 #
 # CONFIG_util-linux is not set
 # CONFIG_util-linux-dev is not set
@@ -372,11 +377,11 @@ CONFIG_mtd-utils=y
 # CONFIG_util-linux-fsck is not set
 
 #
-# utils 
+# utils
 #
 
 #
-# shadow 
+# shadow
 #
 # CONFIG_shadow is not set
 # CONFIG_shadow-base is not set
@@ -384,7 +389,7 @@ CONFIG_mtd-utils=y
 # CONFIG_shadow-dbg is not set
 
 #
-# xz 
+# xz
 #
 # CONFIG_xz is not set
 # CONFIG_xz-dev is not set
@@ -392,33 +397,76 @@ CONFIG_mtd-utils=y
 # CONFIG_liblzma is not set
 
 #
-# baseutils 
+# baseutils
 #
 
 #
-# shadow-securetty 
+# shadow-securetty
 #
 # CONFIG_shadow-securetty is not set
 # CONFIG_shadow-securetty-dev is not set
 # CONFIG_shadow-securetty-dbg is not set
 
 #
-# console 
+# benchmark
 #
 
 #
-# network 
+# tests
 #
 
 #
-# canutils 
+# dhrystone
 #
-CONFIG_canutils=y
+# CONFIG_dhrystone is not set
+# CONFIG_dhrystone-dev is not set
+# CONFIG_dhrystone-dbg is not set
+
+#
+# linpack
+#
+# CONFIG_linpack is not set
+# CONFIG_linpack-dbg is not set
+# CONFIG_linpack-dev is not set
+
+#
+# whetstone
+#
+# CONFIG_whetstone is not set
+# CONFIG_whetstone-dev is not set
+# CONFIG_whetstone-dbg is not set
+
+#
+# bootgen
+#
+# CONFIG_bootgen is not set
+# CONFIG_bootgen-dev is not set
+# CONFIG_bootgen-dbg is not set
+
+#
+# console
+#
+
+#
+# network
+#
+
+#
+# canutils
+#
+# CONFIG_canutils is not set
 # CONFIG_canutils-dbg is not set
 # CONFIG_canutils-dev is not set
 
 #
-# curl 
+# can-utils
+#
+CONFIG_can-utils=y
+# CONFIG_can-utils-dbg is not set
+# CONFIG_can-utils-dev is not set
+
+#
+# curl
 #
 # CONFIG_curl is not set
 # CONFIG_curl-dev is not set
@@ -426,42 +474,42 @@ CONFIG_canutils=y
 # CONFIG_curl-dbg is not set
 
 #
-# dropbear 
+# dropbear
 #
 # CONFIG_dropbear is not set
 # CONFIG_dropbear-dev is not set
 # CONFIG_dropbear-dbg is not set
 
 #
-# ethtool 
+# ethtool
 #
 # CONFIG_ethtool is not set
 # CONFIG_ethtool-dbg is not set
 # CONFIG_ethtool-dev is not set
 
 #
-# lrzsz 
+# lrzsz
 #
 # CONFIG_lrzsz is not set
 # CONFIG_lrzsz-dbg is not set
 # CONFIG_lrzsz-dev is not set
 
 #
-# mailx 
+# mailx
 #
 # CONFIG_mailx is not set
 # CONFIG_mailx-dbg is not set
 # CONFIG_mailx-dev is not set
 
 #
-# minicom 
+# minicom
 #
 # CONFIG_minicom is not set
 # CONFIG_minicom-dbg is not set
 # CONFIG_minicom-dev is not set
 
 #
-# nfs-utils 
+# nfs-utils
 #
 # CONFIG_nfs-utils is not set
 # CONFIG_nfs-utils-dev is not set
@@ -470,7 +518,7 @@ CONFIG_canutils=y
 # CONFIG_nfs-utils-dbg is not set
 
 #
-# openssh 
+# openssh
 #
 # CONFIG_openssh is not set
 # CONFIG_openssh-misc is not set
@@ -484,7 +532,7 @@ CONFIG_openssh-sftp-server=y
 # CONFIG_openssh-scp is not set
 
 #
-# ppp 
+# ppp
 #
 # CONFIG_ppp is not set
 # CONFIG_ppp-minconn is not set
@@ -499,35 +547,35 @@ CONFIG_openssh-sftp-server=y
 # CONFIG_ppp-winbind is not set
 
 #
-# rpcbind 
+# rpcbind
 #
 # CONFIG_rpcbind is not set
 # CONFIG_rpcbind-dbg is not set
 # CONFIG_rpcbind-dev is not set
 
 #
-# rsync 
+# rsync
 #
 # CONFIG_rsync is not set
 # CONFIG_rsync-dev is not set
 # CONFIG_rsync-dbg is not set
 
 #
-# socat 
+# socat
 #
 # CONFIG_socat is not set
 # CONFIG_socat-dbg is not set
 # CONFIG_socat-dev is not set
 
 #
-# subversion 
+# subversion
 #
 # CONFIG_subversion is not set
 # CONFIG_subversion-dev is not set
 # CONFIG_subversion-dbg is not set
 
 #
-# tcp-wrappers 
+# tcp-wrappers
 #
 # CONFIG_tcp-wrappers is not set
 # CONFIG_tcp-wrappers-dbg is not set
@@ -535,29 +583,29 @@ CONFIG_openssh-sftp-server=y
 # CONFIG_libwrap is not set
 
 #
-# wget 
+# wget
 #
 # CONFIG_wget is not set
 # CONFIG_wget-dev is not set
 # CONFIG_wget-dbg is not set
 
 #
-# tools 
+# tools
 #
 
 #
-# parted 
+# parted
 #
-# CONFIG_parted is not set
+CONFIG_parted=y
 # CONFIG_parted-dbg is not set
 # CONFIG_parted-dev is not set
 
 #
-# utils 
+# utils
 #
 
 #
-# alsa-utils 
+# alsa-utils
 #
 # CONFIG_alsa-utils is not set
 # CONFIG_alsa-utils-aconnect is not set
@@ -577,7 +625,7 @@ CONFIG_openssh-sftp-server=y
 # CONFIG_alsa-utils-alsatplg is not set
 
 #
-# bash-completion 
+# bash-completion
 #
 # CONFIG_bash-completion is not set
 # CONFIG_bash-completion-dev is not set
@@ -585,7 +633,7 @@ CONFIG_openssh-sftp-server=y
 # CONFIG_bash-completion-dbg is not set
 
 #
-# bzip2 
+# bzip2
 #
 # CONFIG_bzip2 is not set
 # CONFIG_libbz2 is not set
@@ -593,28 +641,28 @@ CONFIG_openssh-sftp-server=y
 # CONFIG_bzip2-dev is not set
 
 #
-# file 
+# file
 #
 # CONFIG_file is not set
 # CONFIG_file-dbg is not set
 # CONFIG_file-dev is not set
 
 #
-# findutils 
+# findutils
 #
 # CONFIG_findutils is not set
 # CONFIG_findutils-dbg is not set
 # CONFIG_findutils-dev is not set
 
 #
-# gawk 
+# gawk
 #
 # CONFIG_gawk is not set
 # CONFIG_gawk-dbg is not set
 # CONFIG_gawk-dev is not set
 
 #
-# git 
+# git
 #
 # CONFIG_git is not set
 # CONFIG_git-bash-completion is not set
@@ -624,28 +672,28 @@ CONFIG_openssh-sftp-server=y
 # CONFIG_git-dbg is not set
 
 #
-# grep 
+# grep
 #
 # CONFIG_grep is not set
 # CONFIG_grep-dbg is not set
 # CONFIG_grep-dev is not set
 
 #
-# groff 
+# groff
 #
 # CONFIG_groff is not set
 # CONFIG_groff-dev is not set
 # CONFIG_groff-dbg is not set
 
 #
-# gzip 
+# gzip
 #
 # CONFIG_gzip is not set
 # CONFIG_gzip-dbg is not set
 # CONFIG_gzip-dev is not set
 
 #
-# hdparm 
+# hdparm
 #
 # CONFIG_hdparm is not set
 # CONFIG_wiper is not set
@@ -653,40 +701,33 @@ CONFIG_openssh-sftp-server=y
 # CONFIG_hdparm-dev is not set
 
 #
-# less 
+# less
 #
 # CONFIG_less is not set
 # CONFIG_less-dev is not set
 # CONFIG_less-dbg is not set
 
 #
-# lsb 
-#
-# CONFIG_lsb is not set
-# CONFIG_lsb-dbg is not set
-# CONFIG_lsb-dev is not set
-
-#
-# ltp 
+# ltp
 #
 # CONFIG_ltp is not set
 # CONFIG_ltp-dev is not set
 # CONFIG_ltp-dbg is not set
 
 #
-# man 
+# man
 #
 # CONFIG_man is not set
 
 #
-# man-pages 
+# man-pages
 #
 # CONFIG_man-pages is not set
 # CONFIG_man-pages-dbg is not set
 # CONFIG_man-pages-dev is not set
 
 #
-# mc 
+# mc
 #
 # CONFIG_mc is not set
 # CONFIG_mc-dev is not set
@@ -696,7 +737,7 @@ CONFIG_openssh-sftp-server=y
 # CONFIG_mc-dbg is not set
 
 #
-# pciutils 
+# pciutils
 #
 CONFIG_pciutils=y
 # CONFIG_pciutils-ids is not set
@@ -705,56 +746,56 @@ CONFIG_pciutils=y
 # CONFIG_pciutils-dbg is not set
 
 #
-# pkgconfig 
+# pkgconfig
 #
 # CONFIG_pkgconfig is not set
 # CONFIG_pkgconfig-dbg is not set
 # CONFIG_pkgconfig-dev is not set
 
 #
-# screen 
+# screen
 #
 # CONFIG_screen is not set
 # CONFIG_screen-dbg is not set
 # CONFIG_screen-dev is not set
 
 #
-# sed 
+# sed
 #
 # CONFIG_sed is not set
 # CONFIG_sed-dbg is not set
 # CONFIG_sed-dev is not set
 
 #
-# setserial 
+# setserial
 #
 # CONFIG_setserial is not set
 # CONFIG_setserial-dev is not set
 # CONFIG_setserial-dbg is not set
 
 #
-# smartmontools 
+# smartmontools
 #
 # CONFIG_smartmontools is not set
 # CONFIG_smartmontools-dbg is not set
 # CONFIG_smartmontools-dev is not set
 
 #
-# strace 
+# strace
 #
 # CONFIG_strace is not set
 # CONFIG_strace-dev is not set
 # CONFIG_strace-dbg is not set
 
 #
-# sysstat 
+# sysstat
 #
 # CONFIG_sysstat is not set
 # CONFIG_sysstat-dev is not set
 # CONFIG_sysstat-dbg is not set
 
 #
-# texinfo 
+# texinfo
 #
 # CONFIG_texinfo is not set
 # CONFIG_texinfo-dev is not set
@@ -762,14 +803,14 @@ CONFIG_pciutils=y
 # CONFIG_texinfo-dbg is not set
 
 #
-# unzip 
+# unzip
 #
 # CONFIG_unzip is not set
 # CONFIG_unzip-dbg is not set
 # CONFIG_unzip-dev is not set
 
 #
-# vim 
+# vim
 #
 # CONFIG_vim is not set
 # CONFIG_vim-syntax is not set
@@ -782,82 +823,81 @@ CONFIG_pciutils=y
 # CONFIG_vim-dbg is not set
 
 #
-# zip 
+# zip
 #
 # CONFIG_zip is not set
 # CONFIG_zip-dev is not set
 # CONFIG_zip-dbg is not set
 
 #
-# devel 
+# devel
 #
 
 #
-# autoconf 
+# autoconf
 #
 # CONFIG_autoconf is not set
 # CONFIG_autoconf-dev is not set
 # CONFIG_autoconf-dbg is not set
 
 #
-# automake 
+# automake
 #
 # CONFIG_automake is not set
 # CONFIG_automake-dev is not set
 # CONFIG_automake-dbg is not set
 
 #
-# binutils 
+# binutils
 #
 # CONFIG_binutils is not set
 # CONFIG_binutils-dev is not set
 # CONFIG_binutils-dbg is not set
 
 #
-# bison 
+# bison
 #
 # CONFIG_bison is not set
 # CONFIG_bison-dbg is not set
 # CONFIG_bison-dev is not set
 
 #
-# ccache 
+# ccache
 #
 # CONFIG_ccache is not set
 # CONFIG_ccache-dbg is not set
 # CONFIG_ccache-dev is not set
 
 #
-# diffstat 
+# diffstat
 #
 # CONFIG_diffstat is not set
 # CONFIG_diffstat-dbg is not set
 # CONFIG_diffstat-dev is not set
 
 #
-# distcc 
+# distcc
 #
 # CONFIG_distcc is not set
 # CONFIG_distcc-dbg is not set
-# CONFIG_distcc-distmon-gnome is not set
 # CONFIG_distcc-dev is not set
 
 #
-# expect 
+# expect
 #
 # CONFIG_expect is not set
 # CONFIG_expect-dbg is not set
 # CONFIG_expect-dev is not set
 
 #
-# flex 
+# flex
 #
 # CONFIG_flex is not set
 # CONFIG_flex-dev is not set
 # CONFIG_flex-dbg is not set
 
 #
-# gmp 
+# gmp
 #
 # CONFIG_gmp is not set
 # CONFIG_gmp-dbg is not set
@@ -865,19 +905,19 @@ CONFIG_pciutils=y
 # CONFIG_libgmpxx is not set
 
 #
-# gnu-config 
+# gnu-config
 #
 # CONFIG_gnu-config is not set
 
 #
-# intltool 
+# intltool
 #
 # CONFIG_intltool is not set
 # CONFIG_intltool-dev is not set
 # CONFIG_intltool-dbg is not set
 
 #
-# libarchive 
+# libarchive
 #
 # CONFIG_libarchive is not set
 # CONFIG_libarchive-dev is not set
@@ -886,14 +926,14 @@ CONFIG_pciutils=y
 # CONFIG_libarchive-dbg is not set
 
 #
-# libcheck 
+# libcheck
 #
 # CONFIG_libcheck is not set
 # CONFIG_libcheck-dev is not set
 # CONFIG_libcheck-dbg is not set
 
 #
-# libpcre 
+# libpcre
 #
 # CONFIG_libpcre is not set
 # CONFIG_libpcre-dev is not set
@@ -904,28 +944,28 @@ CONFIG_pciutils=y
 # CONFIG_pcregrep is not set
 
 #
-# lsof 
+# lsof
 #
 # CONFIG_lsof is not set
 # CONFIG_lsof-dev is not set
 # CONFIG_lsof-dbg is not set
 
 #
-# make 
+# make
 #
 # CONFIG_make is not set
 # CONFIG_make-dbg is not set
 # CONFIG_make-dev is not set
 
 #
-# mpfr 
+# mpfr
 #
 # CONFIG_mpfr is not set
 # CONFIG_mpfr-dev is not set
 # CONFIG_mpfr-dbg is not set
 
 #
-# perl 
+# perl
 #
 # CONFIG_perl is not set
 # CONFIG_perl-module-unicore is not set
@@ -933,16 +973,15 @@ CONFIG_pciutils=y
 # CONFIG_perl-misc is not set
 # CONFIG_perl-dbg is not set
 # CONFIG_perl-module-cpan is not set
-# CONFIG_perl-lib is not set
 # CONFIG_perl-modules is not set
 # CONFIG_perl-pod is not set
 
 #
-# python 
+# python
 #
 
 #
-# python 
+# python
 #
 # CONFIG_python is not set
 # CONFIG_python-dbg is not set
@@ -1014,42 +1053,42 @@ CONFIG_pciutils=y
 # CONFIG_python-crypt is not set
 
 #
-# python-nose 
+# python3-nose
 #
-# CONFIG_python-nose is not set
-# CONFIG_python-nose-dbg is not set
-# CONFIG_python-nose-dev is not set
+# CONFIG_python3-nose is not set
+# CONFIG_python3-nose-dbg is not set
+# CONFIG_python3-nose-dev is not set
 
 #
-# python-numpy 
+# python3-numpy
 #
-# CONFIG_python-numpy is not set
-# CONFIG_python-numpy-dev is not set
-# CONFIG_python-numpy-dbg is not set
+# CONFIG_python3-numpy is not set
+# CONFIG_python3-numpy-dev is not set
+# CONFIG_python3-numpy-dbg is not set
 
 #
-# python-scons 
+# python3-scons
 #
-# CONFIG_python-scons is not set
-# CONFIG_python-scons-dev is not set
-# CONFIG_python-scons-dbg is not set
+# CONFIG_python3-scons is not set
+# CONFIG_python3-scons-dev is not set
+# CONFIG_python3-scons-dbg is not set
 
 #
-# python3-dbus 
+# python3-dbus
 #
 # CONFIG_python3-dbus is not set
 # CONFIG_python3-dbus-dbg is not set
 # CONFIG_python3-dbus-dev is not set
 
 #
-# python3-pygobject 
+# python3-pygobject
 #
 # CONFIG_python3-pygobject is not set
 # CONFIG_python3-pygobject-dbg is not set
 # CONFIG_python3-pygobject-dev is not set
 
 #
-# quilt 
+# quilt
 #
 # CONFIG_quilt is not set
 # CONFIG_quilt-dbg is not set
@@ -1057,11 +1096,11 @@ CONFIG_pciutils=y
 # CONFIG_guards is not set
 
 #
-# ruby 
+# ruby
 #
 
 #
-# ruby 
+# ruby
 #
 # CONFIG_ruby is not set
 # CONFIG_ruby-dev is not set
@@ -1069,25 +1108,25 @@ CONFIG_pciutils=y
 # CONFIG_ruby-dbg is not set
 
 #
-# run-postinsts 
+# run-postinsts
 #
 CONFIG_run-postinsts=y
 # CONFIG_run-postinsts-dbg is not set
 # CONFIG_run-postinsts-dev is not set
 
 #
-# swig 
+# swig
 #
 # CONFIG_swig is not set
 # CONFIG_swig-dev is not set
 # CONFIG_swig-dbg is not set
 
 #
-# tcltk 
+# tcltk
 #
 
 #
-# tcl 
+# tcl
 #
 # CONFIG_tcl is not set
 # CONFIG_tcl-dev is not set
@@ -1095,33 +1134,33 @@ CONFIG_run-postinsts=y
 # CONFIG_tcl-dbg is not set
 
 #
-# vala 
+# vala
 #
 # CONFIG_vala is not set
 # CONFIG_vala-dev is not set
 # CONFIG_vala-dbg is not set
 
 #
-# fonts 
+# fonts
 #
 
 #
-# cantarell-fonts 
+# cantarell-fonts
 #
 # CONFIG_cantarell-fonts is not set
 # CONFIG_cantarell-fonts-dbg is not set
 # CONFIG_cantarell-fonts-dev is not set
 
 #
-# kernel 
+# kernel
 #
 
 #
-# userland 
+# userland
 #
 
 #
-# kexec-tools 
+# kexec-tools
 #
 # CONFIG_kexec-tools is not set
 # CONFIG_kexec-tools-dbg is not set
@@ -1131,11 +1170,11 @@ CONFIG_run-postinsts=y
 # CONFIG_vmcore-dmesg is not set
 
 #
-# libs 
+# libs
 #
 
 #
-# acl 
+# acl
 #
 # CONFIG_acl is not set
 # CONFIG_acl-dev is not set
@@ -1143,21 +1182,21 @@ CONFIG_run-postinsts=y
 # CONFIG_acl-dbg is not set
 
 #
-# apr 
+# apr
 #
 # CONFIG_apr is not set
 # CONFIG_apr-dbg is not set
 # CONFIG_apr-dev is not set
 
 #
-# apr-util 
+# apr-util
 #
 # CONFIG_apr-util is not set
 # CONFIG_apr-util-dev is not set
 # CONFIG_apr-util-dbg is not set
 
 #
-# attr 
+# attr
 #
 # CONFIG_attr is not set
 # CONFIG_attr-dbg is not set
@@ -1165,7 +1204,7 @@ CONFIG_run-postinsts=y
 # CONFIG_libattr is not set
 
 #
-# bluez5 
+# bluez5
 #
 # CONFIG_bluez5 is not set
 # CONFIG_bluez5-testtools is not set
@@ -1175,7 +1214,7 @@ CONFIG_run-postinsts=y
 # CONFIG_bluez5-noinst-tools is not set
 
 #
-# boost 
+# boost
 #
 # CONFIG_boost is not set
 # CONFIG_boost-random is not set
@@ -1201,7 +1240,7 @@ CONFIG_run-postinsts=y
 # CONFIG_boost-log is not set
 
 #
-# cairo 
+# cairo
 #
 # CONFIG_cairo is not set
 # CONFIG_cairo-gobject is not set
@@ -1211,7 +1250,7 @@ CONFIG_run-postinsts=y
 # CONFIG_cairo-dev is not set
 
 #
-# db 
+# db
 #
 # CONFIG_db is not set
 # CONFIG_db-dbg is not set
@@ -1220,18 +1259,18 @@ CONFIG_run-postinsts=y
 # CONFIG_db-bin is not set
 
 #
-# devel 
+# devel
 #
 
 #
-# libyaml 
+# libyaml
 #
 # CONFIG_libyaml is not set
 # CONFIG_libyaml-dev is not set
 # CONFIG_libyaml-dbg is not set
 
 #
-# expat 
+# expat
 #
 # CONFIG_expat is not set
 # CONFIG_expat-bin is not set
@@ -1239,24 +1278,21 @@ CONFIG_run-postinsts=y
 # CONFIG_expat-dev is not set
 
 #
-# faad2 
+# faad2
 #
 # CONFIG_faad2 is not set
-# CONFIG_libfaad-dev is not set
 # CONFIG_faad2-dev is not set
 # CONFIG_faad2-dbg is not set
-# CONFIG_libmp4ff-dev is not set
-# CONFIG_libfaad is not set
 
 #
-# ffmpeg 
+# ffmpeg
 #
 # CONFIG_ffmpeg is not set
 # CONFIG_ffmpeg-dbg is not set
 # CONFIG_ffmpeg-dev is not set
 
 #
-# flac 
+# flac
 #
 # CONFIG_flac is not set
 # CONFIG_flac-dbg is not set
@@ -1265,7 +1301,7 @@ CONFIG_run-postinsts=y
 # CONFIG_flac-dev is not set
 
 #
-# fontconfig 
+# fontconfig
 #
 # CONFIG_fontconfig is not set
 # CONFIG_fontconfig-utils is not set
@@ -1273,14 +1309,14 @@ CONFIG_run-postinsts=y
 # CONFIG_fontconfig-dev is not set
 
 #
-# freetype 
+# freetype
 #
 # CONFIG_freetype is not set
 # CONFIG_freetype-dbg is not set
 # CONFIG_freetype-dev is not set
 
 #
-# gdbm 
+# gdbm
 #
 # CONFIG_gdbm is not set
 # CONFIG_gdbm-bin is not set
@@ -1289,7 +1325,7 @@ CONFIG_run-postinsts=y
 # CONFIG_gdbm-dev is not set
 
 #
-# gdk-pixbuf 
+# gdk-pixbuf
 #
 # CONFIG_gdk-pixbuf is not set
 # CONFIG_gdk-pixbuf-xlib is not set
@@ -1297,7 +1333,7 @@ CONFIG_run-postinsts=y
 # CONFIG_gdk-pixbuf-dev is not set
 
 #
-# gettext 
+# gettext
 #
 # CONFIG_gettext is not set
 # CONFIG_libgettextlib is not set
@@ -1307,21 +1343,21 @@ CONFIG_run-postinsts=y
 # CONFIG_gettext-dbg is not set
 
 #
-# glib-networking 
+# glib-networking
 #
 # CONFIG_glib-networking is not set
 # CONFIG_glib-networking-dbg is not set
 # CONFIG_glib-networking-dev is not set
 
 #
-# gobject-introspection 
+# gobject-introspection
 #
 # CONFIG_gobject-introspection is not set
 # CONFIG_gobject-introspection-dev is not set
 # CONFIG_gobject-introspection-dbg is not set
 
 #
-# gtk+ 
+# gtk+
 #
 # CONFIG_gtkPLUS is not set
 # CONFIG_gtkPLUS-dev is not set
@@ -1330,7 +1366,7 @@ CONFIG_run-postinsts=y
 # CONFIG_gtk-demo is not set
 
 #
-# gtk+3 
+# gtk+3
 #
 # CONFIG_gtkPLUS3 is not set
 # CONFIG_gtkPLUS3-demo is not set
@@ -1338,7 +1374,7 @@ CONFIG_run-postinsts=y
 # CONFIG_gtkPLUS3-dbg is not set
 
 #
-# harfbuzz 
+# harfbuzz
 #
 # CONFIG_harfbuzz is not set
 # CONFIG_harfbuzz-icu is not set
@@ -1348,14 +1384,14 @@ CONFIG_run-postinsts=y
 # CONFIG_harfbuzz-dbg is not set
 
 #
-# libaio 
+# libaio
 #
 # CONFIG_libaio is not set
 # CONFIG_libaio-dev is not set
 # CONFIG_libaio-dbg is not set
 
 #
-# libcap 
+# libcap
 #
 # CONFIG_libcap is not set
 # CONFIG_libcap-dbg is not set
@@ -1363,69 +1399,69 @@ CONFIG_run-postinsts=y
 # CONFIG_libcap-bin is not set
 
 #
-# libdaemon 
+# libdaemon
 #
 # CONFIG_libdaemon is not set
 # CONFIG_libdaemon-dbg is not set
 # CONFIG_libdaemon-dev is not set
 
 #
-# libdmx 
+# libdmx
 #
 # CONFIG_libdmx is not set
 # CONFIG_libdmx-dbg is not set
 # CONFIG_libdmx-dev is not set
 
 #
-# libeigen 
+# libeigen
 #
 # CONFIG_libeigen-dev is not set
 # CONFIG_libeigen-dbg is not set
 
 #
-# libepoxy 
+# libepoxy
 #
 # CONFIG_libepoxy is not set
 # CONFIG_libepoxy-dev is not set
 # CONFIG_libepoxy-dbg is not set
 
 #
-# libevdev 
+# libevdev
 #
 # CONFIG_libevdev is not set
 # CONFIG_libevdev-dbg is not set
 # CONFIG_libevdev-dev is not set
 
 #
-# libevent 
+# libevent
 #
 # CONFIG_libevent is not set
 # CONFIG_libevent-dev is not set
 # CONFIG_libevent-dbg is not set
 
 #
-# libexif 
+# libexif
 #
 # CONFIG_libexif is not set
 # CONFIG_libexif-dbg is not set
 # CONFIG_libexif-dev is not set
 
 #
-# libffi 
+# libffi
 #
 # CONFIG_libffi is not set
 # CONFIG_libffi-dev is not set
 # CONFIG_libffi-dbg is not set
 
 #
-# libfontenc 
+# libfontenc
 #
 # CONFIG_libfontenc is not set
 # CONFIG_libfontenc-dev is not set
 # CONFIG_libfontenc-dbg is not set
 
 #
-# libgcrypt 
+# libgcrypt
 #
 # CONFIG_libgcrypt is not set
 # CONFIG_libgcrypt-dbg is not set
@@ -1433,14 +1469,14 @@ CONFIG_run-postinsts=y
 # CONFIG_dumpsexp-dev is not set
 
 #
-# libgpg-error 
+# libgpg-error
 #
 # CONFIG_libgpg-error is not set
 # CONFIG_libgpg-error-dbg is not set
 # CONFIG_libgpg-error-dev is not set
 
 #
-# libgphoto2 
+# libgphoto2
 #
 # CONFIG_libgphoto2 is not set
 # CONFIG_libgphoto2-dbg is not set
@@ -1457,14 +1493,14 @@ CONFIG_run-postinsts=y
 # CONFIG_libgpiod-dbg is not set
 
 #
-# libgudev 
+# libgudev
 #
 # CONFIG_libgudev is not set
 # CONFIG_libgudev-dev is not set
 # CONFIG_libgudev-dbg is not set
 
 #
-# libhugetlbfs 
+# libhugetlbfs
 #
 # CONFIG_libhugetlbfs is not set
 # CONFIG_libhugetlbfs-tests is not set
@@ -1472,28 +1508,28 @@ CONFIG_run-postinsts=y
 # CONFIG_libhugetlbfs-dev is not set
 
 #
-# libical 
+# libical
 #
 # CONFIG_libical is not set
 # CONFIG_libical-dev is not set
 # CONFIG_libical-dbg is not set
 
 #
-# libice 
+# libice
 #
 # CONFIG_libice is not set
 # CONFIG_libice-dbg is not set
 # CONFIG_libice-dev is not set
 
 #
-# libid3tag 
+# libid3tag
 #
 # CONFIG_libid3tag is not set
 # CONFIG_libid3tag-dbg is not set
 # CONFIG_libid3tag-dev is not set
 
 #
-# libidn 
+# libidn
 #
 # CONFIG_libidn is not set
 # CONFIG_idn is not set
@@ -1501,14 +1537,14 @@ CONFIG_run-postinsts=y
 # CONFIG_libidn-dev is not set
 
 #
-# libinput 
+# libinput
 #
 # CONFIG_libinput is not set
 # CONFIG_libinput-dbg is not set
 # CONFIG_libinput-dev is not set
 
 #
-# libjpeg-turbo 
+# libjpeg-turbo
 #
 # CONFIG_libjpeg-turbo is not set
 # CONFIG_libturbojpeg is not set
@@ -1517,28 +1553,28 @@ CONFIG_run-postinsts=y
 # CONFIG_libjpeg-turbo-dev is not set
 
 #
-# libmetal 
+# libmetal
 #
 # CONFIG_libmetal is not set
 # CONFIG_libmetal-dbg is not set
 # CONFIG_libmetal-dev is not set
 
 #
-# libmpc 
+# libmpc
 #
 # CONFIG_libmpc is not set
 # CONFIG_libmpc-dev is not set
 # CONFIG_libmpc-dbg is not set
 
 #
-# libnet 
+# libnet
 #
 # CONFIG_libnet is not set
 # CONFIG_libnet-dev is not set
 # CONFIG_libnet-dbg is not set
 
 #
-# libnewt 
+# libnewt
 #
 # CONFIG_libnewt is not set
 # CONFIG_libnewt-dev is not set
@@ -1546,35 +1582,35 @@ CONFIG_run-postinsts=y
 # CONFIG_whiptail is not set
 
 #
-# libnotify 
+# libnotify
 #
 # CONFIG_libnotify is not set
 # CONFIG_libnotify-dbg is not set
 # CONFIG_libnotify-dev is not set
 
 #
-# libnss-mdns 
+# libnss-mdns
 #
 # CONFIG_libnss-mdns is not set
 # CONFIG_libnss-mdns-dbg is not set
 # CONFIG_libnss-mdns-dev is not set
 
 #
-# libogg 
+# libogg
 #
 # CONFIG_libogg is not set
 # CONFIG_libogg-dev is not set
 # CONFIG_libogg-dbg is not set
 
 #
-# libpciaccess 
+# libpciaccess
 #
 # CONFIG_libpciaccess is not set
 # CONFIG_libpciaccess-dbg is not set
 # CONFIG_libpciaccess-dev is not set
 
 #
-# libpng 
+# libpng
 #
 # CONFIG_libpng is not set
 # CONFIG_libpng-dev is not set
@@ -1582,35 +1618,35 @@ CONFIG_run-postinsts=y
 # CONFIG_libpng-tools is not set
 
 #
-# libproxy 
+# libproxy
 #
 # CONFIG_libproxy is not set
 # CONFIG_libproxy-dev is not set
 # CONFIG_libproxy-dbg is not set
 
 #
-# libsamplerate0 
+# libsamplerate0
 #
 # CONFIG_libsamplerate0 is not set
 # CONFIG_libsamplerate0-dbg is not set
 # CONFIG_libsamplerate0-dev is not set
 
 #
-# libsecret 
+# libsecret
 #
 # CONFIG_libsecret is not set
 # CONFIG_libsecret-dbg is not set
 # CONFIG_libsecret-dev is not set
 
 #
-# libsm 
+# libsm
 #
 # CONFIG_libsm is not set
 # CONFIG_libsm-dev is not set
 # CONFIG_libsm-dbg is not set
 
 #
-# libtasn1 
+# libtasn1
 #
 # CONFIG_libtasn1 is not set
 # CONFIG_libtasn1-bin is not set
@@ -1618,14 +1654,14 @@ CONFIG_run-postinsts=y
 # CONFIG_libtasn1-dbg is not set
 
 #
-# libtheora 
+# libtheora
 #
 # CONFIG_libtheora is not set
 # CONFIG_libtheora-dbg is not set
 # CONFIG_libtheora-dev is not set
 
 #
-# libtool 
+# libtool
 #
 # CONFIG_libtool is not set
 # CONFIG_libtool-dbg is not set
@@ -1633,35 +1669,35 @@ CONFIG_run-postinsts=y
 # CONFIG_libtool-dev is not set
 
 #
-# liburcu 
+# liburcu
 #
 # CONFIG_liburcu is not set
 # CONFIG_liburcu-dev is not set
 # CONFIG_liburcu-dbg is not set
 
 #
-# libusb-compat 
+# libusb-compat
 #
 # CONFIG_libusb-compat is not set
 # CONFIG_libusb-compat-dev is not set
 # CONFIG_libusb-compat-dbg is not set
 
 #
-# libusb1 
+# libusb1
 #
 # CONFIG_libusb1 is not set
 # CONFIG_libusb1-dbg is not set
 # CONFIG_libusb1-dev is not set
 
 #
-# libvorbis 
+# libvorbis
 #
 # CONFIG_libvorbis is not set
 # CONFIG_libvorbis-dbg is not set
 # CONFIG_libvorbis-dev is not set
 
 #
-# libwebp 
+# libwebp
 #
 # CONFIG_libwebp is not set
 # CONFIG_libwebp-bin is not set
@@ -1669,7 +1705,7 @@ CONFIG_run-postinsts=y
 # CONFIG_libwebp-dbg is not set
 
 #
-# libx11 
+# libx11
 #
 # CONFIG_libx11 is not set
 # CONFIG_libx11-dbg is not set
@@ -1677,105 +1713,105 @@ CONFIG_run-postinsts=y
 # CONFIG_libx11-dev is not set
 
 #
-# libxau 
+# libxau
 #
 # CONFIG_libxau is not set
 # CONFIG_libxau-dbg is not set
 # CONFIG_libxau-dev is not set
 
 #
-# libxcomposite 
+# libxcomposite
 #
 # CONFIG_libxcomposite is not set
 # CONFIG_libxcomposite-dbg is not set
 # CONFIG_libxcomposite-dev is not set
 
 #
-# libxcursor 
+# libxcursor
 #
 # CONFIG_libxcursor is not set
 # CONFIG_libxcursor-dev is not set
 # CONFIG_libxcursor-dbg is not set
 
 #
-# libxdamage 
+# libxdamage
 #
 # CONFIG_libxdamage is not set
 # CONFIG_libxdamage-dev is not set
 # CONFIG_libxdamage-dbg is not set
 
 #
-# libxdmcp 
+# libxdmcp
 #
 # CONFIG_libxdmcp is not set
 # CONFIG_libxdmcp-dev is not set
 # CONFIG_libxdmcp-dbg is not set
 
 #
-# libxext 
+# libxext
 #
 # CONFIG_libxext is not set
 # CONFIG_libxext-dbg is not set
 # CONFIG_libxext-dev is not set
 
 #
-# libxfixes 
+# libxfixes
 #
 # CONFIG_libxfixes is not set
 # CONFIG_libxfixes-dev is not set
 # CONFIG_libxfixes-dbg is not set
 
 #
-# libxfont 
+# libxfont
 #
 # CONFIG_libxfont is not set
 # CONFIG_libxfont-dev is not set
 # CONFIG_libxfont-dbg is not set
 
 #
-# libxft 
+# libxft
 #
 # CONFIG_libxft is not set
 # CONFIG_libxft-dev is not set
 # CONFIG_libxft-dbg is not set
 
 #
-# libxi 
+# libxi
 #
 # CONFIG_libxi is not set
 # CONFIG_libxi-dbg is not set
 # CONFIG_libxi-dev is not set
 
 #
-# libxinerama 
+# libxinerama
 #
 # CONFIG_libxinerama is not set
 # CONFIG_libxinerama-dbg is not set
 # CONFIG_libxinerama-dev is not set
 
 #
-# libxkbcommon 
+# libxkbcommon
 #
 # CONFIG_libxkbcommon is not set
 # CONFIG_libxkbcommon-dbg is not set
 # CONFIG_libxkbcommon-dev is not set
 
 #
-# libxkbfile 
+# libxkbfile
 #
 # CONFIG_libxkbfile is not set
 # CONFIG_libxkbfile-dbg is not set
 # CONFIG_libxkbfile-dev is not set
 
 #
-# libxml-parser-perl 
+# libxml-parser-perl
 #
 # CONFIG_libxml-parser-perl is not set
 # CONFIG_libxml-parser-perl-dbg is not set
 # CONFIG_libxml-parser-perl-dev is not set
 
 #
-# libxml2 
+# libxml2
 #
 # CONFIG_libxml2 is not set
 # CONFIG_libxml2-dbg is not set
@@ -1783,7 +1819,7 @@ CONFIG_run-postinsts=y
 # CONFIG_libxml2-python is not set
 
 #
-# libxmu 
+# libxmu
 #
 # CONFIG_libxmu is not set
 # CONFIG_libxmu-dev is not set
@@ -1791,28 +1827,28 @@ CONFIG_run-postinsts=y
 # CONFIG_libxmuu is not set
 
 #
-# libxrandr 
+# libxrandr
 #
 # CONFIG_libxrandr is not set
 # CONFIG_libxrandr-dev is not set
 # CONFIG_libxrandr-dbg is not set
 
 #
-# libxrender 
+# libxrender
 #
 # CONFIG_libxrender is not set
 # CONFIG_libxrender-dev is not set
 # CONFIG_libxrender-dbg is not set
 
 #
-# libxres 
+# libxres
 #
 # CONFIG_libxres is not set
 # CONFIG_libxres-dev is not set
 # CONFIG_libxres-dbg is not set
 
 #
-# libxslt 
+# libxslt
 #
 # CONFIG_libxslt is not set
 # CONFIG_libxslt-dev is not set
@@ -1820,67 +1856,53 @@ CONFIG_run-postinsts=y
 # CONFIG_libxslt-dbg is not set
 
 #
-# libxt 
+# libxt
 #
 # CONFIG_libxt is not set
 # CONFIG_libxt-dbg is not set
 # CONFIG_libxt-dev is not set
 
 #
-# libxtst 
+# libxtst
 #
 # CONFIG_libxtst is not set
 # CONFIG_libxtst-dev is not set
 # CONFIG_libxtst-dbg is not set
 
 #
-# libxv 
+# libxv
 #
 # CONFIG_libxv is not set
 # CONFIG_libxv-dbg is not set
 # CONFIG_libxv-dev is not set
 
 #
-# libxxf86dga 
-#
-# CONFIG_libxxf86dga is not set
-# CONFIG_libxxf86dga-dbg is not set
-# CONFIG_libxxf86dga-dev is not set
-
-#
-# libxxf86misc 
-#
-# CONFIG_libxxf86misc is not set
-# CONFIG_libxxf86misc-dev is not set
-# CONFIG_libxxf86misc-dbg is not set
-
-#
-# libxxf86vm 
+# libxxf86vm
 #
 # CONFIG_libxxf86vm is not set
 # CONFIG_libxxf86vm-dbg is not set
 # CONFIG_libxxf86vm-dev is not set
 
 #
-# lzo 
+# lzo
 #
 # CONFIG_lzo is not set
 # CONFIG_lzo-dbg is not set
 # CONFIG_lzo-dev is not set
 
 #
-# mtdev 
+# mtdev
 #
 # CONFIG_mtdev is not set
 # CONFIG_mtdev-dbg is not set
 # CONFIG_mtdev-dev is not set
 
 #
-# multimedia 
+# multimedia
 #
 
 #
-# alsa-lib 
+# alsa-lib
 #
 # CONFIG_alsa-lib is not set
 # CONFIG_alsa-lib-dbg is not set
@@ -1892,7 +1914,7 @@ CONFIG_run-postinsts=y
 # CONFIG_alsa-oss is not set
 
 #
-# libsndfile1 
+# libsndfile1
 #
 # CONFIG_libsndfile1 is not set
 # CONFIG_libsndfile1-dbg is not set
@@ -1900,7 +1922,7 @@ CONFIG_run-postinsts=y
 # CONFIG_libsndfile1-bin is not set
 
 #
-# pulseaudio 
+# pulseaudio
 #
 # CONFIG_pulseaudio is not set
 # CONFIG_pulseaudio-misc is not set
@@ -1916,7 +1938,7 @@ CONFIG_run-postinsts=y
 # CONFIG_pulseaudio-server is not set
 
 #
-# taglib 
+# taglib
 #
 # CONFIG_taglib is not set
 # CONFIG_taglib-dev is not set
@@ -1924,7 +1946,7 @@ CONFIG_run-postinsts=y
 # CONFIG_taglib-dbg is not set
 
 #
-# ncurses 
+# ncurses
 #
 # CONFIG_ncurses is not set
 # CONFIG_ncurses-terminfo-base is not set
@@ -1934,25 +1956,25 @@ CONFIG_run-postinsts=y
 # CONFIG_ncurses-dbg is not set
 
 #
-# neon 
+# neon
 #
 # CONFIG_neon is not set
 # CONFIG_neon-dev is not set
 # CONFIG_neon-dbg is not set
 
 #
-# nettle 
+# nettle
 #
 # CONFIG_nettle is not set
 # CONFIG_nettle-dev is not set
 # CONFIG_nettle-dbg is not set
 
 #
-# network 
+# network
 #
 
 #
-# libnl 
+# libnl
 #
 # CONFIG_libnl is not set
 # CONFIG_libnl-xfrm is not set
@@ -1965,28 +1987,28 @@ CONFIG_run-postinsts=y
 # CONFIG_libnl-genl is not set
 
 #
-# libpcap 
+# libpcap
 #
 # CONFIG_libpcap is not set
 # CONFIG_libpcap-dev is not set
 # CONFIG_libpcap-dbg is not set
 
 #
-# libsocketcan 
+# libsocketcan
 #
 # CONFIG_libsocketcan is not set
 # CONFIG_libsocketcan-dbg is not set
 # CONFIG_libsocketcan-dev is not set
 
 #
-# libtirpc 
+# libtirpc
 #
 # CONFIG_libtirpc is not set
 # CONFIG_libtirpc-dev is not set
 # CONFIG_libtirpc-dbg is not set
 
 #
-# openssl 
+# openssl
 #
 # CONFIG_openssl is not set
 # CONFIG_openssl-conf is not set
@@ -1998,14 +2020,14 @@ CONFIG_run-postinsts=y
 # CONFIG_libssl is not set
 
 #
-# open-amp 
+# open-amp
 #
 # CONFIG_open-amp is not set
 # CONFIG_open-amp-dbg is not set
 # CONFIG_open-amp-dev is not set
 
 #
-# opencv 
+# opencv
 #
 # CONFIG_opencv is not set
 # CONFIG_opencv-dev is not set
@@ -2014,56 +2036,56 @@ CONFIG_run-postinsts=y
 # CONFIG_opencv-dbg is not set
 
 #
-# pango 
+# pango
 #
 # CONFIG_pango is not set
 # CONFIG_pango-dbg is not set
 # CONFIG_pango-dev is not set
 
 #
-# popt 
+# popt
 #
 # CONFIG_popt is not set
 # CONFIG_popt-dbg is not set
 # CONFIG_popt-dev is not set
 
 #
-# readline 
+# readline
 #
 # CONFIG_readline is not set
 # CONFIG_readline-dev is not set
 # CONFIG_readline-dbg is not set
 
 #
-# sbc 
+# sbc
 #
 # CONFIG_sbc is not set
 # CONFIG_sbc-dev is not set
 # CONFIG_sbc-dbg is not set
 
 #
-# slang 
+# slang
 #
 # CONFIG_slang is not set
 # CONFIG_slang-dev is not set
 # CONFIG_slang-dbg is not set
 
 #
-# speex 
+# speex
 #
 # CONFIG_speex is not set
 # CONFIG_speex-dev is not set
 # CONFIG_speex-dbg is not set
 
 #
-# speexdsp 
+# speexdsp
 #
 # CONFIG_speexdsp is not set
 # CONFIG_speexdsp-dev is not set
 # CONFIG_speexdsp-dbg is not set
 
 #
-# sqlite3 
+# sqlite3
 #
 # CONFIG_sqlite3 is not set
 # CONFIG_libsqlite3 is not set
@@ -2071,39 +2093,68 @@ CONFIG_run-postinsts=y
 # CONFIG_libsqlite3-dev is not set
 
 #
-# startup-notification 
+# startup-notification
 #
 # CONFIG_startup-notification is not set
 # CONFIG_startup-notification-dev is not set
 # CONFIG_startup-notification-dbg is not set
 
 #
-# tremor 
+# tremor
 #
 # CONFIG_tremor is not set
 # CONFIG_tremor-dev is not set
 # CONFIG_tremor-dbg is not set
 
 #
-# which 
+# which
 #
 # CONFIG_which is not set
 # CONFIG_which-dev is not set
 # CONFIG_which-dbg is not set
 
 #
-# zlib 
+# xrt
+#
+CONFIG_xrt=y
+CONFIG_xrt-dev=y
+# CONFIG_xrt-dbg is not set
+
+#
+# zocl
+#
+CONFIG_zocl=y
+# CONFIG_zocl-dev is not set
+# CONFIG_zocl-dbg is not set
+
+#
+# opencl-clhpp
+#
+CONFIG_opencl-clhpp=y
+
+#
+# opencl-headers
+#
+CONFIG_opencl-headers=y
+
+#
+# protobuf
+#
+# CONFIG_protobuf is not set
+
+#
+# zlib
 #
 # CONFIG_zlib is not set
 # CONFIG_zlib-dbg is not set
 # CONFIG_zlib-dev is not set
 
 #
-# misc 
+# misc
 #
 
 #
-# alsa-state 
+# alsa-state
 #
 # CONFIG_alsa-state is not set
 # CONFIG_alsa-state-dev is not set
@@ -2118,7 +2169,7 @@ CONFIG_run-postinsts=y
 # CONFIG_apache2-dev is not set
 
 #
-# at-spi2-atk 
+# at-spi2-atk
 #
 # CONFIG_at-spi2-atk is not set
 # CONFIG_at-spi2-atk-dbg is not set
@@ -2127,42 +2178,42 @@ CONFIG_run-postinsts=y
 # CONFIG_at-spi2-atk-gtk2 is not set
 
 #
-# at-spi2-core 
+# at-spi2-core
 #
 # CONFIG_at-spi2-core is not set
 # CONFIG_at-spi2-core-dev is not set
 # CONFIG_at-spi2-core-dbg is not set
 
 #
-# babeltrace 
+# babeltrace
 #
 # CONFIG_babeltrace is not set
 # CONFIG_babeltrace-dev is not set
 # CONFIG_babeltrace-dbg is not set
 
 #
-# blktool 
+# blktool
 #
 # CONFIG_blktool is not set
 # CONFIG_blktool-dev is not set
 # CONFIG_blktool-dbg is not set
 
 #
-# blktrace 
+# blktrace
 #
 # CONFIG_blktrace is not set
 # CONFIG_blktrace-dbg is not set
 # CONFIG_blktrace-dev is not set
 
 #
-# ca-certificates 
+# ca-certificates
 #
 # CONFIG_ca-certificates is not set
 # CONFIG_ca-certificates-dev is not set
 # CONFIG_ca-certificates-dbg is not set
 
 #
-# chkconfig 
+# chkconfig
 #
 # CONFIG_chkconfig is not set
 # CONFIG_chkconfig-dbg is not set
@@ -2170,14 +2221,14 @@ CONFIG_run-postinsts=y
 # CONFIG_chkconfig-alternatives is not set
 
 #
-# chrpath 
+# chrpath
 #
 # CONFIG_chrpath is not set
 # CONFIG_chrpath-dev is not set
 # CONFIG_chrpath-dbg is not set
 
 #
-# connman 
+# connman
 #
 # CONFIG_connman is not set
 # CONFIG_connman-tests is not set
@@ -2188,54 +2239,54 @@ CONFIG_run-postinsts=y
 # CONFIG_connman-client is not set
 
 #
-# connman-conf 
+# connman-conf
 #
 # CONFIG_connman-conf-dbg is not set
 
 #
-# consolekit 
+# consolekit
 #
 # CONFIG_consolekit is not set
 # CONFIG_consolekit-dbg is not set
 # CONFIG_consolekit-dev is not set
 
 #
-# coreutils 
+# coreutils
 #
 # CONFIG_coreutils is not set
 # CONFIG_coreutils-dev is not set
 # CONFIG_coreutils-dbg is not set
 
 #
-# cpufrequtils 
+# cpufrequtils
 #
 # CONFIG_cpufrequtils is not set
 # CONFIG_cpufrequtils-dev is not set
 # CONFIG_cpufrequtils-dbg is not set
 
 #
-# cryptodev-linux 
+# cryptodev-linux
 #
 # CONFIG_cryptodev-linux is not set
 # CONFIG_cryptodev-linux-dev is not set
 # CONFIG_cryptodev-linux-dbg is not set
 
 #
-# encodings 
+# encodings
 #
 # CONFIG_encodings is not set
 # CONFIG_encodings-dev is not set
 # CONFIG_encodings-dbg is not set
 
 #
-# epiphany 
+# epiphany
 #
 # CONFIG_epiphany is not set
 # CONFIG_epiphany-dbg is not set
 # CONFIG_epiphany-dev is not set
 
 #
-# eudev 
+# eudev
 #
 # CONFIG_eudev is not set
 # CONFIG_libudev is not set
@@ -2245,34 +2296,34 @@ CONFIG_run-postinsts=y
 CONFIG_udev-extraconf=y
 
 #
-# fbset 
+# fbset
 #
 # CONFIG_fbset is not set
 # CONFIG_fbset-dbg is not set
 # CONFIG_fbset-dev is not set
 
 #
-# fbset-modes 
+# fbset-modes
 #
 # CONFIG_fbset-modes is not set
 # CONFIG_fbset-modes-dev is not set
 # CONFIG_fbset-modes-dbg is not set
 
 #
-# font-util 
+# font-util
 #
 # CONFIG_font-util is not set
 # CONFIG_font-util-dev is not set
 # CONFIG_font-util-dbg is not set
 
 #
-# gcc-runtime 
+# gcc-runtime
 #
 # CONFIG_libstdcPLUSPLUS is not set
 # CONFIG_libstdcPLUSPLUS-dev is not set
 
 #
-# gcc-sanitizers 
+# gcc-sanitizers
 #
 # CONFIG_gcc-sanitizers is not set
 # CONFIG_libubsan-dev is not set
@@ -2282,14 +2333,14 @@ CONFIG_udev-extraconf=y
 # CONFIG_libasan-dev is not set
 
 #
-# gcr 
+# gcr
 #
 # CONFIG_gcr is not set
 # CONFIG_gcr-dev is not set
 # CONFIG_gcr-dbg is not set
 
 #
-# gdb 
+# gdb
 #
 # CONFIG_gdb is not set
 # CONFIG_gdb-dbg is not set
@@ -2297,7 +2348,7 @@ CONFIG_udev-extraconf=y
 # CONFIG_gdbserver is not set
 
 #
-# glib-2.0 
+# glib-2.0
 #
 # CONFIG_glib-2.0 is not set
 # CONFIG_glib-2.0-codegen is not set
@@ -2307,7 +2358,7 @@ CONFIG_udev-extraconf=y
 # CONFIG_glib-2.0-dev is not set
 
 #
-# glibc 
+# glibc
 #
 # CONFIG_glibc is not set
 # CONFIG_glibc-dev is not set
@@ -2315,14 +2366,14 @@ CONFIG_udev-extraconf=y
 # CONFIG_ldd is not set
 
 #
-# gnome-desktop-testing 
+# gnome-desktop-testing
 #
 # CONFIG_gnome-desktop-testing is not set
 # CONFIG_gnome-desktop-testing-dbg is not set
 # CONFIG_gnome-desktop-testing-dev is not set
 
 #
-# gnutls 
+# gnutls
 #
 # CONFIG_gnutls is not set
 # CONFIG_gnutls-dev is not set
@@ -2332,36 +2383,19 @@ CONFIG_udev-extraconf=y
 # CONFIG_gnutls-openssl is not set
 
 #
-# gsettings-desktop-schemas 
+# gsettings-desktop-schemas
 #
 # CONFIG_gsettings-desktop-schemas is not set
 # CONFIG_gsettings-desktop-schemas-dev is not set
 # CONFIG_gsettings-desktop-schemas-dbg is not set
 
 #
-# gst-player 
+# gst-player
 #
 # CONFIG_gst-player is not set
 
 #
-# gst-plugins-base 
-#
-# CONFIG_gst-plugins-base is not set
-# CONFIG_gst-plugins-base-apps is not set
-# CONFIG_gst-plugins-base-meta is not set
-# CONFIG_gst-plugins-base-dbg is not set
-# CONFIG_gst-plugins-base-dev is not set
-
-#
-# gst-plugins-good 
-#
-# CONFIG_gst-plugins-good is not set
-# CONFIG_gst-plugins-good-dev is not set
-# CONFIG_gst-plugins-good-meta is not set
-# CONFIG_gst-plugins-good-dbg is not set
-
-#
-# gstreamer1.0-plugins-bad 
+# gstreamer1.0-plugins-bad
 #
 # CONFIG_gstreamer1.0-plugins-bad is not set
 # CONFIG_gstreamer1.0-plugins-bad-meta is not set
@@ -2369,7 +2403,7 @@ CONFIG_udev-extraconf=y
 # CONFIG_gstreamer1.0-plugins-bad-dbg is not set
 
 #
-# gstreamer1.0-plugins-base 
+# gstreamer1.0-plugins-base
 #
 # CONFIG_gstreamer1.0-plugins-base is not set
 # CONFIG_gstreamer1.0-plugins-base-dev is not set
@@ -2378,7 +2412,7 @@ CONFIG_udev-extraconf=y
 # CONFIG_gstreamer1.0-plugins-base-dbg is not set
 
 #
-# gstreamer1.0-plugins-good 
+# gstreamer1.0-plugins-good
 #
 # CONFIG_gstreamer1.0-plugins-good is not set
 # CONFIG_gstreamer1.0-plugins-good-meta is not set
@@ -2386,14 +2420,14 @@ CONFIG_udev-extraconf=y
 # CONFIG_gstreamer1.0-plugins-good-dbg is not set
 
 #
-# hicolor-icon-theme 
+# hicolor-icon-theme
 #
 # CONFIG_hicolor-icon-theme is not set
 # CONFIG_hicolor-icon-theme-dbg is not set
 # CONFIG_hicolor-icon-theme-dev is not set
 
 #
-# icu 
+# icu
 #
 # CONFIG_icu is not set
 # CONFIG_libicudata is not set
@@ -2405,35 +2439,42 @@ CONFIG_udev-extraconf=y
 # CONFIG_icu-dev is not set
 
 #
-# iptables 
+# iotop
+#
+# CONFIG_iotop is not set
+# CONFIG_iotop-dev is not set
+# CONFIG_iotop-dbg is not set
+
+#
+# iptables
 #
 # CONFIG_iptables is not set
 # CONFIG_iptables-dbg is not set
 # CONFIG_iptables-dev is not set
 
 #
-# iso-codes 
+# iso-codes
 #
 # CONFIG_iso-codes is not set
 # CONFIG_iso-codes-dbg is not set
 # CONFIG_iso-codes-dev is not set
 
 #
-# json-c 
+# json-c
 #
 # CONFIG_json-c is not set
 # CONFIG_json-c-dbg is not set
 # CONFIG_json-c-dev is not set
 
 #
-# l3afpad 
+# l3afpad
 #
 # CONFIG_l3afpad is not set
 # CONFIG_l3afpad-dev is not set
 # CONFIG_l3afpad-dbg is not set
 
 #
-# lttng-ust 
+# lttng-ust
 #
 # CONFIG_lttng-ust is not set
 # CONFIG_lttng-ust-dbg is not set
@@ -2441,56 +2482,63 @@ CONFIG_udev-extraconf=y
 # CONFIG_lttng-ust-dev is not set
 
 #
-# m4 
+# m4
 #
 # CONFIG_m4 is not set
 # CONFIG_m4-dbg is not set
 # CONFIG_m4-dev is not set
 
 #
-# matchbox-config-gtk 
+# matchbox-config-gtk
 #
 # CONFIG_matchbox-config-gtk is not set
 # CONFIG_matchbox-config-gtk-dev is not set
 # CONFIG_matchbox-config-gtk-dbg is not set
 
 #
-# matchbox-panel-2 
+# matchbox-panel-2
 #
 # CONFIG_matchbox-panel-2 is not set
 # CONFIG_matchbox-panel-2-dbg is not set
 # CONFIG_matchbox-panel-2-dev is not set
 
 #
-# mdadm 
+# mdadm
 #
 # CONFIG_mdadm is not set
 # CONFIG_mdadm-dbg is not set
 # CONFIG_mdadm-dev is not set
 
 #
-# mkfontdir 
+# mkfontdir
 #
 # CONFIG_mkfontdir is not set
 # CONFIG_mkfontdir-dev is not set
 # CONFIG_mkfontdir-dbg is not set
 
 #
-# mkfontscale 
+# mkfontscale
 #
 # CONFIG_mkfontscale is not set
 # CONFIG_mkfontscale-dbg is not set
 # CONFIG_mkfontscale-dev is not set
 
 #
-# net-tools 
+# net-tools
 #
 # CONFIG_net-tools is not set
 # CONFIG_net-tools-dbg is not set
 # CONFIG_net-tools-dev is not set
 
 #
-# ofono 
+# nicstat
+#
+# CONFIG_nicstat is not set
+# CONFIG_nicstat-dbg is not set
+# CONFIG_nicstat-dev is not set
+
+#
+# ofono
 #
 # CONFIG_ofono is not set
 # CONFIG_ofono-tests is not set
@@ -2498,105 +2546,105 @@ CONFIG_udev-extraconf=y
 # CONFIG_ofono-dbg is not set
 
 #
-# openamp-fw-echo-testd 
+# openamp-fw-echo-testd
 #
 # CONFIG_openamp-fw-echo-testd is not set
 # CONFIG_openamp-fw-echo-testd-dev is not set
 # CONFIG_openamp-fw-echo-testd-dbg is not set
 
 #
-# openamp-fw-mat-muld 
+# openamp-fw-mat-muld
 #
 # CONFIG_openamp-fw-mat-muld is not set
 # CONFIG_openamp-fw-mat-muld-dev is not set
 # CONFIG_openamp-fw-mat-muld-dbg is not set
 
 #
-# openamp-fw-rpc-demo 
+# openamp-fw-rpc-demo
 #
 # CONFIG_openamp-fw-rpc-demo is not set
 # CONFIG_openamp-fw-rpc-demo-dev is not set
 # CONFIG_openamp-fw-rpc-demo-dbg is not set
 
 #
-# opkg-arch-config 
+# opkg-arch-config
 #
 # CONFIG_opkg-arch-config is not set
 # CONFIG_opkg-arch-config-dbg is not set
 # CONFIG_opkg-arch-config-dev is not set
 
 #
-# orc 
+# orc
 #
 # CONFIG_orc is not set
 # CONFIG_orc-dbg is not set
 # CONFIG_orc-dev is not set
 
 #
-# p11-kit 
+# p11-kit
 #
 # CONFIG_p11-kit is not set
 # CONFIG_p11-kit-dev is not set
 # CONFIG_p11-kit-dbg is not set
 
 #
-# packagegroup-core-boot 
+# packagegroup-core-boot
 #
 CONFIG_packagegroup-core-boot=y
 # CONFIG_packagegroup-core-boot-dev is not set
 # CONFIG_packagegroup-core-boot-dbg is not set
 
 #
-# packagegroup-core-buildessential 
+# packagegroup-core-buildessential
 #
 # CONFIG_packagegroup-core-buildessential is not set
 # CONFIG_packagegroup-core-buildessential-dev is not set
 # CONFIG_packagegroup-core-buildessential-dbg is not set
 
 #
-# packagegroup-core-sdk 
+# packagegroup-core-sdk
 #
 # CONFIG_packagegroup-core-sdk is not set
 # CONFIG_packagegroup-core-sdk-dbg is not set
 # CONFIG_packagegroup-core-sdk-dev is not set
 
 #
-# packagegroup-core-ssh-dropbear 
+# packagegroup-core-ssh-dropbear
 #
 CONFIG_packagegroup-core-ssh-dropbear=y
 # CONFIG_packagegroup-core-ssh-dropbear-dbg is not set
 # CONFIG_packagegroup-core-ssh-dropbear-dev is not set
 
 #
-# packagegroup-core-standalone-sdk-target 
+# packagegroup-core-standalone-sdk-target
 #
 # CONFIG_packagegroup-core-standalone-sdk-target is not set
 # CONFIG_packagegroup-core-standalone-sdk-target-dev is not set
 # CONFIG_packagegroup-core-standalone-sdk-target-dbg is not set
 
 #
-# packagegroup-core-tools-debug 
+# packagegroup-core-tools-debug
 #
 # CONFIG_packagegroup-core-tools-debug is not set
 # CONFIG_packagegroup-core-tools-debug-dev is not set
 # CONFIG_packagegroup-core-tools-debug-dbg is not set
 
 #
-# packagegroup-core-tools-profile 
+# packagegroup-core-tools-profile
 #
 # CONFIG_packagegroup-core-tools-profile is not set
 # CONFIG_packagegroup-core-tools-profile-dbg is not set
 # CONFIG_packagegroup-core-tools-profile-dev is not set
 
 #
-# packagegroup-core-tools-testapps 
+# packagegroup-core-tools-testapps
 #
 # CONFIG_packagegroup-core-tools-testapps is not set
 # CONFIG_packagegroup-core-tools-testapps-dbg is not set
 # CONFIG_packagegroup-core-tools-testapps-dev is not set
 
 #
-# packagegroup-core-x11 
+# packagegroup-core-x11
 #
 # CONFIG_packagegroup-core-x11 is not set
 # CONFIG_packagegroup-core-x11-dbg is not set
@@ -2606,21 +2654,21 @@ CONFIG_packagegroup-core-ssh-dropbear=y
 # CONFIG_packagegroup-core-x11-utils-dev is not set
 
 #
-# packagegroup-core-x11-base 
+# packagegroup-core-x11-base
 #
 # CONFIG_packagegroup-core-x11-base is not set
 # CONFIG_packagegroup-core-x11-base-dev is not set
 # CONFIG_packagegroup-core-x11-base-dbg is not set
 
 #
-# packagegroup-core-x11-xserver 
+# packagegroup-core-x11-xserver
 #
 # CONFIG_packagegroup-core-x11-xserver is not set
 # CONFIG_packagegroup-core-x11-xserver-dev is not set
 # CONFIG_packagegroup-core-x11-xserver-dbg is not set
 
 #
-# packagegroup-self-hosted 
+# packagegroup-self-hosted
 #
 # CONFIG_packagegroup-self-hosted is not set
 # CONFIG_packagegroup-self-hosted-extended-dev is not set
@@ -2642,7 +2690,7 @@ CONFIG_packagegroup-core-ssh-dropbear=y
 # CONFIG_packagegroup-self-hosted-graphics is not set
 
 #
-# perf 
+# perf
 #
 # CONFIG_perf is not set
 # CONFIG_perf-tests is not set
@@ -2651,28 +2699,28 @@ CONFIG_packagegroup-core-ssh-dropbear=y
 # CONFIG_perf-dev is not set
 
 #
-# pixman 
+# pixman
 #
 # CONFIG_pixman is not set
 # CONFIG_pixman-dbg is not set
 # CONFIG_pixman-dev is not set
 
 #
-# powertop 
+# powertop
 #
 # CONFIG_powertop is not set
 # CONFIG_powertop-dev is not set
 # CONFIG_powertop-dbg is not set
 
 #
-# ptest-runner 
+# ptest-runner
 #
 # CONFIG_ptest-runner is not set
 # CONFIG_ptest-runner-dev is not set
 # CONFIG_ptest-runner-dbg is not set
 
 #
-# python3 
+# python3
 #
 # CONFIG_python3 is not set
 # CONFIG_python3-smtpd is not set
@@ -2734,42 +2782,42 @@ CONFIG_packagegroup-core-ssh-dropbear=y
 # CONFIG_python3-ctypes is not set
 
 #
-# python3-async 
+# python3-async
 #
 # CONFIG_python3-async is not set
 # CONFIG_python3-async-dev is not set
 # CONFIG_python3-async-dbg is not set
 
 #
-# python3-git 
+# python3-git
 #
 # CONFIG_python3-git is not set
 # CONFIG_python3-git-dbg is not set
 # CONFIG_python3-git-dev is not set
 
 #
-# python3-gitdb 
+# python3-gitdb
 #
 # CONFIG_python3-gitdb is not set
 # CONFIG_python3-gitdb-dev is not set
 # CONFIG_python3-gitdb-dbg is not set
 
 #
-# python3-setuptools 
+# python3-setuptools
 #
 # CONFIG_python3-setuptools is not set
 # CONFIG_python3-setuptools-dev is not set
 # CONFIG_python3-setuptools-dbg is not set
 
 #
-# python3-smmap 
+# python3-smmap
 #
 # CONFIG_python3-smmap is not set
 # CONFIG_python3-smmap-dbg is not set
 # CONFIG_python3-smmap-dev is not set
 
 #
-# qtbase 
+# qtbase
 #
 # CONFIG_qtbase is not set
 # CONFIG_qtbase-tools is not set
@@ -2780,7 +2828,7 @@ CONFIG_packagegroup-core-ssh-dropbear=y
 # CONFIG_qtbase-mkspecs is not set
 
 #
-# qtcharts 
+# qtcharts
 #
 # CONFIG_qtcharts is not set
 # CONFIG_qtcharts-mkspecs is not set
@@ -2791,7 +2839,7 @@ CONFIG_packagegroup-core-ssh-dropbear=y
 # CONFIG_qtcharts-qmldesigner is not set
 
 #
-# qtconnectivity 
+# qtconnectivity
 #
 # CONFIG_qtconnectivity is not set
 # CONFIG_qtconnectivity-tools is not set
@@ -2802,7 +2850,7 @@ CONFIG_packagegroup-core-ssh-dropbear=y
 # CONFIG_qtconnectivity-qmlplugins is not set
 
 #
-# qtdeclarative 
+# qtdeclarative
 #
 # CONFIG_qtdeclarative is not set
 # CONFIG_qtdeclarative-examples is not set
@@ -2813,7 +2861,7 @@ CONFIG_packagegroup-core-ssh-dropbear=y
 # CONFIG_qtdeclarative-mkspecs is not set
 
 #
-# qtenginio 
+# qtenginio
 #
 # CONFIG_qtenginio is not set
 # CONFIG_qtenginio-qmlplugins is not set
@@ -2823,7 +2871,7 @@ CONFIG_packagegroup-core-ssh-dropbear=y
 # CONFIG_qtenginio-examples is not set
 
 #
-# qtimageformats 
+# qtimageformats
 #
 # CONFIG_qtimageformats is not set
 # CONFIG_qtimageformats-plugins is not set
@@ -2831,7 +2879,7 @@ CONFIG_packagegroup-core-ssh-dropbear=y
 # CONFIG_qtimageformats-dev is not set
 
 #
-# qtlocation 
+# qtlocation
 #
 # CONFIG_qtlocation is not set
 # CONFIG_qtlocation-plugins is not set
@@ -2842,7 +2890,7 @@ CONFIG_packagegroup-core-ssh-dropbear=y
 # CONFIG_qtlocation-mkspecs is not set
 
 #
-# qtmultimedia 
+# qtmultimedia
 #
 # CONFIG_qtmultimedia is not set
 # CONFIG_qtmultimedia-plugins is not set
@@ -2853,7 +2901,7 @@ CONFIG_packagegroup-core-ssh-dropbear=y
 # CONFIG_qtmultimedia-dbg is not set
 
 #
-# qtquickcontrols 
+# qtquickcontrols
 #
 # CONFIG_qtquickcontrols is not set
 # CONFIG_qtquickcontrols-dbg is not set
@@ -2863,7 +2911,7 @@ CONFIG_packagegroup-core-ssh-dropbear=y
 # CONFIG_qtquickcontrols-qmldesigner is not set
 
 #
-# qtscript 
+# qtscript
 #
 # CONFIG_qtscript is not set
 # CONFIG_qtscript-examples is not set
@@ -2872,11 +2920,10 @@ CONFIG_packagegroup-core-ssh-dropbear=y
 # CONFIG_qtscript-dev is not set
 
 #
-# qtsensors 
+# qtsensors
 #
 # CONFIG_qtsensors is not set
 # CONFIG_qtsensors-dbg is not set
-# CONFIG_qtsensors-examples-dev is not set
 # CONFIG_qtsensors-mkspecs is not set
 # CONFIG_qtsensors-examples is not set
 # CONFIG_qtsensors-dev is not set
@@ -2884,7 +2931,7 @@ CONFIG_packagegroup-core-ssh-dropbear=y
 # CONFIG_qtsensors-qmlplugins is not set
 
 #
-# qtserialport 
+# qtserialport
 #
 # CONFIG_qtserialport is not set
 # CONFIG_qtserialport-mkspecs is not set
@@ -2893,7 +2940,7 @@ CONFIG_packagegroup-core-ssh-dropbear=y
 # CONFIG_qtserialport-dbg is not set
 
 #
-# qtsvg 
+# qtsvg
 #
 # CONFIG_qtsvg is not set
 # CONFIG_qtsvg-plugins is not set
@@ -2903,7 +2950,7 @@ CONFIG_packagegroup-core-ssh-dropbear=y
 # CONFIG_qtsvg-examples is not set
 
 #
-# qtsystems 
+# qtsystems
 #
 # CONFIG_qtsystems is not set
 # CONFIG_qtsystems-dbg is not set
@@ -2914,7 +2961,7 @@ CONFIG_packagegroup-core-ssh-dropbear=y
 # CONFIG_qtsystems-mkspecs is not set
 
 #
-# qttools 
+# qttools
 #
 # CONFIG_qttools is not set
 # CONFIG_qttools-examples is not set
@@ -2925,24 +2972,21 @@ CONFIG_packagegroup-core-ssh-dropbear=y
 # CONFIG_qttools-dev is not set
 
 #
-# qttranslations 
+# qttranslations
 #
 # CONFIG_qttranslations is not set
 # CONFIG_qttranslations-qthelp is not set
 # CONFIG_qttranslations-assistant is not set
 # CONFIG_qttranslations-qtwebsockets is not set
 # CONFIG_qttranslations-qtquickcontrols2 is not set
-# CONFIG_qttranslations-qtquick1 is not set
 # CONFIG_qttranslations-qtdeclarative is not set
 # CONFIG_qttranslations-qtxmlpatterns is not set
 # CONFIG_qttranslations-qtmultimedia is not set
 # CONFIG_qttranslations-qtconnectivity is not set
-# CONFIG_qttranslations-qt is not set
 # CONFIG_qttranslations-qtbase is not set
 # CONFIG_qttranslations-qtserialport is not set
 # CONFIG_qttranslations-linguist is not set
 # CONFIG_qttranslations-dbg is not set
-# CONFIG_qttranslations-qmlviewer is not set
 # CONFIG_qttranslations-qtlocation is not set
 # CONFIG_qttranslations-qtscript is not set
 # CONFIG_qttranslations-qtwebengine is not set
@@ -2951,7 +2995,7 @@ CONFIG_packagegroup-core-ssh-dropbear=y
 # CONFIG_qttranslations-dev is not set
 
 #
-# qtwebchannel 
+# qtwebchannel
 #
 # CONFIG_qtwebchannel is not set
 # CONFIG_qtwebchannel-dev is not set
@@ -2961,7 +3005,7 @@ CONFIG_packagegroup-core-ssh-dropbear=y
 # CONFIG_qtwebchannel-mkspecs is not set
 
 #
-# qtwebkit 
+# qtwebkit
 #
 # CONFIG_qtwebkit is not set
 # CONFIG_qtwebkit-qmlplugins is not set
@@ -2970,7 +3014,7 @@ CONFIG_packagegroup-core-ssh-dropbear=y
 # CONFIG_qtwebkit-mkspecs is not set
 
 #
-# qtwebsockets 
+# qtwebsockets
 #
 # CONFIG_qtwebsockets is not set
 # CONFIG_qtwebsockets-dev is not set
@@ -2980,7 +3024,7 @@ CONFIG_packagegroup-core-ssh-dropbear=y
 # CONFIG_qtwebsockets-dbg is not set
 
 #
-# qtxmlpatterns 
+# qtxmlpatterns
 #
 # CONFIG_qtxmlpatterns is not set
 # CONFIG_qtxmlpatterns-mkspecs is not set
@@ -2990,14 +3034,14 @@ CONFIG_packagegroup-core-ssh-dropbear=y
 # CONFIG_qtxmlpatterns-tools is not set
 
 #
-# rgb 
+# rgb
 #
 # CONFIG_rgb is not set
 # CONFIG_rgb-dbg is not set
 # CONFIG_rgb-dev is not set
 
 #
-# rpm 
+# rpm
 #
 # CONFIG_rpm is not set
 # CONFIG_rpm-build is not set
@@ -3005,35 +3049,35 @@ CONFIG_packagegroup-core-ssh-dropbear=y
 # CONFIG_rpm-dbg is not set
 
 #
-# rpmsg-echo-test 
+# rpmsg-echo-test
 #
 # CONFIG_rpmsg-echo-test is not set
 # CONFIG_rpmsg-echo-test-dbg is not set
 # CONFIG_rpmsg-echo-test-dev is not set
 
 #
-# rpmsg-mat-mul 
+# rpmsg-mat-mul
 #
 # CONFIG_rpmsg-mat-mul is not set
 # CONFIG_rpmsg-mat-mul-dev is not set
 # CONFIG_rpmsg-mat-mul-dbg is not set
 
 #
-# rpmsg-proxy-app 
+# rpmsg-proxy-app
 #
 # CONFIG_rpmsg-proxy-app is not set
 # CONFIG_rpmsg-proxy-app-dev is not set
 # CONFIG_rpmsg-proxy-app-dbg is not set
 
 #
-# serf 
+# serf
 #
 # CONFIG_serf is not set
 # CONFIG_serf-dev is not set
 # CONFIG_serf-dbg is not set
 
 #
-# sysfsutils 
+# sysfsutils
 #
 # CONFIG_sysfsutils is not set
 # CONFIG_libsysfs is not set
@@ -3041,49 +3085,49 @@ CONFIG_packagegroup-core-ssh-dropbear=y
 # CONFIG_sysfsutils-dbg is not set
 
 #
-# sysprof 
+# sysprof
 #
 # CONFIG_sysprof is not set
 # CONFIG_sysprof-dev is not set
 # CONFIG_sysprof-dbg is not set
 
 #
-# systemtap 
+# systemtap
 #
 # CONFIG_systemtap is not set
 # CONFIG_systemtap-dev is not set
 # CONFIG_systemtap-dbg is not set
 
 #
-# sysvinit-inittab 
+# sysvinit-inittab
 #
 # CONFIG_sysvinit-inittab is not set
 # CONFIG_sysvinit-inittab-dbg is not set
 # CONFIG_sysvinit-inittab-dev is not set
 
 #
-# tbb 
+# tbb
 #
 # CONFIG_tbb is not set
 # CONFIG_tbb-dev is not set
 # CONFIG_tbb-dbg is not set
 
 #
-# tcf-agent 
+# tcf-agent
 #
 CONFIG_tcf-agent=y
 # CONFIG_tcf-agent-dbg is not set
 # CONFIG_tcf-agent-dev is not set
 
 #
-# texi2html 
+# texi2html
 #
 # CONFIG_texi2html is not set
 # CONFIG_texi2html-dbg is not set
 # CONFIG_texi2html-dev is not set
 
 #
-# tiff 
+# tiff
 #
 # CONFIG_tiff is not set
 # CONFIG_tiff-dev is not set
@@ -3092,14 +3136,14 @@ CONFIG_tcf-agent=y
 # CONFIG_tiff-utils is not set
 
 #
-# util-macros 
+# util-macros
 #
 # CONFIG_util-macros is not set
 # CONFIG_util-macros-dbg is not set
 # CONFIG_util-macros-dev is not set
 
 #
-# v4l-utils 
+# v4l-utils
 #
 # CONFIG_v4l-utils is not set
 # CONFIG_libv4l is not set
@@ -3111,14 +3155,14 @@ CONFIG_tcf-agent=y
 # CONFIG_libv4l-dev is not set
 
 #
-# valgrind 
+# valgrind
 #
 # CONFIG_valgrind is not set
 # CONFIG_valgrind-dbg is not set
 # CONFIG_valgrind-dev is not set
 
 #
-# vte 
+# vte
 #
 # CONFIG_vte is not set
 # CONFIG_libvte is not set
@@ -3126,7 +3170,7 @@ CONFIG_tcf-agent=y
 # CONFIG_vte-dev is not set
 
 #
-# watchdog 
+# watchdog
 #
 # CONFIG_watchdog is not set
 # CONFIG_watchdog-dbg is not set
@@ -3134,28 +3178,28 @@ CONFIG_tcf-agent=y
 # CONFIG_watchdog-dev is not set
 
 #
-# watchdog-config 
+# watchdog-config
 #
 # CONFIG_watchdog-config is not set
 # CONFIG_watchdog-config-dbg is not set
 # CONFIG_watchdog-config-dev is not set
 
 #
-# webkitgtk 
+# webkitgtk
 #
 # CONFIG_webkitgtk is not set
 # CONFIG_webkitgtk-dbg is not set
 # CONFIG_webkitgtk-dev is not set
 
 #
-# x11perf 
+# x11perf
 #
 # CONFIG_x11perf is not set
 # CONFIG_x11perf-dbg is not set
 # CONFIG_x11perf-dev is not set
 
 #
-# x264 
+# x264
 #
 # CONFIG_x264 is not set
 # CONFIG_x264-dbg is not set
@@ -3163,192 +3207,185 @@ CONFIG_tcf-agent=y
 # CONFIG_x264-bin is not set
 
 #
-# xauth 
+# xauth
 #
 # CONFIG_xauth is not set
 # CONFIG_xauth-dbg is not set
 # CONFIG_xauth-dev is not set
 
 #
-# xcb-util-image 
+# xcb-util-image
 #
 # CONFIG_xcb-util-image is not set
 # CONFIG_xcb-util-image-dev is not set
 # CONFIG_xcb-util-image-dbg is not set
 
 #
-# xcb-util-keysyms 
+# xcb-util-keysyms
 #
 # CONFIG_xcb-util-keysyms is not set
 # CONFIG_xcb-util-keysyms-dev is not set
 # CONFIG_xcb-util-keysyms-dbg is not set
 
 #
-# xcb-util-renderutil 
+# xcb-util-renderutil
 #
 # CONFIG_xcb-util-renderutil is not set
 # CONFIG_xcb-util-renderutil-dbg is not set
 # CONFIG_xcb-util-renderutil-dev is not set
 
 #
-# xcb-util-wm 
+# xcb-util-wm
 #
 # CONFIG_xcb-util-wm is not set
 # CONFIG_xcb-util-wm-dbg is not set
 # CONFIG_xcb-util-wm-dev is not set
 
 #
-# xdg-utils 
+# xdg-utils
 #
 # CONFIG_xdg-utils is not set
 # CONFIG_xdg-utils-dbg is not set
 # CONFIG_xdg-utils-dev is not set
 
 #
-# xdpyinfo 
+# xdpyinfo
 #
 # CONFIG_xdpyinfo is not set
 # CONFIG_xdpyinfo-dev is not set
 # CONFIG_xdpyinfo-dbg is not set
 
 #
-# xf86-input-evdev 
+# xf86-input-evdev
 #
 # CONFIG_xf86-input-evdev is not set
 # CONFIG_xf86-input-evdev-dbg is not set
 # CONFIG_xf86-input-evdev-dev is not set
 
 #
-# xf86-input-keyboard 
+# xf86-input-keyboard
 #
 # CONFIG_xf86-input-keyboard is not set
 # CONFIG_xf86-input-keyboard-dev is not set
 # CONFIG_xf86-input-keyboard-dbg is not set
 
 #
-# xf86-input-mouse 
+# xf86-input-mouse
 #
 # CONFIG_xf86-input-mouse is not set
 # CONFIG_xf86-input-mouse-dbg is not set
 # CONFIG_xf86-input-mouse-dev is not set
 
 #
-# xf86-video-fbdev 
+# xf86-video-fbdev
 #
 # CONFIG_xf86-video-fbdev is not set
 # CONFIG_xf86-video-fbdev-dbg is not set
 # CONFIG_xf86-video-fbdev-dev is not set
 
 #
-# xhost 
+# xhost
 #
 # CONFIG_xhost is not set
 # CONFIG_xhost-dbg is not set
 # CONFIG_xhost-dev is not set
 
 #
-# xinetd 
+# xinetd
 #
 # CONFIG_xinetd is not set
 # CONFIG_xinetd-dbg is not set
 # CONFIG_xinetd-dev is not set
 
 #
-# xinit 
+# xinit
 #
 # CONFIG_xinit is not set
 # CONFIG_xinit-dev is not set
 # CONFIG_xinit-dbg is not set
 
 #
-# xinput 
+# xinput
 #
 # CONFIG_xinput is not set
 # CONFIG_xinput-dev is not set
 # CONFIG_xinput-dbg is not set
 
 #
-# xinput-calibrator 
+# xinput-calibrator
 #
 # CONFIG_xinput-calibrator is not set
 # CONFIG_xinput-calibrator-dbg is not set
 # CONFIG_xinput-calibrator-dev is not set
 
 #
-# xkbcomp 
+# xkbcomp
 #
 # CONFIG_xkbcomp is not set
 # CONFIG_xkbcomp-dev is not set
 # CONFIG_xkbcomp-dbg is not set
 
 #
-# xmodmap 
+# xmodmap
 #
 # CONFIG_xmodmap is not set
 # CONFIG_xmodmap-dbg is not set
 # CONFIG_xmodmap-dev is not set
 
 #
-# xprop 
+# xprop
 #
 # CONFIG_xprop is not set
 # CONFIG_xprop-dbg is not set
 # CONFIG_xprop-dev is not set
 
 #
-# xrandr 
+# xrandr
 #
 # CONFIG_xrandr is not set
 # CONFIG_xrandr-dbg is not set
 # CONFIG_xrandr-dev is not set
 
 #
-# xserver-common 
+# xserver-common
 #
 # CONFIG_xserver-common is not set
 # CONFIG_xserver-common-dev is not set
 # CONFIG_xserver-common-dbg is not set
 
 #
-# xset 
+# xset
 #
 # CONFIG_xset is not set
 # CONFIG_xset-dbg is not set
 # CONFIG_xset-dev is not set
 
 #
-# xtrans 
+# xtrans
 #
 # CONFIG_xtrans-dev is not set
 # CONFIG_xtrans-dbg is not set
 
 #
-# xvideo-tests 
-#
-# CONFIG_xvideo-tests is not set
-# CONFIG_xvideo-tests-dev is not set
-# CONFIG_xvideo-tests-dbg is not set
-
-#
-# xwininfo 
+# xwininfo
 #
 # CONFIG_xwininfo is not set
 # CONFIG_xwininfo-dev is not set
 # CONFIG_xwininfo-dbg is not set
 
 #
-# yavta 
+# yavta
 #
 # CONFIG_yavta is not set
 # CONFIG_yavta-dbg is not set
 # CONFIG_yavta-dev is not set
 
 #
-# multimedia 
+# multimedia
 #
 
 #
-# alsa-plugins 
+# alsa-plugins
 #
 # CONFIG_alsa-plugins is not set
 # CONFIG_alsa-plugins-dev is not set
@@ -3356,14 +3393,7 @@ CONFIG_tcf-agent=y
 # CONFIG_alsa-plugins-pulseaudio-conf is not set
 
 #
-# gstreamer 
-#
-# CONFIG_gstreamer is not set
-# CONFIG_gstreamer-dbg is not set
-# CONFIG_gstreamer-dev is not set
-
-#
-# gstreamer1.0 
+# gstreamer1.0
 #
 # CONFIG_gstreamer1.0 is not set
 # CONFIG_gstreamer1.0-dev is not set
@@ -3371,36 +3401,49 @@ CONFIG_tcf-agent=y
 # CONFIG_gstreamer1.0-dbg is not set
 
 #
-# net 
+# net
 #
 
 #
-# bridge-utils 
+# bridge-utils
 #
 CONFIG_bridge-utils=y
 # CONFIG_bridge-utils-dbg is not set
 # CONFIG_bridge-utils-dev is not set
 
 #
-# netcat 
+# net-snmp
+#
+# CONFIG_net-snmp is not set
+# CONFIG_net-snmp-server-snmptrapd is not set
+# CONFIG_net-snmp-libs is not set
+# CONFIG_net-snmp-dev is not set
+# CONFIG_net-snmp-client is not set
+# CONFIG_net-snmp-mibs is not set
+# CONFIG_net-snmp-dbg is not set
+# CONFIG_net-snmp-server-snmpd is not set
+# CONFIG_net-snmp-server is not set
+
+#
+# netcat
 #
 # CONFIG_netcat is not set
 # CONFIG_netcat-dbg is not set
 # CONFIG_netcat-dev is not set
 
 #
-# tcpdump 
+# tcpdump
 #
 # CONFIG_tcpdump is not set
 # CONFIG_tcpdump-dbg is not set
 # CONFIG_tcpdump-dev is not set
 
 #
-# network 
+# network
 #
 
 #
-# avahi 
+# avahi
 #
 # CONFIG_avahi-dbg is not set
 # CONFIG_libavahi-glib is not set
@@ -3415,14 +3458,14 @@ CONFIG_bridge-utils=y
 # CONFIG_libavahi-gobject is not set
 
 #
-# mobile-broadband-provider-info 
+# mobile-broadband-provider-info
 #
 # CONFIG_mobile-broadband-provider-info is not set
 # CONFIG_mobile-broadband-provider-info-dbg is not set
 # CONFIG_mobile-broadband-provider-info-dev is not set
 
 #
-# wpa-supplicant 
+# wpa-supplicant
 #
 # CONFIG_wpa-supplicant is not set
 # CONFIG_wpa-supplicant-passphrase is not set
@@ -3431,73 +3474,73 @@ CONFIG_bridge-utils=y
 # CONFIG_wpa-supplicant-dbg is not set
 
 #
-# optional 
+# optional
 #
 
 #
-# libatomic-ops 
+# libatomic-ops
 #
 # CONFIG_libatomic-ops is not set
 # CONFIG_libatomic-ops-dbg is not set
 # CONFIG_libatomic-ops-dev is not set
 
 #
-# mtools 
+# mtools
 #
 # CONFIG_mtools is not set
 # CONFIG_mtools-dev is not set
 # CONFIG_mtools-dbg is not set
 
 #
-# utils 
+# utils
 #
 
 #
-# patch 
+# patch
 #
 # CONFIG_patch is not set
 # CONFIG_patch-dev is not set
 # CONFIG_patch-dbg is not set
 
 #
-# x11 
+# x11
 #
 
 #
-# base 
+# base
 #
 
 #
-# libdrm 
+# libdrm
 #
-# CONFIG_libdrm is not set
+CONFIG_libdrm=y
 # CONFIG_libdrm-omap is not set
 # CONFIG_libdrm-amdgpu is not set
 # CONFIG_libdrm-dev is not set
 # CONFIG_libdrm-dbg is not set
 # CONFIG_libdrm-drivers is not set
 # CONFIG_libdrm-nouveau is not set
-# CONFIG_libdrm-tests is not set
+CONFIG_libdrm-tests=y
 # CONFIG_libdrm-freedreno is not set
 # CONFIG_libdrm-radeon is not set
-# CONFIG_libdrm-kms is not set
+CONFIG_libdrm-kms=y
 
 #
-# xcursor-transparent-theme 
+# xcursor-transparent-theme
 #
 # CONFIG_xcursor-transparent-theme is not set
 # CONFIG_xcursor-transparent-theme-dev is not set
 # CONFIG_xcursor-transparent-theme-dbg is not set
 
 #
-# xserver-xf86-config 
+# xserver-xf86-config
 #
 # CONFIG_xserver-xf86-config is not set
 # CONFIG_xserver-xf86-config-dbg is not set
 # CONFIG_xserver-xf86-config-dev is not set
 
 #
-# xserver-xorg 
+# xserver-xorg
 #
 # CONFIG_xserver-xorg is not set
 # CONFIG_xserver-xorg-extension-record is not set
@@ -3516,23 +3559,23 @@ CONFIG_bridge-utils=y
 # CONFIG_xserver-xorg-module-libwfb is not set
 
 #
-# builder 
+# builder
 #
 # CONFIG_builder is not set
 # CONFIG_builder-dev is not set
 # CONFIG_builder-dbg is not set
 
 #
-# fonts 
+# fonts
 #
 
 #
-# liberation-fonts 
+# liberation-fonts
 #
 # CONFIG_liberation-fonts is not set
 
 #
-# glew 
+# glew
 #
 # CONFIG_glew is not set
 # CONFIG_glew-dbg is not set
@@ -3540,11 +3583,11 @@ CONFIG_bridge-utils=y
 # CONFIG_glew-dev is not set
 
 #
-# gnome 
+# gnome
 #
 
 #
-# adwaita-icon-theme 
+# adwaita-icon-theme
 #
 # CONFIG_adwaita-icon-theme is not set
 # CONFIG_adwaita-icon-theme-symbolic is not set
@@ -3553,21 +3596,21 @@ CONFIG_bridge-utils=y
 # CONFIG_adwaita-icon-theme-cursors is not set
 
 #
-# gconf 
+# gconf
 #
 # CONFIG_gconf is not set
 # CONFIG_gconf-dev is not set
 # CONFIG_gconf-dbg is not set
 
 #
-# gnome-common 
+# gnome-common
 #
 # CONFIG_gnome-common is not set
 # CONFIG_gnome-common-dbg is not set
 # CONFIG_gnome-common-dev is not set
 
 #
-# gnome-desktop3 
+# gnome-desktop3
 #
 # CONFIG_gnome-desktop3 is not set
 # CONFIG_gnome-desktop3-dbg is not set
@@ -3575,39 +3618,39 @@ CONFIG_bridge-utils=y
 # CONFIG_libgnome-desktop3 is not set
 
 #
-# gnome-themes-standard 
+# gnome-themes-standard
 #
 # CONFIG_gnome-themes-standard-dev is not set
 # CONFIG_gnome-themes-standard-dbg is not set
 # CONFIG_gnome-theme-adwaita is not set
 
 #
-# libsoup-2.4 
+# libsoup-2.4
 #
 # CONFIG_libsoup-2.4 is not set
 # CONFIG_libsoup-2.4-dev is not set
 # CONFIG_libsoup-2.4-dbg is not set
 
 #
-# libglu 
+# libglu
 #
 # CONFIG_libglu is not set
 # CONFIG_libglu-dbg is not set
 # CONFIG_libglu-dev is not set
 
 #
-# libs 
+# libs
 #
 
 #
-# atk 
+# atk
 #
 # CONFIG_atk is not set
 # CONFIG_atk-dbg is not set
 # CONFIG_atk-dev is not set
 
 #
-# libfm 
+# libfm
 #
 # CONFIG_libfm is not set
 # CONFIG_libfm-mime is not set
@@ -3615,70 +3658,69 @@ CONFIG_bridge-utils=y
 # CONFIG_libfm-dbg is not set
 
 #
-# libfm-extra 
+# libfm-extra
 #
 # CONFIG_libfm-extra is not set
 # CONFIG_libfm-extra-dev is not set
 # CONFIG_libfm-extra-dbg is not set
 
 #
-# libmatchbox 
+# libmatchbox
 #
 # CONFIG_libmatchbox is not set
 # CONFIG_libmatchbox-dev is not set
 # CONFIG_libmatchbox-dbg is not set
 
 #
-# libpthread-stubs 
+# libpthread-stubs
 #
-# CONFIG_libpthread-stubs is not set
 # CONFIG_libpthread-stubs-dev is not set
 # CONFIG_libpthread-stubs-dbg is not set
 
 #
-# libwnck3 
+# libwnck3
 #
 # CONFIG_libwnck3 is not set
 # CONFIG_libwnck3-dbg is not set
 # CONFIG_libwnck3-dev is not set
 
 #
-# libxcb 
+# libxcb
 #
 # CONFIG_libxcb is not set
 # CONFIG_libxcb-dev is not set
 # CONFIG_libxcb-dbg is not set
 
 #
-# menu-cache 
+# menu-cache
 #
 # CONFIG_menu-cache is not set
 # CONFIG_menu-cache-dev is not set
 # CONFIG_menu-cache-dbg is not set
 
 #
-# xcb-proto 
+# xcb-proto
 #
 # CONFIG_xcb-proto-dev is not set
 # CONFIG_python-xcbgen is not set
 # CONFIG_xcb-proto-dbg is not set
 
 #
-# xcb-util 
+# xcb-util
 #
 # CONFIG_xcb-util is not set
 # CONFIG_xcb-util-dev is not set
 # CONFIG_xcb-util-dbg is not set
 
 #
-# xkeyboard-config 
+# xkeyboard-config
 #
 # CONFIG_xkeyboard-config is not set
 # CONFIG_xkeyboard-config-dbg is not set
 # CONFIG_xkeyboard-config-dev is not set
 
 #
-# matchbox-keyboard 
+# matchbox-keyboard
 #
 # CONFIG_matchbox-keyboard is not set
 # CONFIG_matchbox-keyboard-dbg is not set
@@ -3687,21 +3729,21 @@ CONFIG_bridge-utils=y
 # CONFIG_matchbox-keyboard-im is not set
 
 #
-# matchbox-session 
+# matchbox-session
 #
 # CONFIG_matchbox-session is not set
 # CONFIG_matchbox-session-dev is not set
 # CONFIG_matchbox-session-dbg is not set
 
 #
-# matchbox-session-sato 
+# matchbox-session-sato
 #
 # CONFIG_matchbox-session-sato is not set
 # CONFIG_matchbox-session-sato-dev is not set
 # CONFIG_matchbox-session-sato-dbg is not set
 
 #
-# mesa 
+# mesa
 #
 # CONFIG_mesa is not set
 # CONFIG_libgles2-mesa is not set
@@ -3722,46 +3764,46 @@ CONFIG_bridge-utils=y
 # CONFIG_libgles3-mesa-dev is not set
 
 #
-# mesa-demos 
+# mesa-demos
 #
 # CONFIG_mesa-demos is not set
 # CONFIG_mesa-demos-dev is not set
 # CONFIG_mesa-demos-dbg is not set
 
 #
-# mini-x-session 
+# mini-x-session
 #
 # CONFIG_mini-x-session is not set
 # CONFIG_mini-x-session-dbg is not set
 # CONFIG_mini-x-session-dev is not set
 
 #
-# pcmanfm 
+# pcmanfm
 #
 # CONFIG_pcmanfm is not set
 # CONFIG_pcmanfm-dbg is not set
 # CONFIG_pcmanfm-dev is not set
 
 #
-# settings-daemon 
+# settings-daemon
 #
 # CONFIG_settings-daemon is not set
 # CONFIG_settings-daemon-dev is not set
 # CONFIG_settings-daemon-dbg is not set
 
 #
-# utils 
+# utils
 #
 
 #
-# libcroco 
+# libcroco
 #
 # CONFIG_libcroco is not set
 # CONFIG_libcroco-dbg is not set
 # CONFIG_libcroco-dev is not set
 
 #
-# librsvg 
+# librsvg
 #
 # CONFIG_librsvg is not set
 # CONFIG_librsvg-gtk is not set
@@ -3770,53 +3812,53 @@ CONFIG_bridge-utils=y
 # CONFIG_rsvg is not set
 
 #
-# matchbox-terminal 
+# matchbox-terminal
 #
 # CONFIG_matchbox-terminal is not set
 # CONFIG_matchbox-terminal-dbg is not set
 # CONFIG_matchbox-terminal-dev is not set
 
 #
-# xrestop 
+# xrestop
 #
 # CONFIG_xrestop is not set
 # CONFIG_xrestop-dev is not set
 # CONFIG_xrestop-dbg is not set
 
 #
-# wm 
+# wm
 #
 
 #
-# libfakekey 
+# libfakekey
 #
 # CONFIG_libfakekey is not set
 # CONFIG_libfakekey-dev is not set
 # CONFIG_libfakekey-dbg is not set
 
 #
-# matchbox-desktop 
+# matchbox-desktop
 #
 # CONFIG_matchbox-desktop is not set
 # CONFIG_matchbox-desktop-dev is not set
 # CONFIG_matchbox-desktop-dbg is not set
 
 #
-# matchbox-theme-sato 
+# matchbox-theme-sato
 #
 # CONFIG_matchbox-theme-sato is not set
 # CONFIG_matchbox-theme-sato-dev is not set
 # CONFIG_matchbox-theme-sato-dbg is not set
 
 #
-# matchbox-wm 
+# matchbox-wm
 #
 # CONFIG_matchbox-wm is not set
 # CONFIG_matchbox-wm-dbg is not set
 # CONFIG_matchbox-wm-dev is not set
 
 #
-# xserver-nodm-init 
+# xserver-nodm-init
 #
 # CONFIG_xserver-nodm-init is not set
 # CONFIG_xserver-nodm-init-dbg is not set
@@ -3827,28 +3869,28 @@ CONFIG_bridge-utils=y
 #
 
 #
-# packagegroup-petalinux 
+# packagegroup-petalinux
 #
 # CONFIG_packagegroup-petalinux is not set
 # CONFIG_packagegroup-petalinux-dev is not set
 # CONFIG_packagegroup-petalinux-dbg is not set
 
 #
-# packagegroup-petalinux-display-debug 
+# packagegroup-petalinux-display-debug
 #
 # CONFIG_packagegroup-petalinux-display-debug is not set
 # CONFIG_packagegroup-petalinux-display-debug-dbg is not set
 # CONFIG_packagegroup-petalinux-display-debug-dev is not set
 
 #
-# packagegroup-petalinux-lmsensors 
+# packagegroup-petalinux-lmsensors
 #
 # CONFIG_packagegroup-petalinux-lmsensors is not set
 # CONFIG_packagegroup-petalinux-lmsensors-dbg is not set
 # CONFIG_packagegroup-petalinux-lmsensors-dev is not set
 
 #
-# packagegroup-petalinux-matchbox 
+# packagegroup-petalinux-matchbox
 #
 # CONFIG_packagegroup-petalinux-matchbox is not set
 # CONFIG_packagegroup-petalinux-matchbox-dbg is not set
@@ -3862,75 +3904,89 @@ CONFIG_bridge-utils=y
 # CONFIG_packagegroup-petalinux-networking-debug-dev is not set
 
 #
-# packagegroup-petalinux-networking-stack 
+# packagegroup-petalinux-networking-stack
 #
 # CONFIG_packagegroup-petalinux-networking-stack is not set
 # CONFIG_packagegroup-petalinux-networking-stack-dbg is not set
 # CONFIG_packagegroup-petalinux-networking-stack-dev is not set
 
 #
-# packagegroup-petalinux-openamp 
+# packagegroup-petalinux-ocicontainers
+#
+# CONFIG_packagegroup-petalinux-ocicontainers is not set
+# CONFIG_packagegroup-petalinux-ocicontainers-dev is not set
+# CONFIG_packagegroup-petalinux-ocicontainers-dbg is not set
+
+#
+# packagegroup-petalinux-openamp
 #
 # CONFIG_packagegroup-petalinux-openamp is not set
 # CONFIG_packagegroup-petalinux-openamp-dbg is not set
 # CONFIG_packagegroup-petalinux-openamp-dev is not set
 
 #
-# packagegroup-petalinux-opencv 
+# packagegroup-petalinux-opencv
 #
 CONFIG_packagegroup-petalinux-opencv=y
 # CONFIG_packagegroup-petalinux-opencv-dbg is not set
 # CONFIG_packagegroup-petalinux-opencv-dev is not set
 
 #
-# packagegroup-petalinux-python-modules 
+# packagegroup-petalinux-python-modules
 #
 # CONFIG_packagegroup-petalinux-python-modules is not set
 # CONFIG_packagegroup-petalinux-python-modules-dbg is not set
 # CONFIG_packagegroup-petalinux-python-modules-dev is not set
 
 #
-# packagegroup-petalinux-qt 
+# packagegroup-petalinux-qt
 #
 # CONFIG_packagegroup-petalinux-qt is not set
 # CONFIG_packagegroup-petalinux-qt-dbg is not set
 # CONFIG_packagegroup-petalinux-qt-dev is not set
-# CONFIG_inherit-populate-sdk-qt5 is not set
+# CONFIG_imageclass-populate-sdk-qt5 is not set
 
 #
-# packagegroup-petalinux-qt-extended 
+# packagegroup-petalinux-qt-extended
 #
 # CONFIG_packagegroup-petalinux-qt-extended is not set
 # CONFIG_packagegroup-petalinux-qt-extended-dbg is not set
 # CONFIG_packagegroup-petalinux-qt-extended-dev is not set
 
 #
-# packagegroup-petalinux-self-hosted 
+# packagegroup-petalinux-self-hosted
 #
 # CONFIG_packagegroup-petalinux-self-hosted is not set
 # CONFIG_packagegroup-petalinux-self-hosted-dbg is not set
 # CONFIG_packagegroup-petalinux-self-hosted-dev is not set
 
 #
-# packagegroup-petalinux-utils 
+# packagegroup-petalinux-utils
 #
 # CONFIG_packagegroup-petalinux-utils is not set
 # CONFIG_packagegroup-petalinux-utils-dbg is not set
 # CONFIG_packagegroup-petalinux-utils-dev is not set
 
 #
-# packagegroup-petalinux-v4lutils 
+# packagegroup-petalinux-v4lutils
 #
-# CONFIG_packagegroup-petalinux-v4lutils is not set
+CONFIG_packagegroup-petalinux-v4lutils=y
 # CONFIG_packagegroup-petalinux-v4lutils-dbg is not set
 # CONFIG_packagegroup-petalinux-v4lutils-dev is not set
 
 #
-# packagegroup-petalinux-x11 
+# packagegroup-petalinux-x11
 #
-# CONFIG_packagegroup-petalinux-x11 is not set
+CONFIG_packagegroup-petalinux-x11=y
 # CONFIG_packagegroup-petalinux-x11-dbg is not set
 # CONFIG_packagegroup-petalinux-x11-dev is not set
+
+#
+# packagegroup-petalinux-xrt
+#
+# CONFIG_packagegroup-petalinux-xrt is not set
+# CONFIG_packagegroup-petalinux-xrt-dev is not set
+# CONFIG_packagegroup-petalinux-xrt-dbg is not set
 
 #
 # Image Features
@@ -3938,27 +3994,23 @@ CONFIG_packagegroup-petalinux-opencv=y
 CONFIG_imagefeature-ssh-server-dropbear=y
 # CONFIG_imagefeature-ssh-server-openssh is not set
 CONFIG_imagefeature-hwcodecs=y
-# CONFIG_imagefeature-package-management is not set
-# CONFIG_imagefeature-debug-tweaks is not set
+CONFIG_imagefeature-package-management=y
+CONFIG_package-feed-uris="http://petalinux.xilinx.com/sswreleases/rel-v2020/feeds/"
+CONFIG_imagefeature-debug-tweaks=y
+CONFIG_auto-login=y
 
 #
-# apps 
+# apps
 #
 # CONFIG_gpio-demo is not set
-CONFIG_mnt-sd=y
 # CONFIG_peekpoke is not set
 
 #
-# user packages 
+# user packages
 #
-CONFIG_opencl-clhpp-dev=y
-CONFIG_opencl-headers-dev=y
-CONFIG_xrt=y
-CONFIG_xrt-dev=y
-CONFIG_zocl=y
 
 #
 # PetaLinux RootFS Settings
 #
 CONFIG_ROOTFS_ROOT_PASSWD="root"
-CONFIG_ADD_EXTRA_USERS=""
+CONFIG_ADD_EXTRA_USERS="petalinux:petalinux;"
