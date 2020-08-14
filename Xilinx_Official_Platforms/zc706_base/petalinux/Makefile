@@ -1,14 +1,14 @@
 CPU_ARCH=a9
 OUTPUT=../platform_repo/tmp/sw_components/
 SYSROOT=../platform_repo/sysroot
-all: refresh_hw xrt zocl kernel_config rootfs_config linux sw_comp bootimage
+all: refresh_hw kernel_config rootfs_config linux sw_comp bootimage
 export COMMON_RFS_KRNL_SYSROOT = TRUE
 .phony: all
 
 refresh_hw:
 	petalinux-config --get-hw-description=${XSA_DIR} --silentconfig
 
-sw_config: xrt zocl kernel_config rootfs_config
+sw_config: kernel_config rootfs_config
 
 xrt:
 	petalinux-config -c xrt --silentconfig
