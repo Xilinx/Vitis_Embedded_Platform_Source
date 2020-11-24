@@ -1,0 +1,7 @@
+the_ROM_image:
+{
+	[bootloader] images/linux/zynq_fsbl.elf
+	xilinx_zc706_base_202020_1.bit
+	images/linux/u-boot.elf
+	[load=0x00100000] images/linux/system.dtb
+}

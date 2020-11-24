@@ -1,0 +1,93 @@
+/*
+ * Reset-map definitions.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+/* Low PD Reset macros.  */
+#define CRL_RST_ADMA		0
+#define CRL_RST_GEM0		1
+#define CRL_RST_GEM1		2
+#define CRL_RST_SPARE		3
+#define CRL_RST_USB0		4
+#define CRL_RST_UART0		5
+#define CRL_RST_UART1		6
+#define CRL_RST_SPI0		7
+#define CRL_RST_SPI1		8
+#define CRL_RST_CAN0		9
+#define CRL_RST_CAN1		10
+#define CRL_RST_I2C0		11
+#define CRL_RST_I2C1		12
+#define CRL_RST_DBG_LPD		13
+#define CRL_RST_DBG_LPD_HSDP	14
+#define CRL_RST_DBG_LPD_RPU0	15
+#define CRL_RST_DBG_LPD_RPU1	16
+#define CRL_RST_GPIO		17
+#define CRL_RST_TTC0		18
+#define CRL_RST_TTC1		19
+#define CRL_RST_TTC2		20
+#define CRL_RST_TTC3		21
+#define CRL_RST_TIMESTAMP	22
+#define CRL_RST_SWDT		23
+#define CRL_RST_OCM		24
+#define CRL_RST_IPI		25
+#define CRL_RST_SYSMON_CFG	26
+#define CRL_RST_SYSMON_SEQ	27
+#define CRL_RST_FPD_POR		28
+#define CRL_RST_FPD_SRST	29
+#define CRL_PSM_SLEEP		30
+#define CRL_PSM_WAKEUP		31
+#define CRL_RST_CPU_R5_0	32
+#define CRL_RST_CPU_R5_1	33
+
+/* PMC Reset macros.  */
+#define CRP_RST_QSPI		0
+#define CRP_RST_OSPI		1
+#define CRP_RST_PS_PMC_SRST	2
+#define CRP_RST_SDIO1		3
+#define CRP_RST_I2C		4
+#define CRP_RST_GPIO		5
+#define CRP_RST_PS_PL_SRST	6
+#define CRP_RST_PS_PS_SRST	7
+#define CRP_RST_SDIO0		8
+#define CRP_RST_PS_PL_POR	9
+#define CRP_RST_PS_PS_POR	10
+#define CRP_RST_PS_PMC_POR	11
+#define CRP_RST_NONPS_SYS3	12
+#define CRP_RST_NONPS_SYS2	13
+#define CRP_RST_NONPS_SYS1	14
+#define CRP_RST_NONPS_NPI	15
+#define CRP_RST_NONPS_NOC_POR	16
+#define CRP_RST_NONPS_NOC	17
+#define CRP_RST_SBI		18
+#define CRP_RST_PDMA0		19
+#define CRP_RST_PDMA1		20
+#define CRP_RST_SYSMON_CFG	21
+#define CRP_RST_SYSMON_SEQ	22
+#define CRP_RST_PL0		23
+#define CRP_RST_PL1		24
+#define CRP_RST_PL2		25
+#define CRP_RST_PL3		26
+#define CRP_RST_USB		27
+#define CRP_RST_DBG_RESET	28
+#define CRP_RST_DBG_DPC		29
+
+/* PMC Global.  */
+#define PMC_GLOBAL_PPU1_RST	1
+#define PMC_GLOBAL_PPU1_WAKEUP	2

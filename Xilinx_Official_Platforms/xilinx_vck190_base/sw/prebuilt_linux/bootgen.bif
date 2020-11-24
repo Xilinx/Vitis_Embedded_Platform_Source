@@ -1,0 +1,12 @@
+the_ROM_image:
+{
+image {
+	{ type=bootimage, file=xilinx_vck190_base_202020_1_presynth.pdi }
+}
+image {
+	id = 0x1c000000, name=apu_subsystem 
+	{ type=raw, load=0x00001000, file=images/linux/system.dtb }
+	{ core=a72-0, exception_level=el-3, trustzone, file=images/linux/bl31.elf }
+	{ core=a72-0, exception_level=el-2, file=images/linux/u-boot.elf }
+}
+}

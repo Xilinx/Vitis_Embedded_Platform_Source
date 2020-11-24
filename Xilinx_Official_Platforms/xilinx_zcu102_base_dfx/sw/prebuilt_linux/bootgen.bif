@@ -1,0 +1,9 @@
+the_ROM_image:
+{
+	[bootloader, destination_cpu=a53-0] images/linux/zynqmp_fsbl.elf
+	[pmufw_image] images/linux/pmufw.elf 
+	[destination_device=pl] xilinx_zcu102_base_dfx_202020_1.bit
+	[destination_cpu=a53-0, exception_level=el-3, trustzone] images/linux/bl31.elf
+	[destination_cpu=a53-0, load=0x00100000] images/linux/system.dtb
+	[destination_cpu=a53-0, exception_level=el-2] images/linux/u-boot.elf
+}

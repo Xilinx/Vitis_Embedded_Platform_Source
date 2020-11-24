@@ -1,0 +1,263 @@
+/*
+ * Versal PMC NPI
+ *
+ * Copyright (c) 2016, Xilinx Inc
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of the <organization> nor the
+ *       names of its contributors may be used to endorse or promote products
+ *       derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+#include "versal.dtsh"
+
+#define GEN_NMU(N)							\
+	npi_noc_nmu_ ## N: npi_noc_nmu_## N@MM_NPI_NOC_NMU_ ## N  {	\
+		doc-ignore = <1>;					\
+		doc-status = "partial";					\
+		doc-comments = "A stub including minimal setup.";	\
+		compatible = "xlnx,noc-nmu";				\
+		reg = <0x0 MM_NPI_NOC_NMU_ ## N 0x0 MM_NPI_NOC_NMU_ ## N ## _SIZE 0x0>; \
+		reset-gpios = <&pmc_clk_rst CRP_RST_NONPS_NPI >;	\
+	};
+
+#define GEN_NSU(N)							\
+	npi_noc_nsu_ ## N: npi_noc_nsu_## N@MM_NPI_NOC_NSU_ ## N  {	\
+		doc-ignore = <1>;					\
+		doc-status = "partial";					\
+		doc-comments = "A stub including minimal setup.";	\
+		compatible = "xlnx,noc-nsu";				\
+		reg = <0x0 MM_NPI_NOC_NSU_ ## N 0x0 MM_NPI_NOC_NSU_ ## N ## _SIZE 0x0>; \
+		reset-gpios = <&pmc_clk_rst CRP_RST_NONPS_NPI >;	\
+	};
+
+#define GEN_NPS(N)							\
+	npi_noc_nps_ ## N: npi_noc_nps_## N@MM_NPI_NOC_NPS_ ## N  {	\
+		doc-ignore = <1>;					\
+		doc-status = "partial";					\
+		doc-comments = "A stub including minimal setup.";	\
+		compatible = "xlnx,noc-nps";				\
+		reg = <0x0 MM_NPI_NOC_NPS_ ## N 0x0 MM_NPI_NOC_NPS_ ## N ## _SIZE 0x0>; \
+		reset-gpios = <&pmc_clk_rst CRP_RST_NONPS_NPI >;	\
+	};
+
+#define GEN_DDRMC_UB(N)							\
+	npi_ddrmc_ub ## N: npi_ddrmc_ub ## N@MM_NPI_DDRMC_UB_ ## N {	\
+		doc-limitations = "Only the uB rst is supported";	\
+		compatible = "xlnx,versal-ddrmc-ub";			\
+		reg = <0x0 MM_NPI_DDRMC_UB_ ## N 0x0			\
+			MM_NPI_DDRMC_UB_ ## N ## _SIZE 0x0>;		\
+		reset-gpios = <&pmc_clk_rst CRP_RST_NONPS_NPI >;	\
+		#gpio-cells = <1>;					\
+		gpio-controller;					\
+	}
+
+#define GEN_DDRMC_MAIN(N)						\
+	npi_ddrmc_main ## N: npi_ddrmc_main ## N@MM_NPI_DDRMC_MAIN_ ## N { \
+		doc-limitations = "Just a stub";			\
+		compatible = "xlnx,versal-ddrmc-main";			\
+		reg = <0x0 MM_NPI_DDRMC_MAIN_ ## N 0x0			\
+			MM_NPI_DDRMC_MAIN_ ## N ## _SIZE 0x0>;		\
+		reset-gpios = <&pmc_clk_rst CRP_RST_NONPS_NPI >;	\
+	}
+
+/* NOC overlaps with UB regs, for the moment we map NOC as lower prio.  */
+#define GEN_DDRMC_NOC(N)						\
+	npi_ddrmc_noc ## N: npi_ddrmc_noc ## N@MM_NPI_DDRMC_NOC_ ## N { \
+		doc-limitations = "Just a stub";			\
+		compatible = "xlnx,versal-ddrmc-noc";			\
+		reg = <0x0 MM_NPI_DDRMC_NOC_ ## N 0x0			\
+			MM_NPI_DDRMC_NOC_ ## N ## _SIZE 0xffffffff>;	\
+		reset-gpios = <&pmc_clk_rst CRP_RST_NONPS_NPI >;	\
+	}
+
+/*
+ * On hardware, DDRMC_XMPU is contained inside DDRMC_NOC so
+ * give it higher priority
+ */
+#define GEN_DDRMC_XMPU(N, addr)						\
+	npi_ddrmc_xmpu ## N: npi_ddrmc_xmpu ## N@addr { \
+		compatible = "xlnx,versal-ddrmc-xmpu";		\
+		reg-extended =	<							\
+			&amba_pmc_pl 0x0 addr 0x0 0x10000 0x1	\
+			&amba 0x0 0x0 0x0 0x80000000 0x0		\
+		>;											\
+		protected-mr = <&ddr>;						\
+		mr-0 = <&amba>;								\
+		protected-base = <0x0>;						\
+	}
+
+#define GEN_GTY_NPI(N)							\
+	npi_gty ## N: npi_gty ## N@MM_NPI_GTY_NPI_SLAVE_ ## N {		\
+		doc-limitations = "Just a stub";			\
+		compatible = "xlnx,versal-gty-npi";			\
+		reg = <0x0 MM_NPI_GTY_NPI_SLAVE_ ## N 0x0		\
+			MM_NPI_GTY_NPI_SLAVE_ ## N ## _SIZE 0xffffffff>;\
+		reset-gpios = <&pmc_clk_rst CRP_RST_NONPS_NPI >;	\
+	}
+
+#define GEN_XPIO_DCI(N)							\
+	npi_xpio ## N: npi_xpio ## N@MM_NPI_XPIO_DCI_COMPONENT_ ## N {	\
+		doc-limitations = "Just a stub";			\
+		compatible = "xlnx,versal-xpio-dci";			\
+		reg = <0x0 MM_NPI_XPIO_DCI_COMPONENT_ ## N 0x0		\
+			MM_NPI_XPIO_DCI_COMPONENT_ ## N ## _SIZE 0xffffffff>;\
+		reset-gpios = <&pmc_clk_rst CRP_RST_NONPS_NPI >;	\
+	}
+
+#define GEN_CMT_XPLL(N)							\
+	npi_cmt_xpll ## N: npi_cmt_xpll ## N@MM_NPI_CMT_XPLL_ ## N {\
+		doc-limitations = "Just a stub";			\
+		compatible = "xlnx,versal-cmt-xpll";			\
+		reg = <0x0 MM_NPI_CMT_XPLL_ ## N 0x0		\
+			MM_NPI_CMT_XPLL_ ## N ## _SIZE 0xffffffff>;	\
+		reset-gpios = <&pmc_clk_rst CRP_RST_NONPS_NPI >;	\
+	}
+
+#define GEN_CMT_DPLL(N)							\
+	npi_cmt_dpll ## N: npi_cmt_dpll ## N@MM_NPI_CMT_DPLL_ ## N {\
+		doc-limitations = "Just a stub";			\
+		compatible = "xlnx,versal-cmt-dpll";			\
+		reg = <0x0 MM_NPI_CMT_DPLL_ ## N 0x0		\
+			MM_NPI_CMT_DPLL_ ## N ## _SIZE 0xffffffff>;	\
+		reset-gpios = <&pmc_clk_rst CRP_RST_NONPS_NPI >;	\
+	}
+
+#define GEN_CMT_MMCM(N)							\
+	npi_cmt_mmcm ## N: npi_cmt_mmcm ## N@MM_NPI_CMT_MMCM_ ## N {\
+		doc-limitations = "Just a stub";			\
+		compatible = "xlnx,versal-cmt-mmcm";			\
+		reg = <0x0 MM_NPI_CMT_MMCM_ ## N 0x0		\
+			MM_NPI_CMT_MMCM_ ## N ## _SIZE 0xffffffff>;	\
+		reset-gpios = <&pmc_clk_rst CRP_RST_NONPS_NPI >;	\
+	}
+
+#define GEN_NOC_NCRB(N)							\
+	noc_ncrb ## N: noc_ncrb ## N@MM_NPI_NOC_NCRB_ ## N {\
+		doc-limitations = "just a stub";			\
+		compatible = "xlnx,noc_ncrb";				\
+		reg = <0x0 MM_NPI_NOC_NCRB_ ## N 0x0			\
+			MM_NPI_NOC_NCRB_ ## N ## _SIZE 0xffffffff>;	\
+		reset-gpios = <&pmc_clk_rst CRP_RST_NONPS_NPI>;		\
+	}
+
+&amba_pmc_pl {
+#include "versal-pmc-npi-nxx.dtsi"
+
+	npi_me: npi_me@MM_NPI_ME_NPI_0 {
+		compatible = "xlnx,me-npi";
+		reg = <0x0 MM_NPI_ME_NPI_0 0x0 MM_NPI_ME_NPI_0_SIZE 0x0>;
+		reset-gpios = <&pmc_clk_rst CRP_RST_NONPS_NPI >;
+	};
+
+	/* DDRMC NPI registers.  */
+	GEN_DDRMC_UB(0);
+	GEN_DDRMC_UB(1);
+	GEN_DDRMC_UB(2);
+	GEN_DDRMC_UB(3);
+	GEN_DDRMC_MAIN(0);
+	GEN_DDRMC_MAIN(1);
+	GEN_DDRMC_MAIN(2);
+	GEN_DDRMC_MAIN(3);
+	GEN_DDRMC_NOC(0);
+	GEN_DDRMC_NOC(1);
+	GEN_DDRMC_NOC(2);
+	GEN_DDRMC_NOC(3);
+	GEN_DDRMC_XMPU(0, 0xf6080000);
+
+	GEN_GTY_NPI(0);
+	GEN_GTY_NPI(1);
+	GEN_GTY_NPI(2);
+	GEN_GTY_NPI(3);
+	GEN_GTY_NPI(4);
+	GEN_GTY_NPI(5);
+	GEN_GTY_NPI(6);
+	GEN_GTY_NPI(7);
+	GEN_GTY_NPI(8);
+	GEN_GTY_NPI(9);
+	GEN_GTY_NPI(10);
+
+	GEN_XPIO_DCI(0);
+	GEN_XPIO_DCI(1);
+	GEN_XPIO_DCI(2);
+	GEN_XPIO_DCI(3);
+	GEN_XPIO_DCI(4);
+	GEN_XPIO_DCI(5);
+	GEN_XPIO_DCI(6);
+	GEN_XPIO_DCI(7);
+	GEN_XPIO_DCI(8);
+	GEN_XPIO_DCI(9);
+	GEN_XPIO_DCI(10);
+	GEN_XPIO_DCI(11);
+
+	GEN_CMT_XPLL(0);
+	GEN_CMT_XPLL(1);
+	GEN_CMT_XPLL(2);
+	GEN_CMT_XPLL(3);
+	GEN_CMT_XPLL(4);
+	GEN_CMT_XPLL(5);
+	GEN_CMT_XPLL(6);
+	GEN_CMT_XPLL(7);
+	GEN_CMT_XPLL(8);
+	GEN_CMT_XPLL(9);
+	GEN_CMT_XPLL(10);
+	GEN_CMT_XPLL(11);
+	GEN_CMT_XPLL(12);
+	GEN_CMT_XPLL(13);
+
+	GEN_CMT_DPLL(0);
+	GEN_CMT_DPLL(1);
+	GEN_CMT_DPLL(2);
+	GEN_CMT_DPLL(3);
+	GEN_CMT_DPLL(4);
+	GEN_CMT_DPLL(5);
+	GEN_CMT_DPLL(6);
+	GEN_CMT_DPLL(7);
+	GEN_CMT_DPLL(8);
+	GEN_CMT_DPLL(9);
+	GEN_CMT_DPLL(10);
+	GEN_CMT_DPLL(11);
+	GEN_CMT_DPLL(12);
+	GEN_CMT_DPLL(13);
+
+	GEN_CMT_MMCM(0);
+	GEN_CMT_MMCM(1);
+	GEN_CMT_MMCM(2);
+	GEN_CMT_MMCM(3);
+
+	GEN_NOC_NCRB(0);
+	GEN_NOC_NCRB(1);
+	GEN_NOC_NCRB(2);
+	GEN_NOC_NCRB(3);
+	GEN_NOC_NCRB(4);
+	GEN_NOC_NCRB(5);
+};
+
+// Docs
+&npi_noc_nmu_0 {
+	doc-ignore = <0>;
+};
+&npi_noc_nsu_0 {
+	doc-ignore = <0>;
+};
+&npi_noc_nps_0 {
+	doc-ignore = <0>;
+};

@@ -1,0 +1,477 @@
+/*
+ * Versal interconnect
+ *
+ * Copyright (c) 2016, Xilinx Inc
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of the <organization> nor the
+ *       names of its contributors may be used to endorse or promote products
+ *       derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+#include "smmuv2.dtsh"
+
+#define SECURE 1
+#define NON_SECURE 0
+
+#define MR_BACKGROUND(name)					\
+	downstream_ ## name {					\
+		compatible = "qemu:memory-region";		\
+		alias = < & ## name >;				\
+		reg = <0x0 0x0 0xffffffff 0xffffffff 0xffffffff /* -1 */ >; \
+	}
+
+#define MEMATTR(NAME, SEC, MASTERID)			\
+NAME ## _memattr: NAME ## _ma {				\
+	doc-ignore = <1>;				\
+	compatible = "qemu:memory-transaction-attr";	\
+	secure = <SEC>;					\
+	requester-id = <MASTERID>;			\
+}
+
+/ {
+	#address-cells = <2>;
+	#size-cells = <2>;
+	#priority-cells = <1>;
+
+	MEMATTR(pmc_ppu0, SECURE, SMID_PPU0);
+	MEMATTR(pmc_ppu1, SECURE, SMID_PPU1);
+	MEMATTR(psm, SECURE, SMID_PSM);
+	/* DDRMC Master IDs?  */
+	MEMATTR(ddrmc_ub0, SECURE, 0x0);
+	MEMATTR(ddrmc_ub1, SECURE, 0x0);
+	MEMATTR(pmc_dma0, SECURE, SMID_PMC_DMA0);
+	MEMATTR(pmc_dma1, SECURE, SMID_PMC_DMA1);
+	MEMATTR(pmc_qspi_dma, SECURE, SMID_QSPI);
+
+	/* APU.  */
+	MEMATTR(apu0_s, SECURE, SMID_APU_CORE0);
+	MEMATTR(apu0_ns, NON_SECURE, SMID_APU_CORE0);
+	MEMATTR(apu1_s, SECURE, SMID_APU_CORE1);
+	MEMATTR(apu1_ns, NON_SECURE, SMID_APU_CORE1);
+
+	/* RPU */
+	MEMATTR(rpu0_s, SECURE, SMID_RPU0);
+	MEMATTR(rpu1_s, SECURE, SMID_RPU1);
+
+	MEMATTR(gem0, NON_SECURE, SMID_GEM0);
+	MEMATTR(gem1, NON_SECURE, SMID_GEM1);
+	MEMATTR(ospi_dma, NON_SECURE, SMID_OSPI);
+	MEMATTR(sd0, NON_SECURE, SMID_SD0);
+	MEMATTR(sd1, NON_SECURE, SMID_SD1);
+	MEMATTR(usb0, NON_SECURE, SMID_USB0);
+
+	amba_root: amba_root@0 {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		#priority-cells = <1>;
+
+		#interrupt-cells = <1>;
+		interrupt-map-mask = <0x0 0x0 0xffff>;
+		interrupt-map =
+#ifdef HAVE_APU_GIC
+			#define __intc__ &gic
+			#include "versal-ps-irq-map.dtsh"
+			#undef __intc__
+			,
+			#define __intc__ &rpu_gic
+			#include "versal-ps-irq-map.dtsh"
+			#undef __intc__
+			,
+#endif
+			#define __intc__ &pmc_gic_proxy
+			#include "versal-ps-irq-map.dtsh"
+			#undef __intc__
+			,
+			#define __intc__ &psm_gic_proxy
+			#include "versal-ps-irq-map.dtsh"
+			#undef __intc__
+			,
+			/* Manual entries.  */
+			<0 0 IPI_PSM_IRQ_0 &psm0_io_intc IRQ_PSM_INTC_PSM_IPI>
+			;
+
+		amba: amba@0 {
+			#address-cells = <2>;
+			#size-cells = <2>;
+			#priority-cells = <1>;
+			compatible = "simple-bus";
+			ranges;
+
+			MR_BACKGROUND(amba_lpd);
+			MR_BACKGROUND(amba_fpd);
+			MR_BACKGROUND(amba_pmc_internal);
+		};
+
+		amba_lpd: amba_lpd@0 {
+			#address-cells = <2>;
+			#size-cells = <2>;
+			#priority-cells = <1>;
+			compatible = "simple-bus";
+			ranges;
+			MR_BACKGROUND(amba_psm);
+		};
+
+		amba_fpd: amba_fpd@0 {
+			#address-cells = <2>;
+			#size-cells = <2>;
+			#priority-cells = <1>;
+			compatible = "simple-bus";
+			ranges;
+		};
+
+		amba_pmc_internal: amba_pmc_internal@0 {
+			doc-ignore = <1>;
+			#address-cells = <2>;
+			#size-cells = <2>;
+			#priority-cells = <1>;
+			compatible = "simple-bus";
+			ranges;
+
+			MR_BACKGROUND(amba_pmc_ppu);
+			MR_BACKGROUND(amba_pmc_iou);
+			MR_BACKGROUND(amba_pmc_sec);
+			MR_BACKGROUND(amba_pmc_sys);
+			MR_BACKGROUND(amba_pmc_pl);
+			MR_BACKGROUND(amba_pmc_bat);
+		};
+
+		/* amba_pmc represents the PMC Main Switch.  */
+		amba_pmc: amba_pmc@0 {
+			#address-cells = <2>;
+			#size-cells = <2>;
+			#priority-cells = <1>;
+			compatible = "simple-bus";
+			ranges;
+
+			MR_BACKGROUND(amba);
+			MR_BACKGROUND(amba_pmc_internal);
+		};
+		/* amba_pmc_iou represents the PMC IOU Switch.  */
+		amba_pmc_iou: amba_pmc_iou@0 {
+			#address-cells = <2>;
+			#size-cells = <2>;
+			#priority-cells = <1>;
+			compatible = "simple-bus";
+			ranges;
+		};
+
+		amba_pmc_sec: amba_pmc_sec@0 {
+			#address-cells = <2>;
+			#size-cells = <2>;
+			#priority-cells = <1>;
+			compatible = "simple-bus";
+			ranges;
+		};
+
+		amba_pmc_ppu: amba_pmc_ppu@0 {
+			#address-cells = <2>;
+			#size-cells = <2>;
+			#priority-cells = <1>;
+			compatible = "simple-bus";
+			ranges;
+		};
+
+		amba_pmc_sys: amba_pmc_sys@0 {
+			#address-cells = <2>;
+			#size-cells = <2>;
+			#priority-cells = <1>;
+			compatible = "simple-bus";
+			ranges;
+		};
+
+		amba_pmc_pl: amba_pmc_pl@0 {
+			#address-cells = <2>;
+			#size-cells = <2>;
+			#priority-cells = <1>;
+			compatible = "simple-bus";
+			ranges;
+		};
+
+		amba_pmc_bat: amba_pmc_bat@0 {
+			#address-cells = <2>;
+			#size-cells = <2>;
+			#priority-cells = <1>;
+			compatible = "simple-bus";
+			ranges;
+		};
+
+		amba_psm: amba_psm@0 {
+			#address-cells = <2>;
+			#size-cells = <2>;
+			#priority-cells = <1>;
+			compatible = "simple-bus";
+			ranges;
+		};
+	};
+
+	lmb_pmc_ppu0: lmb_pmc_ppu0@0 {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		#priority-cells = <1>;
+		compatible = "simple-bus";
+		ranges;
+
+		main_bus_for_pmc {
+			compatible = "qemu:memory-region";
+			alias = <&amba_pmc>;
+			/* Full address range with 0 priority */
+			reg = <0x0 0x0 0xffffffff 0xffffffff 0>;
+		};
+	};
+
+	lmb_pmc_ppu1: lmb_pmc_ppu1@0 {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		#priority-cells = <1>;
+		compatible = "simple-bus";
+		ranges;
+
+		main_bus_for_pmc {
+			compatible = "qemu:memory-region";
+			alias = <&amba_pmc>;
+			/* Full address range with 0 priority */
+			reg = <0x0 0x0 0xffffffff 0xffffffff 0>;
+		};
+	};
+
+	lmb_psm: lmb_psm@0 {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		#priority-cells = <1>;
+		compatible = "simple-bus";
+		ranges;
+		MR_BACKGROUND(amba);
+
+		main_bus_for_pmc {
+			compatible = "qemu:memory-region";
+			alias = <&amba_psm>;
+			/* Full address range with 0 priority */
+			reg = <0x0 0x0 0xffffffff 0xffffffff 0>;
+		};
+	};
+
+	lmb_ddrmc0: lmb_ddrmc@0 {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		#priority-cells = <1>;
+		compatible = "simple-bus";
+		ranges;
+	};
+
+	lmb_ddrmc1: lmb_ddrmc@1 {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		#priority-cells = <1>;
+		compatible = "simple-bus";
+		ranges;
+	};
+
+	amba_rpu: amba_rpu@0 {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		#priority-cells = <1>;
+		compatible = "simple-bus";
+		ranges;
+
+		downstream_amba {
+			compatible = "qemu:memory-region";
+			alias = <&amba>;
+			/* Full address range with 0 priority */
+			reg = <0x0 0x0 0xffffffff 0xffffffff 0>;
+		};
+	};
+
+	amba_r5_0: amba_r5@0 {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		#priority-cells = <1>;
+		compatible = "simple-bus";
+		ranges;
+
+		downstream_amba {
+			compatible = "qemu:memory-region";
+			alias = <&amba_rpu>;
+			/* Full address range with 0 priority */
+			reg = <0x0 0x0 0xffffffff 0xffffffff 0>;
+		};
+	};
+
+	amba_r5_1: amba_r5@1 {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		#priority-cells = <1>;
+		compatible = "simple-bus";
+		ranges;
+
+		downstream_amba {
+			compatible = "qemu:memory-region";
+			alias = <&amba_rpu>;
+			/* Full address range with 0 priority */
+			reg = <0x0 0x0 0xffffffff 0xffffffff 0>;
+		};
+	};
+
+	/* Dummy controller useful to create gaps for IRQ/GPIO connections.  */
+	dummy1: dummy1@0 {
+		doc-ignore = <1>;
+		interrupt-controller;
+		#interrupt-cells = <1>;
+		gpio-controller;
+		#gpio-cells = <1>;
+	};
+};
+
+/* SMMU structure. See 5.7 FPD Interconnect.  */
+/ {
+	SMMU_TBU_SLAVE(0);
+	SMMU_TBU_SLAVE(1);
+	SMMU_TBU_SLAVE(2);
+	SMMU_TBU_SLAVE(3);
+	SMMU_TBU_SLAVE(4);
+	SMMU_TBU_SLAVE(5);
+	SMMU_TBU_SLAVE(6);
+};
+
+&amba_lpd {
+	smmu: smmu@MM_FPD_FPD_SMMUTCU {
+		compatible = "arm,mmu-500";
+		reg-extended = <&amba_lpd 0x0 MM_FPD_FPD_SMMUTCU 0x0 MM_FPD_FPD_SMMUTCU_SIZE 0x0
+				&smmu_tbu0 0x0 0x0 0xffffffff 0xffffffff 0x0
+				&smmu_tbu1 0x0 0x0 0xffffffff 0xffffffff 0x0
+				&smmu_tbu2 0x0 0x0 0xffffffff 0xffffffff 0x0
+				&smmu_tbu3 0x0 0x0 0xffffffff 0xffffffff 0x0
+				&smmu_tbu4 0x0 0x0 0xffffffff 0xffffffff 0x0
+				&smmu_tbu5 0x0 0x0 0xffffffff 0xffffffff 0x0
+				&smmu_tbu6 0x0 0x0 0xffffffff 0xffffffff 0x0
+				>;
+		interrupt-parent = <&smmu_reg>;
+		interrupts = < 0 1 2 3 4 5 6 7
+			       8 9 10 11 12 13 14 15 16
+			       17>;
+
+		dma = <&amba>;
+		mr-0 = <&amba>;
+		mr-1 = <&amba>;
+		mr-2 = <&amba>;
+		mr-3 = <&amba>;
+		mr-4 = <&amba>;
+		mr-5 = <&amba>;
+		mr-6 = <&amba>;
+
+		num-smr = <64>;
+		num-cb = <32>;
+		num-pages = <32>;
+	};
+
+	smmu_reg: smmu0@MM_FPD_FPD_SMMU {
+		compatible = "xlnx,smmu-reg";
+		reg = <0x0 MM_FPD_FPD_SMMU 0x0 MM_FPD_FPD_SMMU_SIZE 0x0>;
+		interrupt-controller;
+		interrupts = <INTF_FPD_SMMU_IRQ_0>;
+	};
+};
+
+&amba {
+	xmpu_ocm: xmpu_ocm@0 {
+		compatible = "xlnx,versal-xmpu";
+		interrupts = <XMPU_OCM_IRQ_0>;
+		reg-extended = <
+			&amba 0x0 MM_OCM_XMPU 0x0 MM_OCM_XMPU_SIZE 0x0
+			&amba 0x0 MM_OCM_MEM 0x0 MM_OCM_MEM_SIZE 0x2
+		>;
+		protected-mr = <&ocm_mem>;
+		mr-0 = <&amba>;
+		protected-base = <MM_OCM_MEM>;
+	};
+	xmpu_ocm2: xmpu_ocm2@0 {
+		compatible = "xlnx,versal-xmpu";
+		interrupts = <XMPU_OCM_IRQ_0>;
+		reg-extended = <
+			&amba 0x0 MM_OCM2_XMPU 0x0 MM_OCM2_XMPU_SIZE 0x0
+			&amba_lpd 0x0 MM_OCM2_MEM 0x0 MM_OCM2_MEM_SIZE 0x2
+		>;
+		protected-mr = <&ocm2_mem>;
+		mr-0 = <&amba_lpd>;
+		protected-base = <MM_OCM2_MEM>;
+	};
+};
+
+&amba_lpd {
+	xppu_lpd: xppu_lpd@MM_LPD_XPPU {
+		compatible = "xlnx,versal-xppu";
+		reg-extended = <
+			&amba_lpd 0x0 MM_LPD_XPPU 0x0 MM_LPD_XPPU_SIZE 0x0
+			/* 64KB * 256. Reduce it to not cover the OCM and TCM region. */
+			&amba_pmc_iou 0x0 0xff000000 0x0 0xE00000 0x2
+			/* 1MB * 16 */
+			&amba_pmc_iou 0x0 0xfe000000 0x0 0x1000000 0x2
+			/* 512MB * 1 */
+			/* Coverage is shortened to avoid overlapping with other areas */
+			&amba 0x0 0xe0000000 0x0 0x10000000 0x2
+		>;
+		mr = <&amba_lpd>;
+		interrupts = <XPPU_IRQ_0>;
+		region = <0>;
+	};
+};
+
+&amba_pmc_internal {
+	xmpu_pmc: xmpu_pmc@0 {
+		compatible = "xlnx,versal-xmpu";
+		interrupts = <XMPU_PRAM_IRQ_0>;
+		reg-extended = <
+			&amba_pmc_internal 0x0 MM_PMC_PMC_XMPU 0x0 MM_PMC_PMC_XMPU_SIZE 0x0
+			&amba_pmc_internal 0x0 MM_PMC_PMC_RAM 0x0 MM_PMC_PMC_RAM_SIZE 0x2
+		>;
+		protected-mr = <&pmc_ram>;
+		mr-0 = <&amba_pmc_internal>;
+		protected-base = <MM_PMC_PMC_RAM>;
+	};
+	xppu_pmc_npi: xppu_pmc_npi@MM_PMC_PMC_XPPU_NPI {
+		compatible = "xlnx,versal-xppu";
+		reg-extended = <
+			&amba_pmc_internal 0x0 MM_PMC_PMC_XPPU_NPI 0x0 MM_PMC_PMC_XPPU_NPI_SIZE 0x0
+			/* 64KB * 256 */
+			&amba_pmc_internal 0x0 0xf6000000 0x0 0x1000000 0x2
+			/* 1MB * 16 */
+			&amba_pmc_internal 0x0 0xf7000000 0x0 0x1000000 0x2
+		>;
+		mr = <&amba_pmc_pl>;
+		interrupts = <XPPU_PMC_IRQ_0>;
+		region = <2>;
+	};
+	xppu_pmc: xppu_pmc@MM_PMC_PMC_XPPU {
+		compatible = "xlnx,versal-xppu";
+		reg-extended = <
+			&amba_pmc_internal 0x0 MM_PMC_PMC_XPPU 0x0 MM_PMC_PMC_XPPU_SIZE 0x0
+			/* 64KB * 256 */
+			&amba 0x0 0xf1000000 0x0 0x1000000 0x2
+			/* 1MB * 16 */
+			&amba 0x0 0xf0000000 0x0 0x1000000 0x2
+			/* 512MB * 1 */
+			&amba 0x0 MM_TOP_QSPI 0x0 MM_TOP_QSPI_SIZE 0x2
+		>;
+		mr = <&amba_pmc_internal>;
+		interrupts = <XPPU_PMC_IRQ_0>;
+		region = <1>;
+	};
+};

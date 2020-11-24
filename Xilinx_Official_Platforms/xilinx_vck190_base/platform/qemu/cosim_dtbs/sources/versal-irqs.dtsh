@@ -1,0 +1,82 @@
+/*
+ * Versal IRQs header file
+ *
+ * Copyright (c) 2016, Xilinx Inc
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of the <organization> nor the
+ *       names of its contributors may be used to endorse or promote products
+ *       derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/* Include the auto-generated stuff.  */
+#include "versal-ps-irqs.dtsh"
+
+/* Add manual entries.  */
+
+/* PMC PPU0.  */
+#define IRQ_PPU0_INTC_TAMPER_REG		16
+#define IRQ_PPU0_INTC_TAMPER_MIO		17
+#define IRQ_PPU0_INTC_PMC_DEBUG			18
+#define IRQ_PPU0_INTC_SYSMON_TEMP		19
+#define IRQ_PPU0_INTC_SYSMON_VOLT0		20
+#define IRQ_PPU0_INTC_SYSMON_VOLT1		21
+#define IRQ_PPU0_INTC_SYSMON_VOLT2		22
+#define IRQ_PPU0_INTC_SYSMON_VOLT3		23
+#define IRQ_PPU0_INTC_SYSMON_VOLT4		24
+#define IRQ_PPU0_INTC_SYSMON_VOLT5		25
+#define IRQ_PPU0_INTC_SYSMON_VOLT6		26
+#define IRQ_PPU0_INTC_SYSMON_VOLT7		27
+#define IRQ_PPU0_INTC_PPU0_RAM_ECC		28
+#define IRQ_PPU0_INTC_TAMPER_GLITCH		29
+#define IRQ_PPU0_INTC_SEC_DBG			30
+#define IRQ_PPU0_INTC_PUF_CMD			31
+
+/* PMC PPU1.  */
+#define IRQ_PPU1_INTC_PMC_GICP			16
+#define IRQ_PPU1_INTC_PPU1_RAM_ECC		17
+#define IRQ_PPU1_INTC_PMC_ERROR			18
+#define IRQ_PPU1_INTC_RESERVED_19		19
+#define IRQ_PPU1_INTC_CFRAME_SEU_ERROR		20
+#define IRQ_PPU1_INTC_RESERVED_21		21
+#define IRQ_PPU1_INTC_PPU1_GPI			22
+#define IRQ_PPU1_INTC_PL			23
+#define IRQ_PPU1_INTC_SSIT_ERR0			24
+#define IRQ_PPU1_INTC_SSIT_ERR1			25
+#define IRQ_PPU1_INTC_SSIT_ERR2			26
+#define IRQ_PPU1_INTC_REQ_PWRDWN		27
+#define IRQ_PPU1_INTC_REQ_PWRUP			28
+#define IRQ_PPU1_INTC_REQ_SWRST			29
+#define IRQ_PPU1_INTC_REQ_ISOLATION		30
+#define IRQ_PPU1_INTC_WAKEUP			31
+
+/* PSM IO-Module interrupt controller. These are from spec + 16 */
+#define IRQ_PSM_INTC_PSM_RAM_ERROR		16
+#define IRQ_PSM_INTC_GLOBAL_IF_TIMEOUT		17
+#define IRQ_PSM_INTC_PSM_IPI			18
+#define IRQ_PSM_INTC_GIC_PROXY			22
+#define IRQ_PSM_INTC_ISOLATE_REQ		24
+#define IRQ_PSM_INTC_SW_RESET_REQ		26
+#define IRQ_PSM_INTC_PWRUP_REQ			27
+#define IRQ_PSM_INTC_PWRDWN_REQ			28
+#define IRQ_PSM_INTC_PSM_ERR_MGM		29
+#define IRQ_PSM_INTC_WAKEUP_REQ			30
+#define IRQ_PSM_INTC_PWR_CONTROL_REQ		31

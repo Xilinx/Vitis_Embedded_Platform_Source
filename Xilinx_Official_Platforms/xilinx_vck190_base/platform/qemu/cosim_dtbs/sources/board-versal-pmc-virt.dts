@@ -1,0 +1,216 @@
+/*
+ * Versal Virtual PMC board device tree
+ *
+ * Copyright (c) 2016, Xilinx Inc
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of the <organization> nor the
+ *       names of its contributors may be used to endorse or promote products
+ *       derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/dts-v1/;
+
+#include "versal.dtsh"
+
+#ifndef MULTI_ARCH
+#include "versal-pmc.dtsi"
+#include "versal-psm.dtsi"
+#include "versal-ddrmc.dtsi"
+#include "versal-ps-iou.dtsi"
+#include "versal-pmc-ppu-cpus.dtsi"
+#include "versal-psm-cpu.dtsi"
+
+/ {
+	/* FIXME: Once we add the NOC, these should be attached to it.  */
+	MEM_REGION(ddr, 0x0, 0x00000000, 0x00000000, 0x08000000, &ddr_mem)
+
+	/* Dummy APUs.  */
+	cpu0: apu@0 {
+	};
+	cpu1: apu@1 {
+	};
+	rpu_cpu0: rpu_cpu0 {
+	};
+	rpu_cpu1: rpu_cpu1 {
+	};
+#ifndef HAVE_DDRMC_CPUS
+	ddrmc_ub0: ddrmc_ub@0 {
+		#interrupt-cells = <1>;
+		interrupt-controller;
+	};
+	ddrmc_ub1: ddrmc_ub@1 {
+		#interrupt-cells = <1>;
+		interrupt-controller;
+	};
+#endif
+	/* Dummy GIC.  */
+	gic: apu_gic@0 {
+		#interrupt-cells = <3>;
+		interrupt-controller;
+	};
+};
+
+&pmc_qspi_0 {
+	SPI_FLASH(qspi_flash_lcs_lb,"m25qu02gcbb", 0x02000000, 0x0 0x0)
+	SPI_FLASH(qspi_flash_lcs_ub,"m25qu02gcbb", 0x02000000, 0x2 0x1)
+	SPI_FLASH(qspi_flash_ucs_lb,"m25qu02gcbb", 0x02000000, 0x1 0x0)
+	SPI_FLASH(qspi_flash_ucs_ub,"m25qu02gcbb", 0x02000000, 0x3 0x1)
+};
+
+&ospi {
+	SPI_FLASH(ospi_flash_lcs_lb, "mt35xu01gbba", 0x02000000, 0x0 0x0)
+	SPI_FLASH(ospi_flash_lcs_ub, "mt35xu01gbba", 0x02000000, 0x1 0x0)
+	SPI_FLASH(ospi_flash_ucs_lb, "mt35xu01gbba", 0x02000000, 0x2 0x0)
+	SPI_FLASH(ospi_flash_ucs_ub, "mt35xu01gbba", 0x02000000, 0x3 0x0)
+};
+
+#else
+#include "versal-icnt.dtsi"
+#include "versal-rams.dtsi"
+#include "versal-pmc-ppu-cpus.dtsi"
+#include "versal-psm-cpu.dtsi"
+
+/ {
+	/* FIXME: Once we add the NOC, these should be attached to it.  */
+	MEM_REGION(ddr, 0x0, 0x00000000, 0x00000000, 0x80000000, &ddr_mem)
+
+	ps_pmc_rp: ps_pmc_rp@0 {
+		doc-name = "Remote-port PMC-PS";
+		compatible = "remote-port";
+		chrdev-id = "ps-pmc-rp";
+	};
+	rp_pmc_ppu0: rp_pmc_ppu0@0 {
+		compatible = "remote-port-gpio";
+		remote-ports = <&ps_pmc_rp 1>;
+		interrupts-extended = < &pmc_ppu0 0 >;
+	};
+	rp_pmc_ppu1: rp_pmc_ppu1@0 {
+		compatible = "remote-port-gpio";
+		remote-ports = <&ps_pmc_rp 2>;
+		interrupts-extended = < &pmc_ppu1 0 >;
+	};
+	pmc_global: rp_pmc_global@0 {
+		compatible = "remote-port-gpio";
+		remote-ports = <&ps_pmc_rp 3>;
+		#gpio-cells = <1>;
+		num-gpios = <16>;
+	};
+	lmb_pmc_ppu0: lmb_pmc_ppu0@0 {
+		rp_lmb_pmc_ppu0@0 {
+			compatible = "remote-port-memory-master";
+			remote-ports = <&ps_pmc_rp 4>;
+			reg = < 0x0 0x0 0xFFFFFFFF 0xFFFFFFFF 0xFFFFFFFF /* -1 */ >;
+		};
+	};
+	lmb_pmc_ppu1: lmb_pmc_ppu1@0 {
+		rp_lmb_pmc_ppu1@0 {
+			compatible = "remote-port-memory-master";
+			remote-ports = <&ps_pmc_rp 5>;
+			reg = < 0x0 0x0 0xFFFFFFFF 0xFFFFFFFF 0xFFFFFFFF /* -1 */ >;
+		};
+	};
+	crl: crl@MM_CRL {
+		compatible = "remote-port-gpio";
+		remote-ports = <&ps_pmc_rp 6>;
+		#gpio-cells = <1>;
+		num-gpios = <32>;
+	};
+	pmc_clk_rst: pmc_clk_rst@0 {
+		compatible = "remote-port-gpio";
+		remote-ports = <&ps_pmc_rp 7>;
+		#gpio-cells = <1>;
+		num-gpios = <30>;
+	};
+	rp_psm0: rp_psm0@0 {
+		compatible = "remote-port-gpio";
+		remote-ports = <&ps_pmc_rp 8>;
+		interrupts-extended = < &psm0 0 >;
+	};
+
+	rp_ddrmc_ub0: rp_ddrmc_ub@0 {
+		compatible = "remote-port-gpio";
+		remote-ports = <&ps_pmc_rp 9>;
+#ifdef HAVE_DDRMC_CPUS
+		interrupts-extended = < &ddrmc_ub0 0 >;
+#endif
+	};
+
+	rp_ddrmc_ub1: rp_ddrmc_ub@1 {
+		compatible = "remote-port-gpio";
+		remote-ports = <&ps_pmc_rp 10>;
+#ifdef HAVE_DDRMC_CPUS
+		interrupts-extended = < &ddrmc_ub1 0 >;
+#endif
+	};
+
+	npi_ddrmc_ub0: rp_npi_ddrmc_ub@0 {
+		compatible = "remote-port-gpio";
+		remote-ports = <&ps_pmc_rp 11>;
+		#gpio-cells = <1>;
+	};
+
+	npi_ddrmc_ub1: rp_npi_ddrmc_ub@1 {
+		compatible = "remote-port-gpio";
+		remote-ports = <&ps_pmc_rp 12>;
+		#gpio-cells = <1>;
+	};
+
+	lmb_psm: lmb_psm@0 {
+		rp_lmb_psm@0 {
+			compatible = "remote-port-memory-master";
+			remote-ports = <&ps_pmc_rp 13>;
+			reg = < 0x0 0x0 0xFFFFFFFF 0xFFFFFFFF 0xFFFFFFFF /* -1 */ >;
+		};
+	};
+
+	/* Dummy stub to avoid ifdefs in the interrupt-map.  */
+	pmc_gic_proxy: pmc_gic_proxy {
+		doc-ignore = <1>;
+		#interrupt-cells = <3>;
+		interrupt-controller;
+	};
+	psm_gic_proxy: psm_gic_proxy {
+		doc-ignore = <1>;
+		#interrupt-cells = <3>;
+		interrupt-controller;
+	};
+	psm0_io_intc: psm0_io_intc {
+		doc-ignore = <1>;
+		#interrupt-cells = <1>;
+		interrupt-controller;
+	};
+};
+#endif
+
+/ {
+	/*
+	 * FIXME: This legacy hook will reset the entire PMC instance
+	 * meaning PSM and PMC MicroBlazes for multi-arch and all
+	 * devices for single-arch.
+	 * Once the CPU reset infrastructure is improved, we should
+	 * remove this.
+	 */
+	pmc_reset: pmc_reset@ {
+		compatible = "qemu,reset-device";
+		gpios = <&pmc_clk_rst CRP_RST_PS_PMC_SRST>;
+	};
+};

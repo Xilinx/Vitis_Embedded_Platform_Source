@@ -1,0 +1,24 @@
+Copyright (c) 2016, Xilinx Inc
+All rights reserved.
+
+This repo is used to build QEMU specific device trees for the Zynq Ultrascale+
+architecture. These device trees are used by the QEMU provided by Xilinx to
+internally generate machine models.
+
+For more instructions on running QEMU see the Xilinx wiki:
+http://www.wiki.xilinx.com/QEMU+-+Zynq+UltraScalePlus
+
+To build the device trees:
+   1. You must have dtc on your PATH, or specify DTC= env to a dtc executable.
+   2. Run make
+
+This will give you a folder called LATEST which contains subdirectories for the
+different QEMU operating modes. Under these sub directories is the board
+specific device trees.
+
+Xilinx welcomes and encourages users to send patches to this repository. If you
+would like to contribute code please either send a pull request through the
+GitHub interface or send Git patches to qemu-dev@xilinx.com.
+
+If you have any questions the maintainer can be contacted at:
+	Alistair Francis <alistair.francis@xilinx.com>

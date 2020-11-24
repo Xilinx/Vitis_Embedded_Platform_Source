@@ -1,0 +1,135 @@
+/*
+ * Versal vc-p-a2197 PS board device tree
+ *
+ * Copyright (c) 2019, Xilinx Inc
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of the <organization> nor the
+ *       names of its contributors may be used to endorse or promote products
+ *       derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+#include "board-versal-ps-virt.dts"
+#include "versal-silicon-freq.dtsi"
+
+#define I2C_DUMMY(name, addr)			\
+	name@addr {				\
+		compatible = "i2c-dev-dummy";	\
+		reg = <addr>;			\
+	}
+
+&ps_i2c0 {
+	i2cswitch@74 {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		reg = <0x74>;
+		compatible = "pca9548";
+		i2c@0 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <0>;
+			/* PMBUS1 */
+			I2C_DUMMY(tps53671rsbt, 0x42);
+			I2C_DUMMY(tps53671rsbt, 0x43);
+			I2C_DUMMY(tps53671rsbt, 0x44);
+			I2C_DUMMY(tps53671rsbt, 0x45);
+		};
+		i2c@1 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <1>;
+			/* PMBUS1_INA226 */
+			I2C_DUMMY(ina226, 0xc0);
+			I2C_DUMMY(ina226, 0x07);
+			I2C_DUMMY(ina226, 0x08);
+			I2C_DUMMY(ina226, 0x09);
+			I2C_DUMMY(ina226, 0x0a);
+		};
+		i2c@2 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <2>;
+			/* PMBUS2 */
+			I2C_DUMMY(tps53671rsbt, 0x0D);
+			I2C_DUMMY(tps53671rsbt, 0x0E);
+			I2C_DUMMY(tps53671rsbt, 0x0F);
+			I2C_DUMMY(tps53671rsbt, 0x10);
+			I2C_DUMMY(tps53671rsbt, 0x11);
+			I2C_DUMMY(tps53671rsbt, 0x12);
+			I2C_DUMMY(tps53671rsbt, 0x13);
+			I2C_DUMMY(tps53671rsbt, 0x14);
+			I2C_DUMMY(tps53671rsbt, 0x15);
+			I2C_DUMMY(tps53671rsbt, 0x16);
+			I2C_DUMMY(tps53671rsbt, 0x17);
+			I2C_DUMMY(tps53671rsbt, 0x19);
+			I2C_DUMMY(tps53671rsbt, 0x1a);
+			I2C_DUMMY(tps53671rsbt, 0x1b);
+			I2C_DUMMY(tps53671rsbt, 0x1c);
+			I2C_DUMMY(tps53671rsbt, 0x1d);
+			I2C_DUMMY(tps53671rsbt, 0x1e);
+			I2C_DUMMY(tps53671rsbt, 0x1f);
+		};
+		i2c@3 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <3>;
+			/* PMBUS2_INA226 */
+			I2C_DUMMY(ina226, 0x40);
+			I2C_DUMMY(ina226, 0x41);
+			I2C_DUMMY(ina226, 0x42);
+			I2C_DUMMY(ina226, 0x43);
+			I2C_DUMMY(ina226, 0x44);
+			I2C_DUMMY(ina226, 0x45);
+			I2C_DUMMY(ina226, 0x46);
+			I2C_DUMMY(ina226, 0x47);
+			I2C_DUMMY(ina226, 0x48);
+			I2C_DUMMY(ina226, 0x49);
+			I2C_DUMMY(ina226, 0x4a);
+			I2C_DUMMY(ina226, 0x4b);
+			I2C_DUMMY(ina226, 0x4c);
+			I2C_DUMMY(ina226, 0x4d);
+			I2C_DUMMY(ina226, 0x4e);
+		};
+		i2c@4 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <4>;
+			/* External SYSMON I2C */
+		};
+	};
+	ps_i2c0_wire: ps_i2c0_wire@0 {
+		compatible = "i2c-wire";
+		i2cWire-peer= <&pmc_i2c_wire>;
+	};
+};
+&ps_i2c1 {
+	eeprom_versal: eeprom@51 { /* U116 */
+		compatible = "at,24c08";
+		reg = <0x51>;
+		size = <0x4000>;
+	};
+};
+&pmc_i2c {
+	pmc_i2c_wire: pmc_i2c_wire@0 {
+		compatible = "i2c-wire";
+		i2cWire-peer = <&ps_i2c0_wire>;
+	};
+};

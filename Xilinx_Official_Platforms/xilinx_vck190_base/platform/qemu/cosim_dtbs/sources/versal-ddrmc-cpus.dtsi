@@ -1,0 +1,81 @@
+/*
+ * Versal DDRMC CPUs only
+ *
+ * Copyright (c) 2018, Xilinx Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of the <organization> nor the
+ *       names of its contributors may be used to endorse or promote products
+ *       derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+#include "versal.dtsh"
+
+#define CREATE_UB(X, VECTORS, GDB_ID, PVR_USER1)		\
+	ddrmc_ub ## X: ddr_cpu@ ## X {				\
+		gdb-id = GDB_ID;				\
+		doc-status = "partial";				\
+		#interrupt-cells = <1>;				\
+		compatible = "xlnx,microblaze-cpu";		\
+		device_type = "cpu";				\
+		version = "10.0";				\
+		xlnx,base-vectors = <VECTORS>;			\
+		xlnx,div-zero-exception = <0x1>;		\
+		xlnx,family = "virtex7";			\
+		xlnx,fault-tolerant = <0x1>;			\
+		xlnx,fpu-exception = <0x0>;			\
+		xlnx,ill-opcode-exception = <0x1>;		\
+		xlnx,mmu-privileged-instr = <0x0>;		\
+		xlnx,mmu-tlb-access = <0x3>;			\
+		xlnx,mmu-zones = <0x2>;				\
+		xlnx,opcode-0x0-illegal = <0x1>;		\
+		xlnx,pc-width = <0x20>;				\
+		xlnx,pvr = <0x2>;				\
+		xlnx,pvr-user1 = <PVR_USER1>;			\
+		xlnx,pvr-user2 = <0x0>;				\
+		xlnx,reset-msr = <0x0>;				\
+		xlnx,unaligned-exceptions = <0x1>;		\
+		xlnx,use-barrel = <0x1>;			\
+		xlnx,use-div = <0x1>;				\
+		xlnx,use-ext-brk = <0x1>;			\
+		xlnx,use-ext-nm-brk = <0x1>;			\
+		xlnx,use-extended-fsl-instr = <0x0>;		\
+		xlnx,use-fpu = <0x0>;				\
+		xlnx,use-hw-mul = <0x2>;			\
+		xlnx,use-mmu = <0x0>;				\
+		xlnx,use-msr-instr = <0x1>;			\
+		xlnx,use-pcmp-instr = <0x1>;			\
+		xlnx,use-stack-protection = <0x1>;		\
+		xlnx,addr-size= <52>;				\
+		mr = <&lmb_ddrmc ## X>;				\
+		memory = <&lmb_ddrmc ## X>;			\
+		memattr = <&ddrmc_ub ## X ## _memattr>;		\
+		gpios = <&npi_ddrmc_ub ## X 0			\
+			 &npi_ddrmc_ub ## X 1>;			\
+		gpio-names = "reset", "wakeup";			\
+		qemu,halt = <0x1>;				\
+	}
+/ {
+	cpus {
+		CREATE_UB(0, MM_DDRMC_RAM_INSTR, "DDRMC-UB0", 0x0);
+		CREATE_UB(1, MM_DDRMC_RAM_INSTR, "DDRMC-UB1", 0x0);
+	};
+};

@@ -1,0 +1,252 @@
+/*
+ * Versal PMC PPU block
+ *
+ * Copyright (c) 2016, Xilinx Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of the <organization> nor the
+ *       names of its contributors may be used to endorse or promote products
+ *       derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+#include "versal.dtsh"
+
+#define CREATE_PPU_IOMOD(X)						\
+	pmc_ppu ## X ## _io_module: io-module@00 {			\
+		doc-status = "complete";				\
+		#address-cells = <2>;					\
+		#size-cells = <1>;					\
+		#priority-cells = <0>;					\
+		compatible = "xlnx,iomodule-1.02.a", "syscon", "simple-bus"; \
+		container = <&lmb_pmc_ppu ## X>;			\
+		priority = <0xffffffff>;				\
+		xlnx,freq = <0x47868c0>;				\
+		xlnx,instance = "iomodule_1";				\
+		xlnx,io-mask = <0xfffe0000>;				\
+		xlnx,lmb-awidth = <0x20>;				\
+		xlnx,lmb-dwidth = <0x20>;				\
+		xlnx,mask = <0xffffff80>;				\
+		xlnx,use-io-bus = <0x1>;				\
+									\
+		pmc_ppu ## X ## _io_intc: pmc_ppu ## X ## _intc@0C {	\
+			#interrupt-cells = <1>;				\
+			compatible = "xlnx,io-intc-1.02.a", "xlnx,io_intc"; \
+			interrupt-controller ;				\
+			interrupts-extended = <&pmc_ppu ## X 0>;	\
+			reg = <0x0 MM_PMC_PPU ## X ## _IOM(0C) 0x4 0x0 MM_PMC_PPU ## X ## _IOM(30) 0x10 0x0 MM_PMC_PPU ## X ## _IOM(80) 0x7C>; \
+			xlnx,intc-addr-width = <0x20>;			\
+			xlnx,intc-base-vectors = <0x0>;			\
+			xlnx,intc-has-fast = <0x0>;			\
+			xlnx,intc-intr-size = <0x10>;			\
+			xlnx,intc-level-edge = <0x0>;			\
+			xlnx,intc-positive = <0xffff>;			\
+			xlnx,intc-use-ext-intr = <0x1>;			\
+		};							\
+									\
+		pmc_ppu ## X ## _io_gpi1: pmc_ppu ## X ## _gpi@20 {	\
+			#gpio-cells = <1>;				\
+			gpio-controller;				\
+			compatible = "xlnx,io-gpi-1.02.a", "xlnx,io_gpi"; \
+			interrupt-parent = <&pmc_ppu ## X ## _io_intc>;	\
+			interrupts = <11>;				\
+			reg = <0x0 MM_PMC_PPU ## X ## _IOM(20) 0x4>;	\
+			xlnx,gpi-interrupt = <0x1>;			\
+			xlnx,gpi-size = <0x20>;				\
+			xlnx,use-gpi = <0x1>;				\
+		};							\
+		pmc_ppu ## X ## _io_gpi2: pmc_ppu ## X ## _gpi@24 {	\
+			#gpio-cells = <1>;				\
+			gpio-controller;				\
+			compatible = "xlnx,io-gpi-1.02.a", "xlnx,io_gpi"; \
+			interrupt-parent = <&pmc_ppu ## X ## _io_intc>;	\
+			interrupts = <12>;				\
+			reg = <0x0 MM_PMC_PPU ## X ## _IOM(24) 0x4>;	\
+			xlnx,gpi-interrupt = <0x1>;			\
+			xlnx,gpi-size = <0x20>;				\
+			xlnx,use-gpi = <0x1>;				\
+		};							\
+		pmc_ppu ## X ## _io_gpi3: pmc_ppu ## X ## _gpi@28 {	\
+			#gpio-cells = <1>;				\
+			gpio-controller;				\
+			compatible = "xlnx,io-gpi-1.02.a", "xlnx,io_gpi"; \
+			interrupt-parent = <&pmc_ppu ## X ## _io_intc>;	\
+			interrupts = <13>;				\
+			reg = <0x0 MM_PMC_PPU ## X ## _IOM(28) 0x4>;	\
+			xlnx,gpi-interrupt = <0x1>;			\
+			xlnx,gpi-size = <0x20>;				\
+			xlnx,use-gpi = <0x1>;				\
+		};							\
+		pmc_ppu ## X ## _io_gpi4: pmc_ppu ## X ## _gpi@2c {	\
+			#gpio-cells = <1>;				\
+			gpio-controller;				\
+			compatible = "xlnx,io-gpi-1.02.a", "xlnx,io_gpi"; \
+			interrupt-parent = <&pmc_ppu ## X ## _io_intc>;	\
+			interrupts = <14>;				\
+			reg = <0x0 MM_PMC_PPU ## X ## _IOM(2c) 0x4>;	\
+			xlnx,gpi-interrupt = <0x1>;			\
+			xlnx,gpi-size = <0x20>;				\
+			xlnx,use-gpi = <0x1>;				\
+		};							\
+									\
+		pmc_ppu ## X ## _io_gpo1: pmc_ppu ## X ## _gpo@10 {	\
+			#gpio-cells = <1>;				\
+			gpio-controller;				\
+			compatible = "xlnx,io-gpo-1.02.a", "xlnx,io_gpo"; \
+			reg = <0x0 MM_PMC_PPU ## X ## _IOM(10) 0x4>;	\
+			xlnx,gpo-init = <0x0>;				\
+			xlnx,gpo-size = <0x9>;				\
+			xlnx,use-gpo = <0x1>;				\
+		};							\
+		pmc_ppu ## X ## _io_gpo2: pmc_ppu ## X ## _gpo@14 {	\
+			#gpio-cells = <1>;				\
+			gpio-controller;				\
+			compatible = "xlnx,io-gpo-1.02.a", "xlnx,io_gpo"; \
+			reg = <0x0 MM_PMC_PPU ## X ## _IOM(14) 0x4>;	\
+			xlnx,gpo-init = <0x0>;				\
+			xlnx,gpo-size = <0x20>;				\
+			xlnx,use-gpo = <0x1>;				\
+		};							\
+		pmc_ppu ## X ## _io_gpo3: pmc_ppu ## X ## _gpo@18 {	\
+			#gpio-cells = <1>;				\
+			gpio-controller;				\
+			compatible = "xlnx,io-gpo-1.02.a", "xlnx,io_gpo"; \
+			reg = <0x0 MM_PMC_PPU ## X ## _IOM(18) 0x4>;	\
+			xlnx,gpo-init = <0x0>;				\
+			xlnx,gpo-size = <0x20>;				\
+			xlnx,use-gpo = <0x1>;				\
+		};							\
+		pmc_ppu ## X ## _io_gpo4: pmc_ppu ## X ## _gpo@1c {	\
+			#gpio-cells = <1>;				\
+			gpio-controller;				\
+			compatible = "xlnx,io-gpo-1.02.a", "xlnx,io_gpo"; \
+			reg = <0x0 MM_PMC_PPU ## X ## _IOM(1c) 0x4>;	\
+			xlnx,gpo-init = <0x0>;				\
+			xlnx,gpo-size = <0x20>;				\
+			xlnx,use-gpo = <0x1>;				\
+		};							\
+									\
+		pmc_ppu ## X ## _io_pit1: pmc_ppu ## X ## _pit@40 {	\
+			compatible = "xlnx,io-pit-1.02.a", "xlnx,io_pit"; \
+			interrupt-parent = <&pmc_ppu ## X ## _io_intc>;	\
+			interrupts = <3>;				\
+			reg = <0x0 MM_PMC_PPU ## X ## _IOM(40) 0xc>;	\
+			xlnx,pit-interrupt = <0x1>;			\
+			xlnx,pit-prescaler = <0x9>;			\
+			xlnx,pit-readable = <0x1>;			\
+			xlnx,pit-size = <0x20>;				\
+			xlnx,use-pit = <0x1>;				\
+			frequency = <460000000>;			\
+			gpios = <&pmc_ppu ## X ## _io_gpo1 1 &pmc_ppu ## X ## _io_pit2 0>; \
+			gpio-names = "ps_config","ps_hit_in";		\
+			gpio-controller;				\
+			#gpio-cells = <1>;				\
+		};							\
+		pmc_ppu ## X ## _io_pit2: pmc_ppu ## X ## _pit@50 {	\
+			compatible = "xlnx,io-pit-1.02.a", "xlnx,io_pit"; \
+			interrupt-parent = <&pmc_ppu ## X ## _io_intc>;	\
+			interrupts = <4>;				\
+			reg = <0x0 MM_PMC_PPU ## X ## _IOM(50) 0xc>;	\
+			xlnx,pit-interrupt = <0x1>;			\
+			xlnx,pit-prescaler = <0x9>;			\
+			xlnx,pit-readable = <0x1>;			\
+			xlnx,pit-size = <0x20>;				\
+			xlnx,use-pit = <0x1>;				\
+			frequency = <460000000>;			\
+			gpio-controller;				\
+			#gpio-cells = <1>;				\
+		};							\
+		pmc_ppu ## X ## _io_pit3: pmc_ppu ## X ## _pit@60 {	\
+			compatible = "xlnx,io-pit-1.02.a", "xlnx,io_pit"; \
+			interrupt-parent = <&pmc_ppu ## X ## _io_intc>;	\
+			interrupts = <5>;				\
+			reg = <0x0 MM_PMC_PPU ## X ## _IOM(60) 0xc>;	\
+			xlnx,pit-interrupt = <0x1>;			\
+			xlnx,pit-prescaler = <0x9>;			\
+			xlnx,pit-readable = <0x1>;			\
+			xlnx,pit-size = <0x20>;				\
+			xlnx,use-pit = <0x1>;				\
+			frequency = <460000000>;			\
+			gpios = <&pmc_ppu ## X ## _io_gpo1 6 &pmc_ppu ## X ## _io_pit4 0>; \
+			gpio-names = "ps_config","ps_hit_in";		\
+			gpio-controller;				\
+			#gpio-cells = <1>;				\
+		};							\
+		pmc_ppu ## X ## _io_pit4: pmc_ppu ## X ## _pit@70 {	\
+			compatible = "xlnx,io-pit-1.02.a", "xlnx,io_pit"; \
+			interrupt-parent = <&pmc_ppu ## X ## _io_intc>;	\
+			interrupts = <6>;				\
+			reg = <0x0 MM_PMC_PPU ## X ## _IOM(70) 0xc>;	\
+			xlnx,pit-interrupt = <0x1>;			\
+			xlnx,pit-prescaler = <0x9>;			\
+			xlnx,pit-readable = <0x1>;			\
+			xlnx,pit-size = <0x20>;				\
+			xlnx,use-pit = <0x1>;				\
+			frequency = <460000000>;			\
+			gpio-controller;				\
+			#gpio-cells = <1>;				\
+		};							\
+	}
+
+/ {
+	/* MDM UARTs. We put them here for instantiation ordering purposes
+         * making sure that -serial command line options refer to these
+	 * first.
+         */
+	ppu0_mdm_uart@MM_PMC_PPU0_MDM_HSD {
+		doc-status = "complete";
+		compatible = "xlnx,xps-uartlite";
+		reg-extended = <&lmb_pmc_ppu0 0x0 MM_PMC_PPU0_MDM_HSD 0x0 0x10 0x1>;
+		chardev = "serial0";
+	};
+
+	ppu1_mdm_uart@MM_PMC_PPU1_MDM_HSD {
+		doc-status = "complete";
+		compatible = "xlnx,xps-uartlite";
+		reg-extended = <&lmb_pmc_ppu1 0x0 MM_PMC_PPU1_MDM_HSD 0x0 0x10 0x1>;
+		chardev = "serial1";
+	};
+};
+
+&lmb_pmc_ppu0 {
+	doc-name = "LMB PPU0";
+	doc-status = "complete";
+	CREATE_PPU_IOMOD(0);
+};
+
+&lmb_pmc_ppu1 {
+	doc-name = "LMB PPU1";
+	doc-status = "complete";
+	CREATE_PPU_IOMOD(1);
+};
+
+&amba_pmc_ppu {
+	pmc_gic_proxy: pmc_gic_proxy@MM_PMC_GIC_PROXY {
+		doc-status = "complete";
+		#interrupt-cells = <3>;
+		interrupt-controller;
+
+		compatible = "xlnx,zynqmp-gicp";
+		reg = <0x0 MM_PMC_GIC_PROXY 0x0 MM_PMC_GIC_PROXY_SIZE 0x0>;
+		interrupt-parent = <&pmc_ppu1_io_intc>;
+		interrupts = <IRQ_PPU1_INTC_PMC_GICP>;
+	};
+};
+

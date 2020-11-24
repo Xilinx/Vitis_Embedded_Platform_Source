@@ -1,0 +1,98 @@
+/*
+ * Versal PMC SYS
+ *
+ * Copyright (c) 2016, Xilinx Inc
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of the <organization> nor the
+ *       names of its contributors may be used to endorse or promote products
+ *       derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+#include "versal.dtsh"
+
+&amba_pmc_sys {
+	doc-name = "PMC System";
+	doc-status = "partial";
+	pmc_clk_rst: pmc_clk_rst@MM_PMC_CRP {
+		doc-status = "partial";
+		compatible = "xlnx,pmc-clk-rst";
+		reg = <0x0 MM_PMC_CRP 0x0 0x80000 0x0>;
+		interrupts = <CRP_IRQ_0>;
+		gpio-controller;
+		#gpio-cells = <1>;
+	};
+
+	pmc_int: pmc_int@MM_PMC_INTPMC_CONFIG {
+		doc-status = "partial";
+		compatible = "xlnx,versal-pmc-int";
+		reg = <0x0 MM_PMC_INTPMC_CONFIG
+                       0x0 MM_PMC_INTPMC_CONFIG_SIZE 0x0>;
+		interrupts = <PMC_INT_IRQ_0>;
+	};
+
+	pmc_reset_domain@0 {
+		compatible = "qemu,reset-device";
+		gpios = < &pmc_clk_rst CRP_RST_PS_PMC_SRST >;
+	};
+
+	pmc_global: pmc_global@MM_PMC_PMC_GLOBAL {
+		doc-status = "partial";
+		#gpio-cells = <1>;
+		gpio-controller;
+		/* Use interrupts extended to avoid interrupt-maps routing these
+		 * to the GIC and GIC-Proxies.  */
+		interrupts-extended = <&pmc_ppu1_io_intc IRQ_PPU1_INTC_WAKEUP
+				       &pmc_ppu1_io_intc IRQ_PPU1_INTC_REQ_ISOLATION
+				       &pmc_ppu1_io_intc IRQ_PPU1_INTC_REQ_SWRST
+				       &pmc_ppu1_io_intc IRQ_PPU1_INTC_REQ_PWRUP
+				       &pmc_ppu1_io_intc IRQ_PPU1_INTC_REQ_PWRDWN
+				       &pmc_ppu1_io_intc IRQ_PPU1_INTC_PL
+				       &pmc_ppu1_io_intc IRQ_PPU1_INTC_PPU1_GPI
+				       &dummy1 0 /* PMC GLOBAL_IMR.  */
+				       &pmc_ppu0_io_intc IRQ_PPU0_INTC_TAMPER_REG>;
+		reg = <0x0 MM_PMC_PMC_GLOBAL 0x0 MM_PMC_PMC_GLOBAL_SYS_SIZE 0x0>;
+		gpios = <&pmc_puf_ctrl PMC_PUF_CTRL_PUF_ERROR>;
+
+		compatible = "xlnx,pmc_global";
+	};
+	pmc_stream_zero: pmc_stream_zero@ {
+		compatible = "xlnx,pmc-stream-zero";
+		reg = <0x0 MM_PRAM_ZEROIZE 0x0 MM_PRAM_ZEROIZE_SIZE 0x1>;
+		stream-connected-pzm = <&pmc_stream_switch>;
+	};
+	pmc_analog@MM_PMC_PMC_ANALOG {
+		compatible = "xlnx,pmc-analog";
+		reg = <0x0 MM_PMC_PMC_ANALOG 0x0 MM_PMC_PMC_ANALOG_SIZE 0x0>;
+	};
+	pmc_sysmon@MM_PMC_PMC_SYSMON {
+		compatible = "xlnx,pmc-sysmon";
+		reg = <0x0 MM_PMC_PMC_SYSMON 0x0 MM_PMC_PMC_SYSMON_SIZE 0x0>;
+		interrupts = <SYSMON_IRQ_0
+			      SYSMON_IRQ_1>;
+		reset-gpios = <&pmc_clk_rst CRP_RST_SYSMON_CFG>;
+	};
+	pmc_global_tamper: versal_pmc_tamper@ {
+		compatible = "xlnx,pmc_tamper";
+		reg-extended = <&amba_pmc_sys 0x0 0xF1110530 0x0 0x38 0x1
+				&lmb_pmc_ppu0 0x0 0xF0041100 0x0 0x38 0x2>;
+	};
+};

@@ -1,0 +1,175 @@
+/*
+ * Versal APU subsystem include file
+ *
+ * Copyright (c) 2016, Xilinx Inc
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of the <organization> nor the
+ *       names of its contributors may be used to endorse or promote products
+ *       derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+#include "versal.dtsh"
+
+#ifndef NUM_APUS
+#error "NUM APUs is not set!"
+#elif NUM_APUS != 2 && NUM_APUS != 4
+#error "NUM APUs must be set to 2 or 4"
+#endif
+
+#define APU_COMMON(n,p)							\
+	compatible = "cortex-a72-arm-cpu";				\
+	device_type = "cpu";						\
+	arm,midr = <0x410fd083>;					\
+	arm,ctr = <0x8444c004>;						\
+	arm,clidr = <0x0a200023>;					\
+	arm,id_pfr0 = <0x131>;						\
+	arm,ccsidr0 = <0x701fe00a>;					\
+	arm,ccsidr1 = <0x201fe012>;					\
+	reg = <n>;							\
+	core-count = <2>;						\
+	arm,reset-hivecs = <1>;						\
+	arm,rvbar = <0xffff0000>;					\
+	arm,reset-cbar = <ACPU_GIC_CPUIF>;				\
+	mr = <&amba_apu>;						\
+	memory = <&amba_apu>;						\
+	gpios = <&psm_local PLR_APU_WFI_ACPU ## n>;			\
+	gpio-names = "wfi";						\
+	reset-gpios = <&crf n>;						\
+	power-gpios = < &psm_local PLR_PWR_ACPU ## n ##_0 >;		\
+	qemu,halt = <0x1>;						\
+	memattr_s = <&apu ## n ## _s_memattr>;				\
+	memattr_ns = <&apu ## n ## _ns_memattr>;
+
+/ {
+	cpus {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		cpu0: apu_cpu@0 {
+			APU_COMMON(0, 0x80000001)
+			gdb-id = "Cortex-A72 #0";
+			#interrupt-cells = <1>;
+		};
+		cpu1: apu_cpu@1 {
+			APU_COMMON(1, 0x80000002)
+			gdb-id = "Cortex-A72 #1";
+			#interrupt-cells = <1>;
+		};
+		cpu2: apu_cpu@2 {
+#if NUM_APUS == 4
+			APU_COMMON(2, 0x80000001)
+			gdb-id = "Cortex-A72 #2";
+#endif
+			#interrupt-cells = <1>;
+		};
+		cpu3: apu_cpu@3 {
+#if NUM_APUS == 4
+			APU_COMMON(3, 0x80000002)
+			gdb-id = "Cortex-A72 #3";
+#endif
+			#interrupt-cells = <1>;
+		};
+	};
+
+	amba_apu: amba_apu@0 {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		#priority-cells = <1>;
+		compatible = "simple-bus";
+		ranges ;
+
+		downstream_amba {
+			compatible = "qemu:memory-region";
+			alias = <&amba>;
+			/* Full address range with -1 priority.  */
+			reg = <0x0 0x0 0xffffffff 0xffffffff 0xffffffff >;
+		};
+
+		timer {
+			compatible = "arm,armv8-timer";
+			interrupt-parent = <&gic>;
+			interrupts = <1 13 0xff01>,
+						 <1 14 0xff01>,
+						 <1 11 0xff01>,
+						 <1 10 0xff01>;
+			clock-frequency = <100000000>;
+		};
+	};
+
+	amba_apu_gic: amba_apu_gic@0 {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		#priority-cells = <1>;
+		compatible = "simple-bus";
+		ranges ;
+		container = <&amba>;
+		priority = <0xFFFFFFFF>; /* -1 */
+		gic: interrupt-controller@APU_GIC_DIST {
+			#address-cells = <0>;
+			#size-cells = <0>;
+			#interrupt-cells = <3>;
+
+			compatible = "arm-gicv3";
+			reg = < 0x0 ACPU_GIC_DIST 0x0 0x10000 0
+				0x0 ACPU_GIC_REDIST 0x0 0x80000 0>;
+			interrupt-controller ;
+			interrupts-extended =
+				/* IRQs.  */
+				<&glue(APU_GIC_INTERRUPT_TARGET_STEM, 0) 0>,
+				<&glue(APU_GIC_INTERRUPT_TARGET_STEM, 1) 0>,
+#if NUM_APUS == 4
+				<&glue(APU_GIC_INTERRUPT_TARGET_STEM, 2) 0>,
+				<&glue(APU_GIC_INTERRUPT_TARGET_STEM, 3) 0>,
+#endif
+
+				/* FIQs.  */
+				<&glue(APU_GIC_INTERRUPT_TARGET_STEM, 0) 1>,
+				<&glue(APU_GIC_INTERRUPT_TARGET_STEM, 1) 1>,
+#if NUM_APUS == 4
+				<&glue(APU_GIC_INTERRUPT_TARGET_STEM, 2) 1>,
+				<&glue(APU_GIC_INTERRUPT_TARGET_STEM, 3) 1>,
+#endif
+
+				/* Virtual IRQs.  */
+				<&glue(APU_GIC_INTERRUPT_TARGET_STEM, 0) 2>,
+				<&glue(APU_GIC_INTERRUPT_TARGET_STEM, 1) 2>,
+#if NUM_APUS == 4
+				<&glue(APU_GIC_INTERRUPT_TARGET_STEM, 2) 2>,
+				<&glue(APU_GIC_INTERRUPT_TARGET_STEM, 3) 2>,
+#endif
+
+				/* Virtual FIQs.  */
+				<&glue(APU_GIC_INTERRUPT_TARGET_STEM, 0) 3>,
+				<&glue(APU_GIC_INTERRUPT_TARGET_STEM, 1) 3>,
+#if NUM_APUS == 4
+				<&glue(APU_GIC_INTERRUPT_TARGET_STEM, 2) 3>,
+				<&glue(APU_GIC_INTERRUPT_TARGET_STEM, 3) 3>,
+#endif
+				<&gic 0x1 0x9 0x104>,
+				<&gic 0x1 0x9 0x204>,
+				<&gic 0x1 0x9 0x404>,
+				<&gic 0x1 0x9 0x804>;
+			num-cpu = <NUM_APUS>;
+			num-irq = <224>;
+			has-security-extensions = <1>;
+		};
+	};
+};

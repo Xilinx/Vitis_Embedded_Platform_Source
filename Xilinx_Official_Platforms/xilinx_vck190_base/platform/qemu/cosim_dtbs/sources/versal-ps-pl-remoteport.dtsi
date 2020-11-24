@@ -1,0 +1,232 @@
+/*
+ * Versal PS PL interfaces.
+ *
+ * Copyright (c) 2016, Xilinx Inc
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of the <organization> nor the
+ *       names of its contributors may be used to endorse or promote products
+ *       derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+#include "versal.dtsh"
+
+&amba {
+	cosim_rp_0: cosim@0 {
+		compatible = "remote-port";
+		sync = <1>;
+		chrdev-id = "pl-rp";
+	};
+
+	/* FIXME: These PL to PS ports are not fully implemented, we
+	 *        need to apply SMMU translation. At least this
+	 *        serves to roughly allocate the devids.
+	 *        All still subject to change.
+	 */
+	s_axi_fpd: s_axi_fpd@0 {
+		compatible = "remote-port-memory-slave";
+		remote-ports = <&cosim_rp_0 10>;
+		mr = <&smmu_tbu5>;
+	};
+
+	/* DevID 11 reserved for s_axi_gp_1.  */
+
+	s_axi_gp_2: s_axi_gp_2@0 {
+		compatible = "remote-port-memory-slave";
+		remote-ports = <&cosim_rp_0 12>;
+		mr = <&smmu_tbu5>;
+	};
+
+	s_axi_lpd: s_axi_lpd@0 {
+		compatible = "remote-port-memory-slave";
+		remote-ports = <&cosim_rp_0 14>;
+		mr = <&smmu_tbu2>;
+	};
+
+	/* ACP via APU.  */
+	s_acp_fpd: s_acp_fpd@0 {
+		compatible = "remote-port-memory-slave";
+		remote-ports = <&cosim_rp_0 15>;
+		mr = <&amba>;
+	};
+
+	s_ace_fpd: s_ace_fpd@0 {
+		compatible = "remote-port-memory-slave";
+		remote-ports = <&cosim_rp_0 16>;
+		mr = <&amba>;
+	};
+
+	noc_fpd_axi_0: noc_fpd_axi_0@0 {
+		compatible = "remote-port-memory-slave";
+		remote-ports = <&cosim_rp_0 17>;
+		mr = <&smmu_tbu5>;
+	};
+
+	noc_fpd_axi_1: noc_fpd_axi_1@0 {
+		compatible = "remote-port-memory-slave";
+		remote-ports = <&cosim_rp_0 18>;
+		mr = <&smmu_tbu4>;
+	};
+
+	noc_fpd_cci_0: noc_fpd_cci_0@0 {
+		compatible = "remote-port-memory-slave";
+		remote-ports = <&cosim_rp_0 19>;
+		mr = <&smmu_tbu2>;
+	};
+
+	noc_fpd_cci_1: noc_fpd_cci_1@0 {
+		compatible = "remote-port-memory-slave";
+		remote-ports = <&cosim_rp_0 20>;
+		mr = <&smmu_tbu2>;
+	};
+
+	noc_cpm_pcie_0: noc_cpm_pcie_0@0 {
+		compatible = "remote-port-memory-slave";
+		remote-ports = <&cosim_rp_0 21>;
+		mr = <&amba>;
+	};
+
+	/* Does not exist */
+	if_noc_ps_pcie_1: if_noc_ps_pcie_1@0 {
+		compatible = "remote-port-memory-slave";
+		remote-ports = <&cosim_rp_0 22>;
+		mr = <&amba>;
+	};
+
+	noc_pmc_axi_0: noc_pmc_axi_0@0 {
+		compatible = "remote-port-memory-slave";
+		remote-ports = <&cosim_rp_0 23>;
+		mr = <&amba_pmc>;
+	};
+
+	/* AXI ports directly from PS to PL, bypassing NoC.  */
+	m_axi_fpd: m_axi_fpd@MM_TOP_FPD_AFI_0 {
+		compatible = "remote-port-memory-master";
+		remote-ports = <&cosim_rp_0 40>;
+		reg = <0x0 MM_TOP_PS_PL_FPD_LowAddr0 0x0 MM_TOP_PS_PL_FPD_LowAddr0_SIZE 0x0
+		       0x0 MM_TOP_PS_PL_FPD_LowAddr1 0x0 MM_TOP_PS_PL_FPD_LowAddr1_SIZE 0x0>;
+	};
+
+	/* Device ID 41 reserved for m_axi_gp1 in Extended PS.  */
+
+	m_axi_lpd: m_axi_lpd@MM_TOP_LPD_AFI_FS {
+		compatible = "remote-port-memory-master";
+		remote-ports = <&cosim_rp_0 42>;
+		reg = <0x0 MM_TOP_PS_PL_LPD_LowAddr 0x0 MM_TOP_PS_PL_LPD_LowAddr_SIZE 0x0>;
+	};
+
+	/* FPD_CCI_NOC_0 - 3.  ID 50 - 53 */
+	fpd_cci_noc_0: fpd_cci_noc_0@0 {
+		compatible = "remote-port-memory-master";
+		remote-ports = <&cosim_rp_0 50>;
+		/*
+		 * TODO: Verify this list.
+		 * Since we don't yet have a model of the CCI, we'll only use PORT 0.
+		 * The only ranges we know go on this port are DDR accesses and ME.
+		 * Since DDR never goes over I/O (we do direct shared memory acceses)
+		 * the only range that get's routed here is the ME.
+		 */
+		reg = < MM_TOP_ME_Programming_H MM_TOP_ME_Programming_L MM_TOP_ME_Programming_SIZE_H MM_TOP_ME_Programming_SIZE_L 0x1
+
+			0x0 MM_TOP_Reserved_2 0x0 MM_TOP_Reserved_2_SIZE 0x1
+			MM_TOP_Reserved_3_H MM_TOP_Reserved_3_L 0x0 MM_TOP_Reserved_3_SIZE 0x1
+			MM_TOP_Reserved_4_H MM_TOP_Reserved_4_L 0x0 MM_TOP_Reserved_4_SIZE 0x1
+			MM_TOP_PCIe_region_1_H MM_TOP_PCIe_region_1_L MM_TOP_PCIe_region_1_SIZE_H MM_TOP_PCIe_region_1_SIZE_L 0x1
+			MM_TOP_Reserved_9_H MM_TOP_Reserved_9_L MM_TOP_Reserved_9_SIZE_H MM_TOP_Reserved_9_SIZE_L 0x1
+			MM_TOP_Reserved_10_H MM_TOP_Reserved_10_L MM_TOP_Reserved_10_SIZE_H MM_TOP_Reserved_10_SIZE_L 0x1
+			MM_TOP_PL_via_NoC_H MM_TOP_PL_via_NoC_L MM_TOP_PL_via_NoC_SIZE_H MM_TOP_PL_via_NoC_SIZE_L 0x1
+		      >;
+	};
+
+	/* FPD_AXI_NOC_0 - 1.  ID 54 - 55 */
+	/* CPM_PCIE_NOC_0 - 1. ID 56 - 57 */
+
+	noc_lpd_axi_0: noc_lpd_axi_0@0 {
+		compatible = "remote-port-memory-master";
+		remote-ports = <&cosim_rp_0 58>;
+	};
+
+	/* PL to PS interrupts.  */
+	rp_pl2ps_irq: rp_pl2ps_irq@0 {
+		compatible = "remote-port-gpio";
+		remote-ports = <&cosim_rp_0 80>;
+		num-gpios = <16>;
+		interrupts = <PL_PS_GRP0_IRQ_0
+			      PL_PS_GRP0_IRQ_1
+			      PL_PS_GRP0_IRQ_2
+			      PL_PS_GRP0_IRQ_3
+			      PL_PS_GRP0_IRQ_4
+			      PL_PS_GRP0_IRQ_5
+			      PL_PS_GRP0_IRQ_6
+			      PL_PS_GRP0_IRQ_7
+			      PL_PS_GRP1_IRQ_0
+			      PL_PS_GRP1_IRQ_1
+			      PL_PS_GRP1_IRQ_2
+			      PL_PS_GRP1_IRQ_3
+			      PL_PS_GRP1_IRQ_4
+			      PL_PS_GRP1_IRQ_5
+			      PL_PS_GRP1_IRQ_6
+			      PL_PS_GRP1_IRQ_7
+			      >;
+       };
+
+	/* PS to PL interrupts. 81 */
+	/* PL to PS wires. 82 */
+
+	/* PS to PL wires. 83 */
+	rp_ps2pl_wires: rp_ps2pl_wires@0 {
+		compatible = "remote-port-gpio";
+		remote-ports = <&cosim_rp_0 83>;
+		num-gpios = <4>;
+		gpios = < &pmc_clk_rst CRP_RST_PL0
+			  &pmc_clk_rst CRP_RST_PL1
+			  &pmc_clk_rst CRP_RST_PL2
+			  &pmc_clk_rst CRP_RST_PL3
+			>;
+       };
+};
+
+&amba_pmc_internal {
+	/* IF_PMC_NOC_AXI_0.
+	 *
+	 * Traffic originating from the PMC targeting this list
+	 * of address ranges will go out on this dedicated port from
+	 * the PMC to the NoC.
+	 */
+	pmc_noc_axi_0: pmc_noc_axi_0@0 {
+		compatible = "remote-port-memory-master";
+		remote-ports = <&cosim_rp_0 59>;
+		reg = <
+			 0x0 MM_TOP_Reserved_2 0x0 MM_TOP_Reserved_2_SIZE 0x1
+			 MM_TOP_PMC_alias_region_0_H MM_TOP_PMC_alias_region_0_L 0x0 MM_TOP_PMC_alias_region_0_SIZE 0x1
+			 MM_TOP_PMC_alias_region_1_H MM_TOP_PMC_alias_region_1_L 0x0 MM_TOP_PMC_alias_region_1_SIZE 0x1
+			 MM_TOP_PMC_alias_region_2_H MM_TOP_PMC_alias_region_2_L 0x0 MM_TOP_PMC_alias_region_2_SIZE 0x1
+			 MM_TOP_PMC_alias_region_3_H MM_TOP_PMC_alias_region_3_L 0x0 MM_TOP_PMC_alias_region_3_SIZE 0x1
+			 MM_TOP_Reserved_3_H MM_TOP_Reserved_3_L 0x0 MM_TOP_Reserved_3_SIZE 0x1
+			 MM_TOP_ME_Programming_H MM_TOP_ME_Programming_L MM_TOP_ME_Programming_SIZE_H MM_TOP_ME_Programming_SIZE_L 0x1
+			 MM_TOP_Reserved_4_H MM_TOP_Reserved_4_L 0x0 MM_TOP_Reserved_4_SIZE 0x1
+			 MM_TOP_PCIe_region_1_H MM_TOP_PCIe_region_1_L MM_TOP_PCIe_region_1_SIZE_H MM_TOP_PCIe_region_1_SIZE_L 0x1
+			 MM_TOP_Reserved_9_H MM_TOP_Reserved_9_L MM_TOP_Reserved_9_SIZE_H MM_TOP_Reserved_9_SIZE_L 0x1
+			 MM_TOP_Reserved_10_H MM_TOP_Reserved_10_L MM_TOP_Reserved_10_SIZE_H MM_TOP_Reserved_10_SIZE_L 0x1
+			 MM_TOP_PL_via_NoC_H MM_TOP_PL_via_NoC_L MM_TOP_PL_via_NoC_SIZE_H MM_TOP_PL_via_NoC_SIZE_L 0x1
+			>;
+	};
+};

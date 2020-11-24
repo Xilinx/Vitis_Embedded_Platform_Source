@@ -1,0 +1,353 @@
+/*
+ * Versal Virtual PMC board device tree
+ *
+ * Copyright (c) 2016, Xilinx Inc
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of the <organization> nor the
+ *       names of its contributors may be used to endorse or promote products
+ *       derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/dts-v1/;
+
+/* Base platform has 2 APUs.  */
+#define NUM_APUS 2
+#define HAVE_APU_GIC
+
+#ifdef MULTI_ARCH
+	#define APU_GIC_INTERRUPT_TARGET_STEM apu_intc_redirect_
+	#define RPU_GIC_INTERRUPT_TARGET_STEM rpu_intc_redirect_
+#else
+	#define APU_GIC_INTERRUPT_TARGET_STEM cpu
+	#define RPU_GIC_INTERRUPT_TARGET_STEM rpu_cpu
+#endif
+
+#include "versal.dtsh"
+
+#include "versal-pmc.dtsi"
+#include "versal-psm.dtsi"
+#include "versal-ddrmc.dtsi"
+#include "versal-ps-apu.dtsi"
+#include "versal-ps-rpu.dtsi"
+#include "versal-ps-iou.dtsi"
+#include "versal-virtio-mmio.dtsi"
+#include "versal-boot-init.dtsi"
+
+/ {
+#ifdef MULTI_ARCH
+	ps_pmc_rp: ps_pmc_rp@0 {
+		doc-status = "complete";
+		doc-name = "Remote-port PMC";
+		doc-subdtb = "board-versal-pmc-virt.dtb";
+		compatible = "remote-port";
+		chrdev-id = "ps-pmc-rp";
+	};
+	pmc_ppu0: rp_pmc_ppu0@0 {
+		compatible = "remote-port-gpio";
+		remote-ports = <&ps_pmc_rp 1>;
+		#interrupt-cells = <1>;
+		interrupt-controller;
+	};
+	pmc_ppu1: rp_pmc_ppu1@0 {
+		compatible = "remote-port-gpio";
+		remote-ports = <&ps_pmc_rp 2>;
+		#interrupt-cells = <1>;
+		interrupt-controller;
+	};
+	rp_pmc_global: rp_pmc_global@0 {
+		compatible = "remote-port-gpio";
+		remote-ports = <&ps_pmc_rp 3>;
+		gpio-controller;
+		#gpio-cells = <1>;
+		num-gpios = <16>;
+
+		/* We only need to proxy GPIO 1 and 2 (PPU1 RST and WAKE).  */
+		gpios = < &dummy1 0
+			  &pmc_global 1
+			  &pmc_global 2 >;
+	};
+	rp_lmb_pmc_ppu0: rp_lmb_pmc_ppu0@0 {
+		compatible = "remote-port-memory-slave";
+		remote-ports = <&ps_pmc_rp 4>;
+		mr = <&lmb_pmc_ppu0>;
+	};
+	rp_lmb_pmc_ppu1: rp_lmb_pmc_ppu1@0 {
+		compatible = "remote-port-memory-slave";
+		remote-ports = <&ps_pmc_rp 5>;
+		mr = <&lmb_pmc_ppu1>;
+	};
+	rp_crl: rp_crl@0 {
+		compatible = "remote-port-gpio";
+		remote-ports = <&ps_pmc_rp 6>;
+		gpio-controller;
+		#gpio-cells = <1>;
+		num-gpios = <32>;
+
+		gpios = <
+			  &crl 0
+			  &crl 1
+			  &crl 2
+			  &crl 3
+			  &crl 4
+			  &crl 5
+			  &crl 6
+			  &crl 7
+			  &crl 8
+			  &crl 9
+			  &crl 10
+			  &crl 11
+			  &crl 12
+			  &crl 13
+			  &crl 14
+			  &crl 15
+			  &crl 16
+			  &crl 17
+			  &crl 18
+			  &crl 19
+			  &crl 20
+			  &crl 21
+			  &crl 22
+			  &crl 23
+			  &crl 24
+			  &crl 25
+			  &crl 26
+			  &crl 27
+			  &crl 28
+			  &crl 29
+			  &crl 30
+			  &crl 31 >;
+	};
+	rp_pmc_clk_rst: rp_pmc_clk_rst@0 {
+		compatible = "remote-port-gpio";
+		remote-ports = <&ps_pmc_rp 7>;
+		gpio-controller;
+		#gpio-cells = <1>;
+		num-gpios = <30>;
+
+		gpios = < &pmc_clk_rst 0 &pmc_clk_rst 1
+			  &pmc_clk_rst 2 &pmc_clk_rst 3
+			  &pmc_clk_rst 4 &pmc_clk_rst 5
+			  &pmc_clk_rst 6 &pmc_clk_rst 7
+			  &pmc_clk_rst 8 &pmc_clk_rst 9
+			  &pmc_clk_rst 10 &pmc_clk_rst 11
+			  &pmc_clk_rst 12 &pmc_clk_rst 13
+			  &pmc_clk_rst 14 &pmc_clk_rst 15
+			  &pmc_clk_rst 16 &pmc_clk_rst 17
+			  &pmc_clk_rst 18 &pmc_clk_rst 19
+			  &pmc_clk_rst 20 &pmc_clk_rst 21
+			  &pmc_clk_rst 22 &pmc_clk_rst 23
+			  &pmc_clk_rst 24 &pmc_clk_rst 25
+			  &pmc_clk_rst 26 &pmc_clk_rst 27
+			  &pmc_clk_rst 28 &pmc_clk_rst 29
+			>;
+	};
+	psm0: rp_psm0@0 {
+		compatible = "remote-port-gpio";
+		remote-ports = <&ps_pmc_rp 8>;
+		#interrupt-cells = <1>;
+		interrupt-controller;
+	};
+	ddrmc_ub0: rp_ddrmc@0 {
+		compatible = "remote-port-gpio";
+		remote-ports = <&ps_pmc_rp 9>;
+		#interrupt-cells = <1>;
+		interrupt-controller;
+	};
+	ddrmc_ub1: rp_ddrmc@1 {
+		compatible = "remote-port-gpio";
+		remote-ports = <&ps_pmc_rp 10>;
+		#interrupt-cells = <1>;
+		interrupt-controller;
+	};
+	rp_npi_ddrmc_ub0: rp_npi_ddrmc_ub@0 {
+		compatible = "remote-port-gpio";
+		remote-ports = <&ps_pmc_rp 11>;
+		gpios = < &npi_ddrmc_ub0 0 >;
+	};
+	rp_npi_ddrmc_ub1: rp_npi_ddrmc_ub@1 {
+		compatible = "remote-port-gpio";
+		remote-ports = <&ps_pmc_rp 12>;
+		gpios = < &npi_ddrmc_ub1 0 >;
+	};
+	rp_lmb_psm: rp_lmb_psm@0 {
+		compatible = "remote-port-memory-slave";
+		remote-ports = <&ps_pmc_rp 13>;
+		mr = <&lmb_psm>;
+	};
+
+#define APU_INTC_REDIRECT(n,a,p)					\
+	glue(apu_intc_redirect_, n): glue(apu_intc_redirect, n)@n {	\
+		#interrupt-cells = <1>;					\
+		compatible = "xlnx,zynqmp-intc-redirect";		\
+		interrupt-controller;					\
+		interrupts-extended = <glue(&cpu,n) 0>,			\
+				<glue(&cpu,n) 1>,			\
+				<glue(&cpu,n) 2>,			\
+				<glue(&cpu,n) 3>;			\
+		gpios = <&psm_global p &psm_local a>;			\
+};
+
+	amba_apu: amba_apu@0 {
+		APU_INTC_REDIRECT(0, 100, 0)
+		APU_INTC_REDIRECT(1, 101, 1)
+		APU_INTC_REDIRECT(2, 102, 2)
+		APU_INTC_REDIRECT(3, 103, 3)
+	};
+
+#define RPU_INTC_REDIRECT(NCPU, PSMOUT, RPUN)							\
+glue(rpu_intc_redirect_, NCPU): glue(rpu_intc_redirect, NCPU)@NCPU {	\
+	#interrupt-cells = <1>;									\
+	compatible = "xlnx,zynqmp-intc-redirect";						\
+	interrupt-controller;									\
+	interrupts-extended = <glue(&rpu_cpu,NCPU) 0>;						\
+	gpios = <&psm_global PSMOUT &rpu_ctrl RPUN>;						\
+};
+
+	amba_rpu: amba_rpu@0 {
+		RPU_INTC_REDIRECT(0, 4, 6)
+		RPU_INTC_REDIRECT(1, 5, 7)
+	};
+
+#else
+	/* Single ARCH PS board has no PPU MicroBlazes.  */
+	pmc_ppu0: dummy_ppu0@0 {
+		#interrupt-cells = <1>;
+	};
+	pmc_ppu1: dummy_ppu1@0 {
+		#interrupt-cells = <1>;
+	};
+	psm0: dummy_ppu0@0 {
+		#interrupt-cells = <1>;
+	};
+	ddrmc_ub0: dummy_ddrmc0@0 {
+		#interrupt-cells = <1>;
+	};
+	ddrmc_ub1: dummy_ddrmc1@0 {
+		#interrupt-cells = <1>;
+	};
+#endif
+
+	/* FIXME: Once we add the NOC, these should be attached to it.  */
+	MEM_REGION(ddr, 0x0, MM_TOP_DDR, 0x00000000, MM_TOP_DDR_SIZE, &ddr_mem)  // 2 GB
+        mdio0: mdio {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		#priority-cells = <0>;
+		compatible="mdio";
+		phy0: phy@0 {
+			compatible = "88e1118r";
+			device_type = "ethernet-phy";
+			reg = <0>;
+		};
+		phy1: phy@1 {
+			compatible = "88e1118r";
+			device_type = "ethernet-phy";
+			reg = <1>;
+		};
+	};
+};
+
+/*
+ * One flash for each SPI-master to match prebuilt system.dtb in BSP
+ * xilinx-versal-virt-2019.1
+ */
+#define BDEV_SPI_FLASH(_NAME, _COMPAT, _SIZEM, _REGVAL)	\
+_NAME: _NAME@0 {							\
+	#address-cells = <1>;						\
+	#size-cells = <1>;						\
+	#priority-cells = <0>;						\
+	#bus-cells = <1>;						\
+	compatible = _COMPAT, "st,m25p80";				\
+	spi-max-frequency = <50000000>;					\
+	reg = <_REGVAL>;						\
+	blockdev-node-name = #_NAME;					\
+	_NAME@0x00000000 {						\
+		label = #_NAME;						\
+		reg = <0x00000000 _SIZEM>;				\
+	};								\
+};
+
+&ps7_spi_0 {
+	BDEV_SPI_FLASH(spi0_flash0, "m25p80", 0x00100000, 0x0 0x0)
+};
+
+&ps7_spi_1 {
+	BDEV_SPI_FLASH(spi1_flash0, "m25p80", 0x00100000, 0x0 0x0)
+};
+
+/*
+ * Use 2Gbit QSPI flashes to allow verification of Image-searching
+ * in ROM upto 256MB.
+ */
+#define DI_SPI_FLASH(_DI, _NAME, _COMPAT, _SIZEM, _REGVAL) \
+_NAME: _NAME@0 {							\
+	#address-cells = <1>;						\
+	#size-cells = <1>;						\
+	#priority-cells = <0>;						\
+	#bus-cells = <1>;						\
+	compatible = _COMPAT, "st,m25p80";				\
+	spi-max-frequency = <50000000>;					\
+	reg = <_REGVAL>;						\
+	drive-index = <_DI>;						\
+	_NAME@0x00000000 {						\
+		label = #_NAME;						\
+		reg = <0x00000000 _SIZEM>;				\
+	};								\
+};
+
+&pmc_qspi_0 {
+	DI_SPI_FLASH(0, qspi_flash_lcs_lb, "m25qu02gcbb", 0x02000000, 0x0 0x0)
+	DI_SPI_FLASH(1, qspi_flash_lcs_ub, "m25qu02gcbb", 0x02000000, 0x2 0x1)
+	DI_SPI_FLASH(2, qspi_flash_ucs_lb, "m25qu02gcbb", 0x02000000, 0x1 0x0)
+	DI_SPI_FLASH(3, qspi_flash_ucs_ub, "m25qu02gcbb", 0x02000000, 0x3 0x1)
+};
+
+&ospi {
+	DI_SPI_FLASH(4, ospi_flash_lcs_lb, "mt35xu01gbba", 0x02000000, 0x0 0x0)
+	DI_SPI_FLASH(5, ospi_flash_lcs_ub, "mt35xu01gbba", 0x02000000, 0x1 0x0)
+	DI_SPI_FLASH(6, ospi_flash_ucs_lb, "mt35xu01gbba", 0x02000000, 0x2 0x0)
+	DI_SPI_FLASH(7, ospi_flash_ucs_ub, "mt35xu01gbba", 0x02000000, 0x3 0x0)
+};
+
+&gem0 {
+        mdio = <&mdio0>;
+};
+
+&gem1 {
+        mdio = <&mdio0>;
+};
+
+&cpu0 {
+	generic-timer-frequency = <2720000>;
+};
+
+&cpu1 {
+	generic-timer-frequency = <2720000>;
+};
+
+&cpu2 {
+	generic-timer-frequency = <2720000>;
+};
+
+&cpu3 {
+	generic-timer-frequency = <2720000>;
+};

@@ -1,6 +1,0 @@
-[connectivity]
-stream_connect=COUNTER:krnl_cnt_to_mig_1.stream_in
-sp=krnl_cnt_to_mig_1.m_axi_gmem:MIG0
-sp=krnl_mig_to_ps_1.m_axi_gmem:MIG0
-sp=krnl_mig_to_ps_1.m_axi_gmem1:HP0
- 

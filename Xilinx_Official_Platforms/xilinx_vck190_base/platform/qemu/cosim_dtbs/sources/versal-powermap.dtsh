@@ -1,0 +1,49 @@
+/*
+ * Power-map definitions.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+/* PSM Local regs macros.  */
+#define PLR_PWR_ACPU0_0		0
+#define PLR_PWR_ACPU0_1		1
+#define PLR_PWR_ACPU0_2		2
+#define PLR_PWR_ACPU0_3		3
+#define PLR_PWR_ACPU1_0		4
+#define PLR_PWR_ACPU1_1		5
+#define PLR_PWR_ACPU1_2		6
+#define PLR_PWR_ACPU1_3		7
+#define PLR_PWR_RPU_0		8
+#define PLR_PWR_RPU_1		9
+#define PLR_PWR_RPU_2		10
+#define PLR_PWR_RPU_3		11
+#define PLR_PWR_L2		12
+#define PLR_PWR_OCM_0		13
+#define PLR_PWR_OCM_1		14
+#define PLR_PWR_OCM_2		15
+#define PLR_PWR_OCM_3		16
+#define PLR_PWR_TCM_A0		17
+#define PLR_PWR_TCM_B0		18
+#define PLR_PWR_TCM_A1		19
+#define PLR_PWR_TCM_B1		20
+#define PLR_PWR_GEM0		21
+#define PLR_PWR_GEM1		22
+#define PLR_APU_WFI_ACPU0	24
+#define PLR_APU_WFI_ACPU1	25
+#define PLR_APU_WFI_L2		28

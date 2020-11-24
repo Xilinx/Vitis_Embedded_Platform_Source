@@ -1,0 +1,574 @@
+/*
+ * ZynqMP PL Interface over Remote-port.
+ *
+ * Copyright (c) 2016, Xilinx Inc
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of the <organization> nor the
+ *       names of its contributors may be used to endorse or promote products
+ *       derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/ {
+	#address-cells = <MEMORY_ADDRESS_CELLS>;
+	#size-cells = <1>;
+
+        amba: amba@0 {
+		cosim_rp_0: cosim@0 {
+			compatible = "remote-port";
+			sync = <1>;
+			chrdev-id = "pl-rp";
+		};
+
+		/* FIXME: This should only be accessible by the RPU.  */
+		hpm_lpd: hpm_lpd@40000000 {
+			compatible = "remote-port-memory-master";
+			remote-ports = <&cosim_rp_0 11>;
+			reg = <BASE_ADDR(0x80000000) 0x20000000>;
+		};
+
+		hpc0_fpd: hpc0_fpd@0 {
+			compatible = "remote-port-memory-slave";
+			remote-ports = <&cosim_rp_0 0>;
+			mr = <&smmu_tbu0>;
+		};
+		hpc1_fpd: hpc1_fpd@0 {
+			compatible = "remote-port-memory-slave";
+			remote-ports = <&cosim_rp_0 1>;
+			mr = <&smmu_tbu0>;
+		};
+		hp0_fpd: hp0_fpd@0 {
+			compatible = "remote-port-memory-slave";
+			remote-ports = <&cosim_rp_0 2>;
+			mr = <&smmu_tbu3>;
+		};
+		hp1_fpd: hp1_fpd@0 {
+			compatible = "remote-port-memory-slave";
+			remote-ports = <&cosim_rp_0 3>;
+			mr = <&smmu_tbu4>;
+		};
+		hp2_fpd: hp2_fpd@0 {
+			compatible = "remote-port-memory-slave";
+			remote-ports = <&cosim_rp_0 4>;
+			mr = <&smmu_tbu4>;
+		};
+		hp3_fpd: hp3_fpd@0 {
+			compatible = "remote-port-memory-slave";
+			remote-ports = <&cosim_rp_0 5>;
+			mr = <&smmu_tbu5>;
+		};
+		axi_lpd: axi_lpd@0 {
+			compatible = "remote-port-memory-slave";
+			remote-ports = <&cosim_rp_0 6>;
+			mr = <&amba>;
+		};
+		acp_fpd: acp_fpd@0 {
+			compatible = "remote-port-memory-slave";
+			remote-ports = <&cosim_rp_0 7>;
+			mr = <&cci_slave>;
+		};
+		ace_fpd: ace_fpd@0 {
+			compatible = "remote-port-memory-slave";
+			remote-ports = <&cosim_rp_0 8>;
+			mr = <&cci_slave>;
+		};
+
+		rp_cosim_intr: rp_cosim_intr@0 {
+			compatible = "remote-port-gpio";
+			remote-ports = <&cosim_rp_0 12>;
+			num-gpios = <16>;
+			interrupts = <PL_PS_GRP0_IRQ_0
+				       PL_PS_GRP0_IRQ_1
+				       PL_PS_GRP0_IRQ_2
+				       PL_PS_GRP0_IRQ_3
+				       PL_PS_GRP0_IRQ_4
+				       PL_PS_GRP0_IRQ_5
+				       PL_PS_GRP0_IRQ_6
+				       PL_PS_GRP0_IRQ_7
+				       PL_PS_GRP1_IRQ_0
+				       PL_PS_GRP1_IRQ_1
+				       PL_PS_GRP1_IRQ_2
+				       PL_PS_GRP1_IRQ_3
+				       PL_PS_GRP1_IRQ_4
+				       PL_PS_GRP1_IRQ_5
+				       PL_PS_GRP1_IRQ_6
+				       PL_PS_GRP1_IRQ_7
+				    >;
+		};
+		rp_cosim_intr_out: rp_cosim_intr_out@0 {
+			compatible = "remote-port-gpio";
+			remote-ports = <&cosim_rp_0 13>;
+			num-gpios = <4>;
+			gpios = <&crl 24 &crl 25 &crl 26 &crl 27>;
+		};
+		rp_cosim_intr_pstopl: rp_cosim_intr_pstopl@0 {
+			#interrupt-cells = <3>;
+			interrupt-controller;
+			compatible = "remote-port-gpio";
+			remote-ports = <&cosim_rp_0 14>;
+			num-gpios = <164>;
+			cell-offset-irq-num = <1>;
+		};
+		/* This area can be used for implentation specific emulation*/
+		rp_cosim_reserved: rp_cosim_reserved@0{
+			compatible = "remote-port-memory-master";
+			remote-ports = <&cosim_rp_0 15>;
+			reg = <BASE_ADDR(0xFF4E0000) 0x100000>;
+		};
+
+		rp_cosim_emio_bank0: rp_cosim_emio_bank0 {
+			#gpio-cells = <1>;
+			compatible = "remote-port-gpio";
+			remote-ports = <&cosim_rp_0 16>;
+			num-gpios = <64>;
+			/* psu_gpio fdt-index 78 to 109 belongs to emio bank0,
+			 * 252 to 283 are output enable signls for same bank
+			 */
+			gpios = < &psu_gpio 78
+				  &psu_gpio 79
+				  &psu_gpio 80
+				  &psu_gpio 81
+				  &psu_gpio 82
+				  &psu_gpio 83
+				  &psu_gpio 84
+				  &psu_gpio 85
+				  &psu_gpio 86
+				  &psu_gpio 87
+				  &psu_gpio 88
+				  &psu_gpio 89
+				  &psu_gpio 90
+				  &psu_gpio 91
+				  &psu_gpio 92
+				  &psu_gpio 93
+				  &psu_gpio 94
+				  &psu_gpio 95
+				  &psu_gpio 96
+				  &psu_gpio 97
+				  &psu_gpio 98
+				  &psu_gpio 99
+				  &psu_gpio 100
+				  &psu_gpio 101
+				  &psu_gpio 102
+				  &psu_gpio 103
+				  &psu_gpio 104
+				  &psu_gpio 105
+				  &psu_gpio 106
+				  &psu_gpio 107
+				  &psu_gpio 108
+				  &psu_gpio 109
+				  &psu_gpio 252
+				  &psu_gpio 253
+				  &psu_gpio 254
+				  &psu_gpio 255
+				  &psu_gpio 256
+				  &psu_gpio 257
+				  &psu_gpio 258
+				  &psu_gpio 259
+				  &psu_gpio 260
+				  &psu_gpio 261
+				  &psu_gpio 262
+				  &psu_gpio 263
+				  &psu_gpio 264
+				  &psu_gpio 265
+				  &psu_gpio 266
+				  &psu_gpio 267
+				  &psu_gpio 268
+				  &psu_gpio 269
+				  &psu_gpio 270
+				  &psu_gpio 271
+				  &psu_gpio 272
+				  &psu_gpio 273
+				  &psu_gpio 274
+				  &psu_gpio 275
+				  &psu_gpio 276
+				  &psu_gpio 277
+				  &psu_gpio 278
+				  &psu_gpio 279
+				  &psu_gpio 280
+				  &psu_gpio 281
+				  &psu_gpio 282
+				  &psu_gpio 283 >;
+		};
+		rp_cosim_emio_bank1: rp_cosim_emio_bank1 {
+			#gpio-cells = <1>;
+			compatible = "remote-port-gpio";
+			remote-ports = <&cosim_rp_0 17>;
+			num-gpios = <64>;
+			/* psu_gpio fdt-index 110 to 141 belongs to emio bank1,
+			 * 284 to 315 are output enable signls for same bank
+			 */
+			gpios = < &psu_gpio 110
+				  &psu_gpio 111
+				  &psu_gpio 112
+				  &psu_gpio 113
+				  &psu_gpio 114
+				  &psu_gpio 115
+				  &psu_gpio 116
+				  &psu_gpio 117
+				  &psu_gpio 118
+				  &psu_gpio 119
+				  &psu_gpio 120
+				  &psu_gpio 121
+				  &psu_gpio 122
+				  &psu_gpio 123
+				  &psu_gpio 124
+				  &psu_gpio 125
+				  &psu_gpio 126
+				  &psu_gpio 127
+				  &psu_gpio 128
+				  &psu_gpio 129
+				  &psu_gpio 130
+				  &psu_gpio 131
+				  &psu_gpio 132
+				  &psu_gpio 133
+				  &psu_gpio 134
+				  &psu_gpio 135
+				  &psu_gpio 136
+				  &psu_gpio 137
+				  &psu_gpio 138
+				  &psu_gpio 139
+				  &psu_gpio 140
+				  &psu_gpio 141
+				  &psu_gpio 284
+				  &psu_gpio 285
+				  &psu_gpio 286
+				  &psu_gpio 287
+				  &psu_gpio 288
+				  &psu_gpio 289
+				  &psu_gpio 290
+				  &psu_gpio 291
+				  &psu_gpio 292
+				  &psu_gpio 293
+				  &psu_gpio 294
+				  &psu_gpio 295
+				  &psu_gpio 296
+				  &psu_gpio 297
+				  &psu_gpio 298
+				  &psu_gpio 299
+				  &psu_gpio 300
+				  &psu_gpio 301
+				  &psu_gpio 302
+				  &psu_gpio 303
+				  &psu_gpio 304
+				  &psu_gpio 305
+				  &psu_gpio 306
+				  &psu_gpio 307
+				  &psu_gpio 308
+				  &psu_gpio 309
+				  &psu_gpio 310
+				  &psu_gpio 311
+				  &psu_gpio 312
+				  &psu_gpio 313
+				  &psu_gpio 314
+				  &psu_gpio 315 >;
+		};
+		rp_cosim_emio_bank2: rp_cosim_emio_bank2 {
+			#gpio-cells = <1>;
+			compatible = "remote-port-gpio";
+			remote-ports = <&cosim_rp_0 18>;
+			num-gpios = <64>;
+			/* psu_gpio fdt-index 142 to 173 belongs to emio bank2,
+			 * 316 to 347 are output enable signls for same bank
+			 */
+			gpios = < &psu_gpio 142
+				  &psu_gpio 143
+				  &psu_gpio 144
+				  &psu_gpio 145
+				  &psu_gpio 146
+				  &psu_gpio 147
+				  &psu_gpio 148
+				  &psu_gpio 149
+				  &psu_gpio 150
+				  &psu_gpio 151
+				  &psu_gpio 152
+				  &psu_gpio 153
+				  &psu_gpio 154
+				  &psu_gpio 155
+				  &psu_gpio 156
+				  &psu_gpio 157
+				  &psu_gpio 158
+				  &psu_gpio 159
+				  &psu_gpio 160
+				  &psu_gpio 161
+				  &psu_gpio 162
+				  &psu_gpio 163
+				  &psu_gpio 164
+				  &psu_gpio 165
+				  &psu_gpio 166
+				  &psu_gpio 167
+				  &psu_gpio 168
+				  &psu_gpio 169
+				  &psu_gpio 170
+				  &psu_gpio 171
+				  &psu_gpio 172
+				  &psu_gpio 173
+				  &psu_gpio 316
+				  &psu_gpio 317
+				  &psu_gpio 318
+				  &psu_gpio 319
+				  &psu_gpio 320
+				  &psu_gpio 321
+				  &psu_gpio 322
+				  &psu_gpio 323
+				  &psu_gpio 324
+				  &psu_gpio 325
+				  &psu_gpio 326
+				  &psu_gpio 327
+				  &psu_gpio 328
+				  &psu_gpio 329
+				  &psu_gpio 330
+				  &psu_gpio 331
+				  &psu_gpio 332
+				  &psu_gpio 333
+				  &psu_gpio 334
+				  &psu_gpio 335
+				  &psu_gpio 336
+				  &psu_gpio 337
+				  &psu_gpio 338
+				  &psu_gpio 339
+				  &psu_gpio 340
+				  &psu_gpio 341
+				  &psu_gpio 342
+				  &psu_gpio 343
+				  &psu_gpio 344
+				  &psu_gpio 345
+				  &psu_gpio 346
+				  &psu_gpio 347 >;
+		};
+		mio_in: rp_cosim_mio_in {
+				#gpio-cells = <2>;
+				compatible = "remote-port-gpio";
+				num-gpios = <78>;
+				remote-ports = <&cosim_rp_0 19>;
+		};
+		rp_cosim_mio_out: rp_cosim_mio_out {
+				#gpio-cells = <2>;
+				compatible = "remote-port-gpio";
+				num-gpios = <78>;
+				remote-ports = <&cosim_rp_0 20>;
+				/* MIO Interface
+				 * FIXME: Forcing to connect PMU GPI1/GPO1 to
+				 *        MIO Interface
+				 *        PMU GPO1[ 5: 0] - MIO[37:32]
+				 */
+
+				gpios = < &dummy_mio_map_2 0 0
+					  &dummy_mio_map_2 1 0
+					  &dummy_mio_map_2 2 0
+					  &dummy_mio_map_2 3 0
+					  &dummy_mio_map_2 4 0
+					  &dummy_mio_map_2 5 0
+					  &dummy_mio_map_2 6 0
+					  &dummy_mio_map_2 7 0
+					  &dummy_mio_map_2 8 0
+					  &dummy_mio_map_2 9 0
+					  &dummy_mio_map_2 10 0
+					  &dummy_mio_map_2 11 0
+					  &dummy_mio_map_2 12 0
+					  &dummy_mio_map_2 13 0
+					  &dummy_mio_map_2 14 0
+					  &dummy_mio_map_2 15 0
+					  &dummy_mio_map_2 16 0
+					  &dummy_mio_map_2 17 0
+					  &dummy_mio_map_2 18 0
+					  &dummy_mio_map_2 19 0
+					  &dummy_mio_map_2 20 0
+					  &dummy_mio_map_2 21 0
+					  &dummy_mio_map_2 22 0
+					  &dummy_mio_map_2 23 0
+					  &dummy_mio_map_2 24 0
+					  &dummy_mio_map_2 25 0
+					  &dummy_mio_map_2 26 0
+					  &dummy_mio_map_2 27 0
+					  &dummy_mio_map_2 28 0
+					  &dummy_mio_map_2 29 0
+					  &dummy_mio_map_2 30 0
+					  &dummy_mio_map_2 31 0
+					  &pmu_io_gpo1 0 0  /* PMU_GPO1[0] -> MIO[32] */
+					  &pmu_io_gpo1 1 0  /* PMU_GPO1[1] -> MIO[33] */
+					  &pmu_io_gpo1 2 0  /* PMU_GPO1[2] -> MIO[34] */
+					  &pmu_io_gpo1 3 0  /* PMU_GPO1[3] -> MIO[35] */
+					  &pmu_io_gpo1 4 0  /* PMU_GPO1[4] -> MIO[36] */
+					  &pmu_io_gpo1 5 0  /* PMU_GPO1[5] -> MIO[37] */
+					  &dummy_mio_map_2 38 0
+					  &dummy_mio_map_2 39 0
+					  &dummy_mio_map_2 40 0
+					  &dummy_mio_map_2 41 0
+					  &dummy_mio_map_2 42 0
+					  &dummy_mio_map_2 43 0
+					  &dummy_mio_map_2 44 0
+					  &dummy_mio_map_2 45 0
+					  &dummy_mio_map_2 46 0
+					  &dummy_mio_map_2 47 0
+					  &dummy_mio_map_2 48 0
+					  &dummy_mio_map_2 49 0
+					  &dummy_mio_map_2 50 0
+					  &dummy_mio_map_2 51 0
+					  &dummy_mio_map_2 52 0
+					  &dummy_mio_map_2 53 0
+					  &dummy_mio_map_2 54 0
+					  &dummy_mio_map_2 55 0
+					  &dummy_mio_map_2 56 0
+					  &dummy_mio_map_2 57 0
+					  &dummy_mio_map_2 58 0
+					  &dummy_mio_map_2 59 0
+					  &dummy_mio_map_2 60 0
+					  &dummy_mio_map_2 61 0
+					  &dummy_mio_map_2 62 0
+					  &dummy_mio_map_2 63 0
+					  &dummy_mio_map_2 64 0
+					  &dummy_mio_map_2 65 0
+					  &dummy_mio_map_2 66 0
+					  &dummy_mio_map_2 67 0
+					  &dummy_mio_map_2 68 0
+					  &dummy_mio_map_2 69 0
+					  &dummy_mio_map_2 70 0
+					  &dummy_mio_map_2 71 0
+					  &dummy_mio_map_2 72 0
+					  &dummy_mio_map_2 73 0
+					  &dummy_mio_map_2 74 0
+					  &dummy_mio_map_2 75 0
+					  &dummy_mio_map_2 76 0
+					  &dummy_mio_map_2 77 0 >;
+		};
+
+		dummy_mio_map: dummy_mio_map {
+			gpio-controller;
+			#gpio-cells = <1>;
+		};
+
+		dummy_mio_map_2: dummy_mio_map_2 {
+			gpio-controller;
+			#gpio-cells = <2>;
+		};
+	};
+
+	protected_amba: protected_amba@0 {
+		/*
+		 * HPM0 has 3 appertures that all map onto the same AXI port.
+		 * 0x0000.a0000000 - 0x0000.b0000000   (256MB)
+		 * 0x0004.00000000 - 0x0005.00000000   (4GB)
+		 * 0x0010.00000000 - 0x0048.00000000   (224GB)
+		 */
+		hpm0_fpd: hpm0_fpd@a0000000 {
+			compatible = "remote-port-memory-master";
+			remote-ports = <&cosim_rp_0 9>;
+			reg = <0x0000 0xa0000000 0x00 0x10000000 0x0
+			       0x0004 0x00000000 0x01 0x00000000 0x0
+			       0x0010 0x00000000 0x38 0x00000000 0x0 >;
+		};
+
+		/*
+		 * HPM1 has 3 appertures that all map onto the same AXI port.
+		 * 0x0000.b0000000 - 0x0000.c0000000   (256MB)
+		 * 0x0005.00000000 - 0x0006.00000000   (4GB)
+		 * 0x0048.00000000 - 0x0080.00000000   (224GB)
+		 */
+		hpm1_fpd: hpm1_fpd@b0000000 {
+			compatible = "remote-port-memory-master";
+			remote-ports = <&cosim_rp_0 10>;
+			reg = <0x0000 0xb0000000 0x00 0x10000000 0x0
+			       0x0005 0x00000000 0x01 0x00000000 0x0
+			       0x0048 0x00000000 0x38 0x00000000 0x0 >;
+		};
+	};
+};
+
+&psu_gpio {
+		gpios = <
+#define MIO(dev)				\
+			  dev  0 		\
+			  dev  1 		\
+			  dev  2 		\
+			  dev  3 		\
+			  dev  4 		\
+			  dev  5 		\
+			  dev  6 		\
+			  dev  7 		\
+			  dev  8 		\
+			  dev  9 		\
+			  dev  10		\
+			  dev  11		\
+			  dev  12		\
+			  dev  13		\
+			  dev  14		\
+			  dev  15		\
+			  dev  16		\
+			  dev  17		\
+			  dev  18		\
+			  dev  19		\
+			  dev  20		\
+			  dev  21		\
+			  dev  22		\
+			  dev  23		\
+			  dev  24		\
+			  dev  25
+/* Connect gpio in's for MIO mapped banks,
+ * tie them with dummy model untill we model MIO
+ */
+MIO(&dummy_mio_map)
+MIO(&dummy_mio_map)
+MIO(&dummy_mio_map)
+
+#undef MIO
+
+#define RP_EMIO(dev)				\
+			  dev  0 		\
+			  dev  1 		\
+			  dev  2 		\
+			  dev  3 		\
+			  dev  4 		\
+			  dev  5 		\
+			  dev  6 		\
+			  dev  7 		\
+			  dev  8 		\
+			  dev  9 		\
+			  dev  10		\
+			  dev  11		\
+			  dev  12		\
+			  dev  13		\
+			  dev  14		\
+			  dev  15		\
+			  dev  16		\
+			  dev  17		\
+			  dev  18		\
+			  dev  19		\
+			  dev  20		\
+			  dev  21		\
+			  dev  22		\
+			  dev  23		\
+			  dev  24		\
+			  dev  25		\
+			  dev  26		\
+			  dev  27		\
+			  dev  28		\
+			  dev  29		\
+			  dev  30		\
+			  dev  31
+
+/* Connect gpio in's from emio bank 0,1,2 */
+RP_EMIO(&rp_cosim_emio_bank0)
+RP_EMIO(&rp_cosim_emio_bank1)
+RP_EMIO(&rp_cosim_emio_bank2)
+
+#undef RP_EMIO
+			>;
+};

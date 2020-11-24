@@ -1,0 +1,132 @@
+/*
+ * Versal PMC PPU CPUs only
+ *
+ * Copyright (c) 2016, Xilinx Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of the <organization> nor the
+ *       names of its contributors may be used to endorse or promote products
+ *       derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+#include "versal.dtsh"
+
+#define CREATE_PPU(X, VECTORS, GDB_ID, PVR_USER1)		\
+	pmc_ppu ## X: cpu@ ## X {				\
+		gdb-id = GDB_ID;				\
+		doc-status = "partial";				\
+		#interrupt-cells = <1>;				\
+		clock-frequency = <400000000>;			\
+		compatible = "xlnx,microblaze-cpu";		\
+		d-cache-size = <0x0>;				\
+		device_type = "cpu";				\
+		i-cache-size = <0x0>;				\
+		model = "microblaze,10.0";			\
+		version = "10.0";				\
+		reg = <0>;					\
+		timebase-frequency = <400000000>;		\
+		xlnx,addr-tag-bits = <0x10>;			\
+		xlnx,area-optimized = <0x0>;			\
+		xlnx,avoid-primitives = <0x3>;			\
+		xlnx,base-vectors = <VECTORS>;			\
+		xlnx,branch-target-cache-size = <0x0>;		\
+		xlnx,d-axi = <0x1>;				\
+		xlnx,d-lmb = <0x1>;				\
+		xlnx,d-plb = <0x0>;				\
+		xlnx,data-size = <0x20>;			\
+		xlnx,debug-enabled = <0x1>;			\
+		xlnx,div-zero-exception = <0x1>;		\
+		xlnx,dynamic-bus-sizing = <0x1>;		\
+		xlnx,ecc-use-ce-exception = <0x0>;		\
+		xlnx,edge-is-positive = <0x1>;			\
+		xlnx,endianness = <0x1>;			\
+		xlnx,family = "virtex7";			\
+		xlnx,fault-tolerant = <0x1>;			\
+		xlnx,fpu-exception = <0x0>;			\
+		xlnx,freq = <0x17d78400>;			\
+		xlnx,fsl-data-size = <0x20>;			\
+		xlnx,fsl-exception = <0x0>;			\
+		xlnx,fsl-links = <0x0>;				\
+		xlnx,i-axi = <0x1>;				\
+		xlnx,i-lmb = <0x1>;				\
+		xlnx,i-plb = <0x0>;				\
+		xlnx,ill-opcode-exception = <0x1>;		\
+		xlnx,instance = "microblaze_1";			\
+		xlnx,interconnect = <0x2>;			\
+		xlnx,interrupt-is-edge = <0x0>;			\
+		xlnx,lockstep-slave = <0x0>;			\
+		xlnx,mmu-dtlb-size = <0x2>;			\
+		xlnx,mmu-itlb-size = <0x4>;			\
+		xlnx,mmu-privileged-instr = <0x0>;		\
+		xlnx,mmu-tlb-access = <0x3>;			\
+		xlnx,mmu-zones = <0x2>;				\
+		xlnx,number-of-pc-brk = <0x1>;			\
+		xlnx,number-of-rd-addr-brk = <0x1>;		\
+		xlnx,number-of-wr-addr-brk = <0x1>;		\
+		xlnx,opcode-0x0-illegal = <0x1>;		\
+		xlnx,optimization = <0x0>;			\
+		xlnx,pc-width = <0x20>;				\
+		xlnx,pvr = <0x2>;				\
+		xlnx,pvr-user1 = <PVR_USER1>;			\
+		xlnx,pvr-user2 = <0x0>;				\
+		xlnx,reset-msr = <0x0>;				\
+		xlnx,sco = <0x0>;				\
+		xlnx,stream-interconnect = <0x0>;		\
+		xlnx,unaligned-exceptions = <0x1>;		\
+		xlnx,use-barrel = <0x1>;			\
+		xlnx,use-branch-target-cache = <0x0>;		\
+		xlnx,use-dcache = <0x0>;			\
+		xlnx,use-div = <0x1>;				\
+		xlnx,use-ext-brk = <0x1>;			\
+		xlnx,use-ext-nm-brk = <0x1>;			\
+		xlnx,use-extended-fsl-instr = <0x0>;		\
+		xlnx,use-fpu = <0x0>;				\
+		xlnx,use-hw-mul = <0x2>;			\
+		xlnx,use-icache = <0x0>;			\
+		xlnx,use-interrupt = <0x1>;			\
+		xlnx,use-mmu = <0x0>;				\
+		xlnx,use-msr-instr = <0x1>;			\
+		xlnx,use-pcmp-instr = <0x1>;			\
+		xlnx,use-reorder-instr = <0x1>;			\
+		xlnx,use-stack-protection = <0x1>;		\
+		xlnx,addr-size= <52>;				\
+		mr = <&lmb_pmc_ppu ## X>;			\
+		memory = <&lmb_pmc_ppu ## X>;			\
+		memattr = <&pmc_ppu ## X ## _memattr>;		\
+	}
+/ {
+	cpus {
+		#address-cells = <1>;
+		#cpus = <0x1>;
+		#size-cells = <0>;
+		doc-status = "partial";
+
+		CREATE_PPU(0, MM_PMC_PMC_ROM, "PPU0", 0x5);
+		CREATE_PPU(1, MM_PMC_PPU1_RAM_INSTR, "PPU1", 0x6);
+	};
+};
+
+&pmc_ppu1 {
+	gpios = <&pmc_global PMC_GLOBAL_PPU1_RST
+		 &pmc_global PMC_GLOBAL_PPU1_WAKEUP >;
+	gpio-names = "reset", "halt";
+	qemu,halt = <0x1>;
+};

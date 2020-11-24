@@ -1,0 +1,204 @@
+/*
+ * ZynqMP PMU device tree for multi-arch
+ *
+ * Copyright (c) 2016, Xilinx Inc
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of the <organization> nor the
+ *       names of its contributors may be used to endorse or promote products
+ *       derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+#include "zynqmp.dtsh"
+
+/dts-v1/;
+
+/ {
+	#address-cells = <MEMORY_ADDRESS_CELLS>;
+	#size-cells = <1>;
+	cpus {
+		#address-cells = <1>;
+		#cpus = <0x1>;
+		#size-cells = <0>;
+		pmu_cpu0: cpu@0 {
+			#interrupt-cells = <1>;
+			clock-frequency = <100000000>;
+			compatible = "xlnx,microblaze-cpu";
+			d-cache-size = <0x0>;
+			device_type = "cpu";
+			i-cache-size = <0x0>;
+			model = "microblaze,8.40.b";
+			version = "8.40.b";
+			reg = <0>;
+			timebase-frequency = <100000000>;
+			xlnx,addr-tag-bits = <0x10>;
+			xlnx,area-optimized = <0x0>;
+			xlnx,avoid-primitives = <0x3>;
+			xlnx,base-vectors = <0xffd00000>;
+			xlnx,branch-target-cache-size = <0x0>;
+			xlnx,d-axi = <0x1>;
+			xlnx,d-lmb = <0x1>;
+			xlnx,d-plb = <0x0>;
+			xlnx,data-size = <0x20>;
+			xlnx,debug-enabled = <0x1>;
+			xlnx,div-zero-exception = <0x0>;
+			xlnx,dynamic-bus-sizing = <0x1>;
+			xlnx,ecc-use-ce-exception = <0x0>;
+			xlnx,edge-is-positive = <0x1>;
+			xlnx,endianness = <0x1>;
+			xlnx,family = "virtex7";
+			xlnx,fault-tolerant = <0x1>;
+			xlnx,fpu-exception = <0x0>;
+			xlnx,freq = <0x5f5e100>;
+			xlnx,fsl-data-size = <0x20>;
+			xlnx,fsl-exception = <0x0>;
+			xlnx,fsl-links = <0x0>;
+			xlnx,i-axi = <0x1>;
+			xlnx,i-lmb = <0x1>;
+			xlnx,i-plb = <0x0>;
+			xlnx,ill-opcode-exception = <0x1>;
+			xlnx,instance = "microblaze_1";
+			xlnx,interconnect = <0x2>;
+			xlnx,interrupt-is-edge = <0x0>;
+			xlnx,lockstep-slave = <0x0>;
+			xlnx,mmu-dtlb-size = <0x2>;
+			xlnx,mmu-itlb-size = <0x4>;
+			xlnx,mmu-privileged-instr = <0x0>;
+			xlnx,mmu-tlb-access = <0x3>;
+			xlnx,mmu-zones = <0x2>;
+			xlnx,number-of-pc-brk = <0x1>;
+			xlnx,number-of-rd-addr-brk = <0x1>;
+			xlnx,number-of-wr-addr-brk = <0x1>;
+			xlnx,opcode-0x0-illegal = <0x1>;
+			xlnx,optimization = <0x0>;
+			xlnx,pc-width = <0x20>;
+			xlnx,pvr = <0x0>;
+			xlnx,pvr-user1 = <0x0>;
+			xlnx,pvr-user2 = <0x0>;
+			xlnx,reset-msr = <0x0>;
+			xlnx,sco = <0x0>;
+			xlnx,stream-interconnect = <0x0>;
+			xlnx,unaligned-exceptions = <0x1>;
+			xlnx,use-barrel = <0x1>;
+			xlnx,use-branch-target-cache = <0x0>;
+			xlnx,use-dcache = <0x0>;
+			xlnx,use-div = <0x0>;
+			xlnx,use-ext-brk = <0x1>;
+			xlnx,use-ext-nm-brk = <0x1>;
+			xlnx,use-extended-fsl-instr = <0x0>;
+			xlnx,use-fpu = <0x0>;
+			xlnx,use-hw-mul = <0x0>;
+			xlnx,use-icache = <0x0>;
+			xlnx,use-interrupt = <0x1>;
+			xlnx,use-mmu = <0x0>;
+			xlnx,use-msr-instr = <0x1>;
+			xlnx,use-pcmp-instr = <0x1>;
+			xlnx,use-reorder-instr = <0x1>;
+			xlnx,use-stack-protection = <0x1>;
+#ifdef MULTI_ARCH
+			gpios = <&rp_gpio_pmu 0 &rp_gpio_pmu 3>;
+			gpio-names = "wakeup", "mb_sleep";
+#endif
+			mr = <&lmb_pmu>;
+			memory = <&lmb_pmu>;
+			memattr = <&pmu_memattr>;
+		};
+	};
+
+	lmb_pmu: lmb_pmu@0 {
+		#address-cells = <MEMORY_ADDRESS_CELLS>;
+		#size-cells = <2>;
+		#priority-cells = <1>;
+		compatible = "simple-bus";
+		ranges;
+
+		main_bus_for_pmu {
+			compatible = "qemu:memory-region";
+			alias = <&amba>;
+			/* Full address range with -1 priority */
+			reg = <0x0 0x0 0xffffffff 0xffffffff 0xffffffff>;
+		};
+
+		/* PMU ROM. 32K.  */
+		pmu_rom: memory@ffd00000 {
+			device_type = "memory";
+			reg = <BASE_ADDR(0xffd00000) 0x0 0x00008000 0x1>;
+			compatible = "qemu:memory-region";
+			container = <&lmb_pmu>;
+			qemu,ram = <1>;
+			read-only;
+		};
+
+#ifdef MULTI_ARCH
+		rp_memory_master: rp_mm@40000000 {
+			compatible = "remote-port-memory-master";
+			remote-ports = <&pmu 0>;
+			reg = <BASE_ADDR(0x40000000) 0x0 0xc0000000 0xfffffffe>;
+		};
+#endif
+	};
+
+#ifdef MULTI_ARCH
+	pmu: pmu@0 {
+		compatible = "remote-port";
+		chrdev-id = "pmu-apu-rp";
+	};
+
+	rp_gpio_pmu_intr: rp_gpio_pmu_intr@0 {
+		compatible = "remote-port-gpio";
+		remote-ports = <&pmu 1>;
+		num-gpios = <1>;
+		interrupts-extended = <&pmu_cpu0 0>;
+	};
+	rp_gpio_pmu: rp_gpio_pmu@0 {
+		#gpio-cells = <1>;
+		compatible = "remote-port-gpio";
+		remote-ports = <&pmu 2>;
+		gpio-controller;
+		num-gpios = <4>;
+	};
+
+	ps_reset@0 {
+		compatible = "qemu,reset-device";
+		gpios = <&rp_gpio_pmu 1
+				 &rp_gpio_pmu 2>;
+	};
+#endif
+	MEM_REGION(ddr_bank1_1, 0x0, 0x0, 0x0, 0x30000, &ddr3_ram)
+	MEM_REGION(ddr_bank1_2, 0x0, 0x30000, 0x30000, 0x10000, &ddr3_ram)
+	MEM_REGION(ddr_bank1_3, 0x0, 0x40000, 0x40000, 0x3FFC0000, &ddr3_ram)
+	MEM_REGION(ddr_bank2, 0x0, 0x40000000, 0x40000000, 0x40000000, &ddr3_ram)
+};
+
+#include "zynqmp-memory-regions.dtsi"
+
+#ifndef MULTI_ARCH
+/ {
+	gic: dummy_gic@0 {
+		#interrupt-cells = <3>;
+		interrupt-controller ;
+	};
+};
+
+#include "zynqmp-pmu-dev.dtsi"
+#include "zynqmp-iou.dtsi"
+#include "zynqmp-csu.dtsi"
+#endif

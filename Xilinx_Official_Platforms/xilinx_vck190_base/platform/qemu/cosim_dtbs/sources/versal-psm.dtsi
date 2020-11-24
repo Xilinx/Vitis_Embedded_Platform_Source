@@ -1,0 +1,207 @@
+/*
+ * Versal PSM block
+ *
+ * Copyright (c) 2016, Xilinx Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of the <organization> nor the
+ *       names of its contributors may be used to endorse or promote products
+ *       derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+#include "versal.dtsh"
+
+#define CREATE_PSM_IOMOD(X)						\
+	psm_ ## X ## _io_module: io-module@00 {				\
+		doc-status = "complete";				\
+		#address-cells = <2>;					\
+		#size-cells = <1>;					\
+		#priority-cells = <0>;					\
+		compatible = "simple-bus";				\
+		container = <&lmb_psm>;					\
+		priority = <0xffffffff>;				\
+									\
+		psm ## X ## _io_intc: psm ## X ## _intc@0C {		\
+			#interrupt-cells = <1>;				\
+			compatible = "xlnx,io-intc-1.02.a", "xlnx,io_intc"; \
+			interrupt-controller ;				\
+			interrupts-extended = <&psm ## X 0>;		\
+			reg = <0x0 MM_PSM_IOM(0C) 0x4 0x0 MM_PSM_IOM(30) 0x10 0x0 MM_PSM_IOM(80) 0x7C>; \
+			xlnx,intc-addr-width = <0x20>;			\
+			xlnx,intc-base-vectors = <0x0>;			\
+			xlnx,intc-has-fast = <0x0>;			\
+			xlnx,intc-intr-size = <0x10>;			\
+			xlnx,intc-level-edge = <0x0>;			\
+			xlnx,intc-positive = <0xffff>;			\
+			xlnx,intc-use-ext-intr = <0x1>;			\
+		};							\
+		psm ## X ## _io_gpo1: psm ## X ## _gpo@10 {		\
+			#gpio-cells = <1>;				\
+			gpio-controller;				\
+			compatible = "xlnx,io-gpo-1.02.a", "xlnx,io_gpo"; \
+			reg = <0x0 MM_PSM_IOM(10) 0x4>;			\
+			xlnx,gpo-init = <0x0>;				\
+			xlnx,gpo-size = <0x3>;				\
+			xlnx,use-gpo = <0x1>;				\
+		};							\
+		psm ## X ## _io_pit1: psm ## X ## _pit@40 {		\
+			compatible = "xlnx,io-pit-1.02.a", "xlnx,io_pit"; \
+			interrupt-parent = <&psm ## X ## _io_intc>;	\
+			interrupts = <3>;				\
+			reg = <0x0 MM_PSM_IOM(40) 0xc>;			\
+			xlnx,pit-interrupt = <0x1>;			\
+			xlnx,pit-prescaler = <0x9>;			\
+			xlnx,pit-readable = <0x1>;			\
+			xlnx,pit-size = <0x20>;				\
+			xlnx,use-pit = <0x1>;				\
+			frequency = <460000000>;			\
+			gpios = <&psm ## X ## _io_gpo1 1 &psm ## X ## _io_pit2 0>; \
+			gpio-names = "ps_config","ps_hit_in";		\
+			gpio-controller;				\
+			#gpio-cells = <1>;				\
+		};							\
+		psm ## X ## _io_pit2: psm ## X ## _pit@50 {		\
+			compatible = "xlnx,io-pit-1.02.a", "xlnx,io_pit"; \
+			interrupt-parent = <&psm ## X ## _io_intc>;	\
+			interrupts = <4>;				\
+			reg = <0x0 MM_PSM_IOM(50) 0xc>;			\
+			xlnx,pit-interrupt = <0x1>;			\
+			xlnx,pit-prescaler = <0x9>;			\
+			xlnx,pit-readable = <0x1>;			\
+			xlnx,pit-size = <0x20>;				\
+			xlnx,use-pit = <0x1>;				\
+			frequency = <460000000>;			\
+			gpio-controller;				\
+			#gpio-cells = <1>;				\
+		};							\
+		psm ## X ## _io_pit3: psm ## X ## _pit@60 {		\
+			compatible = "xlnx,io-pit-1.02.a", "xlnx,io_pit"; \
+			interrupt-parent = <&psm ## X ## _io_intc>;	\
+			interrupts = <5>;				\
+			reg = <0x0 MM_PSM_IOM(60) 0xc>;			\
+			xlnx,pit-interrupt = <0x1>;			\
+			xlnx,pit-prescaler = <0x9>;			\
+			xlnx,pit-readable = <0x1>;			\
+			xlnx,pit-size = <0x20>;				\
+			xlnx,use-pit = <0x1>;				\
+			frequency = <460000000>;			\
+			gpios = <&psm ## X ## _io_gpo1 6 &psm ## X ## _io_pit4 0>; \
+			gpio-names = "ps_config","ps_hit_in";		\
+			gpio-controller;				\
+			#gpio-cells = <1>;				\
+		};							\
+		psm ## X ## _io_pit4: psm ## X ## _pit@70 {		\
+			compatible = "xlnx,io-pit-1.02.a", "xlnx,io_pit"; \
+			interrupt-parent = <&psm ## X ## _io_intc>;	\
+			interrupts = <6>;				\
+			reg = <0x0 MM_PSM_IOM(70) 0xc>;			\
+			xlnx,pit-interrupt = <0x1>;			\
+			xlnx,pit-prescaler = <0x9>;			\
+			xlnx,pit-readable = <0x1>;			\
+			xlnx,pit-size = <0x20>;				\
+			xlnx,use-pit = <0x1>;				\
+			frequency = <460000000>;			\
+			gpio-controller;				\
+			#gpio-cells = <1>;				\
+		};							\
+	}
+
+/ {
+	lmb_psm: lmb_psm@0 {
+		doc-name = "LMB PPU0";
+		doc-status = "in-progress";
+		CREATE_PSM_IOMOD(0);
+
+		psm_local: psm_local_reg@MM_PSM_LOCAL_REG {
+			gpio-controller;
+			#gpio-cells = <1>;
+			compatible = "xlnx,psm-local-reg";
+			reg = <0x0 MM_PSM_LOCAL_REG 0x0 MM_PSM_LOCAL_REG_SIZE 0x0>;
+			/* TODO: Connect interrupts.  */
+			gpios = <
+				&apu_ctrl 0
+				&apu_ctrl 1
+				&apu_ctrl 2
+				&apu_ctrl 3
+			>;
+		};
+	};
+};
+
+&amba_psm {
+	psm_gic_proxy: psm_gic_proxy@MM_PSM_GIC_PROXY {
+		doc-status = "complete";
+		#interrupt-cells = <3>;
+		interrupt-controller;
+
+		compatible = "xlnx,zynqmp-gicp";
+		reg = <0x0 MM_PSM_GIC_PROXY 0x0 MM_PSM_GIC_PROXY_SIZE 0x0>;
+		interrupt-parent = <&psm0_io_intc>;
+		interrupts = <IRQ_PSM_INTC_GIC_PROXY>;
+	};
+
+	psm_global: psm_global_reg@MM_PSM_GLOBAL_REG {
+		compatible = "xlnx,psm-global-reg";
+		reg = <0x0 MM_PSM_GLOBAL_REG 0x0 MM_PSM_GLOBAL_REG_SIZE 0x0>;
+		interrupt-parent = <&psm0_io_intc>;
+		interrupts = <IRQ_PSM_INTC_PWRDWN_REQ IRQ_PSM_INTC_WAKEUP_REQ
+				IRQ_PSM_INTC_SW_RESET_REQ IRQ_PSM_INTC_PWRUP_REQ
+				IRQ_PSM_INTC_PWR_CONTROL_REQ IRQ_PSM_INTC_ISOLATE_REQ>;
+		#gpio-cells = <1>;
+		gpios = < &psm_local 32 &psm_local 33	/* LOC_PWR_STATE.  */
+			  &psm_local 34 &psm_local 35
+			  &psm_local 36 &psm_local 37
+			  &psm_local 38 &psm_local 39
+			  &psm_local 40 &psm_local 41
+			  &psm_local 42 &psm_local 43
+			  &psm_local 44 &psm_local 45
+			  &psm_local 46 &psm_local 47
+			  &psm_local 48 &psm_local 49
+			  &psm_local 50 &psm_local 51
+			  &psm_local 52 &psm_local 53
+			  &psm_local 54 &psm_local 55
+			  &psm_local 56 &psm_local 57
+			  &psm_local 58 &psm_local 59
+			  &psm_local 60 &psm_local 61
+			  &psm_local 62 &psm_local 63
+
+			  &psm_local 64 &psm_local 65	/* LOC_AUX_PWR_STATE.  */
+			  &psm_local 66 &psm_local 67
+			  &psm_local 68 &psm_local 69
+			  &psm_local 70 &psm_local 71
+			  &psm_local 72 &psm_local 73
+			  &psm_local 74 &psm_local 75
+			  &psm_local 76 &psm_local 77
+			  &psm_local 78 &psm_local 79
+			  &psm_local 80 &psm_local 81
+			  &psm_local 82 &psm_local 83
+			  &psm_local 84 &psm_local 85
+			  &psm_local 86 &psm_local 87
+			  &psm_local 88 &psm_local 89
+			  &psm_local 90 &psm_local 91
+			  &psm_local 92 &psm_local 93
+			  &psm_local 94 &psm_local 95
+			  &psm_local 96 &psm_local 97	/* APU powerdown req */
+			  &psm_local 98 &psm_local 99
+			  &rpu_ctrl 8 &rpu_ctrl 9	/* RPU powerdown req */
+			>;
+	};
+};

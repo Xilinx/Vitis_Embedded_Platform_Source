@@ -1,0 +1,190 @@
+/*
+ * Versal RAM definitions.
+ *
+ * Copyright (c) 2016, Xilinx Inc
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of the <organization> nor the
+ *       names of its contributors may be used to endorse or promote products
+ *       derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+#include "versal.dtsh"
+
+/*
+ * This file contains definititions for RAMs that get exported
+ * through shared files in the machine-path directory.
+ *
+ * Therefore we need to be careful when changing the names for
+ * these since external applications may depend on their
+ * filenames.
+ */
+/ {
+	ddr_mem: memory@00000000 {
+		compatible = "qemu:memory-region";
+		device_type = "memory";
+		container = <&amba>;
+	};
+
+	ddr_2_mem: memory@8_0000_0000 {
+		compatible = "qemu:memory-region";
+		device_type = "memory";
+		container = <&amba>;
+	};
+
+    ddr_3_mem: memory@MM_TOP_DDR_3 {
+		compatible = "qemu:memory-region";
+		device_type = "memory";
+		container = <&amba>;
+	};
+
+    ddr_4_mem: memory@MM_TOP_DDR_4 {
+		compatible = "qemu:memory-region";
+		device_type = "memory";
+		container = <&amba>;
+	};
+
+	ddr_ch1_mem: memory@MM_TOP_DDR_CH1 {
+		compatible = "qemu:memory-region";
+		device_type = "memory";
+		container = <&amba>;
+	};
+
+	ddr_ch2_mem: memory@MM_TOP_DDR_CH2 {
+		compatible = "qemu:memory-region";
+		device_type = "memory";
+		container = <&amba>;
+	};
+
+    ddr_ch3_mem: memory@MM_TOP_DDR_CH3 {
+		compatible = "qemu:memory-region";
+		device_type = "memory";
+		container = <&amba>;
+	};    
+
+	ocm_mem: ocm_mem@MM_OCM_MEM {
+		compatible = "qemu:memory-region";
+	};
+	MEM_REGION(ocm_mem_bank_0, 0x0, 0x00000, 0x00000, 0x10000, &ocm_mem)
+	MEM_REGION(ocm_mem_bank_1, 0x0, 0x10000, 0x10000, 0x10000, &ocm_mem)
+	MEM_REGION(ocm_mem_bank_2, 0x0, 0x20000, 0x20000, 0x10000, &ocm_mem)
+	MEM_REGION(ocm_mem_bank_3, 0x0, 0x30000, 0x30000, 0x10000, &ocm_mem)
+
+	ocm2_mem: ocm2_mem@MM_OCM2_MEM {
+		compatible = "qemu:memory-region";
+	};
+	MEM_REGION(ocm2_mem_bank_0, 0x0, 0x0, 0x0, 0x200000, &ocm2_mem)
+	MEM_REGION(ocm2_mem_bank_1, 0x0, 0x200000, 0x200000, 0x200000, &ocm2_mem)
+	MEM_REGION(ocm2_mem_bank_2, 0x0, 0x400000, 0x400000, 0x200000, &ocm2_mem)
+	MEM_REGION(ocm2_mem_bank_3, 0x0, 0x600000, 0x600000, 0x200000, &ocm2_mem)
+
+	ipi_msgbuf: ipi_msgbuf@MM_IPI_MSGBUF {
+		compatible = "qemu:memory-region";
+		device_type = "memory";
+		container = <&amba_lpd>;
+		qemu,ram = <QEMU_RAM_PROPERTY>;
+		reg = <0x0 MM_IPI_MSGBUF 0x0 MM_IPI_MSGBUF_SIZE 0x0>;
+	};
+
+	pmc_ram: pmc_ram@MM_PMC_PMC_RAM {
+		compatible = "qemu:memory-region";
+	};
+	MEM_REGION(pmc_ram_bank_0, 0x0, 0x0, 0x0, MM_PMC_PMC_RAM_SIZE, &pmc_ram)
+
+	pmc_ppu1_insn_ram: pmc_ppu1_ram@MM_PMC_PPU1_RAM_INSTR {
+		compatible = "qemu:memory-region";
+		container = <&amba>;
+		qemu,ram = <QEMU_RAM_PROPERTY>;
+		reg = <0x0 MM_PMC_PPU1_RAM_INSTR 0x0 MM_PMC_PPU1_RAM_INSTR_SIZE 0x0>;
+	};
+
+	pmc_ppu1_data_ram: pmc_ppu1_ram@MM_PMC_PPU1_RAM_DATA {
+		compatible = "qemu:memory-region";
+		container = <&amba>;
+		qemu,ram = <QEMU_RAM_PROPERTY>;
+		reg = <0x0 MM_PMC_PPU1_RAM_DATA 0x0 MM_PMC_PPU1_RAM_DATA_SIZE 0x0>;
+	};
+
+#ifdef LQSPI_XIP
+	pmc_lqspi {
+		device_type = "memory";
+		compatible = "qemu:memory-region";
+		container = <&amba_pmc>;
+		qemu,ram = <QEMU_RAM_PROPERTY>;
+		reg = <0x0 MM_PMC_LQSPI 0x0 MM_PMC_LQSPI_SIZE 0x0>;
+	};
+#endif
+
+	lmb_pmc_ppu0: lmb_pmc_ppu0@0 {
+		/* PMC ROM. 128K.  */
+		pmc_rom: pmc_rom@MM_PMC_PMC_ROM {
+			reg = <0x0 MM_PMC_PMC_ROM 0x0 MM_PMC_PMC_ROM_SIZE 0x1>;
+			compatible = "qemu:memory-region";
+			container = <&lmb_pmc_ppu0>;
+			qemu,ram = <QEMU_RAM_PROPERTY>;
+			read-only;
+		};
+
+		/* PMC PPU0 RAM. 8K.  */
+		pmc_ppu0_ram: ppu0_ram@MM_PMC_PPU0_RAM {
+			reg = <0x0 MM_PMC_PPU0_RAM 0x0 MM_PMC_PPU0_RAM_SIZE 0x1>;
+			compatible = "qemu:memory-region";
+			container = <&lmb_pmc_ppu0>;
+			qemu,ram = <QEMU_RAM_PROPERTY>;
+		};
+	};
+};
+
+#define GEN_DDRMC_RAM(LABEL, X)					\
+	LABEL: LABEL@MM_DDRMC_RAM_ ## X {			\
+		reg = <0x0 MM_DDRMC_RAM_ ## X 0x0		\
+			MM_DDRMC_RAM_ ## X ## _SIZE 0x1>;	\
+		compatible = "qemu:memory-region";		\
+		qemu,ram = <QEMU_RAM_PROPERTY>;			\
+	}
+
+&lmb_ddrmc0 {
+	GEN_DDRMC_RAM(ddrmc0_ram_data, DATA);
+	GEN_DDRMC_RAM(ddrmc0_ram_instr, INSTR);
+	GEN_DDRMC_RAM(ddrmc0_ram_exchange, EXCHANGE);
+};
+
+&lmb_ddrmc1 {
+	GEN_DDRMC_RAM(ddrmc1_ram_data, DATA);
+	GEN_DDRMC_RAM(ddrmc1_ram_instr, INSTR);
+	GEN_DDRMC_RAM(ddrmc1_ram_exchange, EXCHANGE);
+};
+
+&amba_psm {
+	psm_ram_instr: psm_ram_instr@MM_RAM_INSTR {
+		device_type = "memory";
+		compatible = "qemu:memory-region";
+		qemu,ram = <QEMU_RAM_PROPERTY>;
+		reg = <0x0 MM_RAM_INSTR 0x0 MM_RAM_INSTR_SIZE 0x1>;
+	};
+
+	psm_ram_data: psm_ram_data@MM_RAM_DATA {
+		device_type = "memory";
+		compatible = "qemu:memory-region";
+		qemu,ram = <QEMU_RAM_PROPERTY>;
+		reg = <0x0 MM_RAM_DATA 0x0 MM_RAM_DATA_SIZE 0x1>;
+	};
+};

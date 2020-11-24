@@ -1,0 +1,5 @@
+PETALINUX_VER=2020.2
+HARDWARE_CHECKSUM=2d9aea3025f893c61fb27d9a3aafeb03
+VALIDATE_HW_CHKSUM=1
+HARDWARE_PATH=/proj/xresults_slv/sivaraj/sdaccel/20201/0227/Vitis_Embedded_Platform_Source/Xilinx_Official_Platforms/xilinx_zcu102_base_dfx_202020_1/vivado/xilinx_zcu102_base_dfx_202020_1.xsa
+RFSCONFIG_CHKSUM=904163df3a0e131d05c118d5b334d124

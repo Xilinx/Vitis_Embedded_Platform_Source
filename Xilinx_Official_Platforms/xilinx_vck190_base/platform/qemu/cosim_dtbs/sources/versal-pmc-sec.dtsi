@@ -1,0 +1,177 @@
+/*
+ * Versal PMC SEC
+ *
+ * Copyright (c) 2018, Xilinx Inc
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of the <organization> nor the
+ *       names of its contributors may be used to endorse or promote products
+ *       derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+#include "versal.dtsh"
+
+&amba_pmc_sec {
+	doc-name = "PMC Secure";
+	doc-status = "in-progress";
+	qemu-fdt-abort-on-error = "QEMU is missing versal (ea) support.\nThis machine is not supported.";
+
+	trng@MM_PMC_TRNG {
+		doc-status = "complete";
+		compatible = "xlnx,versal-trng";
+		reg = <0x0 MM_PMC_TRNG 0x0 0x1000 0x0>;
+		interrupts = <TRNG_IRQ_0>;
+	};
+
+	pmc_dma0_src: pmc_dma0_src@MM_PMC_PMC_DMA0_SRC {
+		doc-status = "complete";
+		compatible = "zynqmp,csu-dma";
+		stream-connected-dma0 = <&pmc_stream_switch> ;
+		reg = <0x0 MM_PMC_PMC_DMA0_SRC 0x0 0x800 0x0>;
+		dma = <&amba_pmc>;
+		memattr = <&pmc_dma0_memattr>;
+		dma-width = <16>;
+		interrupts = <PMC_DMA0_IRQ_0>;
+		reset-gpios = <&pmc_clk_rst CRP_RST_PDMA0>;
+	};
+	pmc_dma0_dst: pmc_dma0_dst@MM_PMC_PMC_DMA0_DST {
+		doc-status = "complete";
+		compatible = "zynqmp,csu-dma";
+		reg = <0x0 MM_PMC_PMC_DMA0_DST 0x0 0x800 0x0>;
+		dma = <&amba_pmc>;
+		memattr = <&pmc_dma0_memattr>;
+		is-dst = <1>;
+		dma-width = <16>;
+		interrupts = <PMC_DMA0_IRQ_0>;
+		reset-gpios = <&pmc_clk_rst CRP_RST_PDMA0>;
+	};
+	pmc_dma1_src: pmc_dma1_src@MM_PMC_PMC_DMA1_SRC {
+		doc-status = "complete";
+		compatible = "zynqmp,csu-dma";
+		stream-connected-dma1 = <&pmc_stream_switch> ;
+		reg = <0x0 MM_PMC_PMC_DMA1_SRC 0x0 0x800 0x0>;
+		dma = <&amba_pmc>;
+		memattr = <&pmc_dma1_memattr>;
+		dma-width = <16>;
+		interrupts = <PMC_DMA1_IRQ_0>;
+		reset-gpios = <&pmc_clk_rst CRP_RST_PDMA1>;
+	};
+	pmc_dma1_dst: pmc_dma1_dst@MM_PMC_PMC_DMA1_DST {
+		doc-status = "complete";
+		compatible = "zynqmp,csu-dma";
+		reg = <0x0 MM_PMC_PMC_DMA1_DST 0x0 0x800 0x0>;
+		dma = <&amba_pmc>;
+		memattr = <&pmc_dma1_memattr>;
+		is-dst = <1>;
+		dma-width = <16>;
+		interrupts = <PMC_DMA1_IRQ_0>;
+		reset-gpios = <&pmc_clk_rst CRP_RST_PDMA1>;
+	};
+	pmc_stream_switch: pmc_stream_switch@MM_PMC_PMC_SSS {
+		doc-status = "complete";
+		compatible = "versal,pmc-sss";
+		reg-extended = <&amba_pmc_sys 0x0 MM_PMC_PMC_SSS 0x0 0x4 0x1>;
+		stream-connected-dma0 = <&pmc_dma0_dst>;
+		stream-connected-dma1 = <&pmc_dma1_dst>;
+		stream-connected-aes = <&pmc_aes>;
+		stream-connected-sha = <&pmc_sha3>;
+	};
+
+	pmc_sha3: pmc_sha@MM_PMC_SHA3 {
+		doc-status = "complete";
+		compatible = "zynqmp,csu-sha3";
+		reg = <0x0 MM_PMC_SHA3 0x0 0x100 0x0>;
+		interrupts = <SHA_IRQ_0>;
+	};
+
+	pmc_aes: pmc_aes@MM_PMC_AES {
+		doc-status = "in-progress";
+		#gpio-cells = <1>;
+		gpio-controller;
+		compatible = "xlnx,versal-aes";
+		stream-connected-aes = <&pmc_stream_switch> ;
+		reg = <0x0 MM_PMC_AES 0x0 0x100 0x0>;
+		interrupts = <AES_IRQ_0>;
+
+		gpios = <&xlnx_aes 0
+			 &xlnx_aes 1>;
+		gpio-names = "busy", "done";
+		aes-core = <&xlnx_aes>;
+		xlnx_aes: xlnx_aes@0 {
+			#gpio-cells = <1>;
+			compatible = "xlnx-aes";
+			gpios = <&pmc_aes 0>;
+			gpio-names = "reset";
+		};
+	};
+
+	pmc_rsa: pmc_rsa@MM_PMC_ECDSA_RSA {
+		doc-status = "complete";
+		compatible = "xlnx,versal-ecdsa-rsa";
+		reg = < 0x0 MM_PMC_ECDSA_RSA 0x0 0x6c 0x0>;
+		interrupts = <ECDSA_RSA_IRQ_0>;
+	};
+
+	xlnx_pmc_efuse_cache: xlnx_pmc_efuse_cache@MM_PMC_EFUSE_CACHE {
+		doc-status = "complete";
+		compatible = "xlnx,pmc-efuse-cache";
+		reg = <0x0 MM_PMC_EFUSE_CACHE 0x0 MM_PMC_EFUSE_CACHE_SIZE 0x0>;
+		efuse = <&xlnx_efuse>;
+	};
+
+	pmc_puf_ctrl: pmc_puf_ctrl@MM_PMC_PUF_CTRL {
+		compatible = "xlnx,versal-puf-ctrl";
+		zynqmp-aes-key-sink-puf = <&pmc_aes>;
+		efuse = <&xlnx_efuse>;
+		reg = <0x0 MM_PMC_PUF_CTRL 0x0 MM_PMC_PUF_CTRL_SIZE 0x0>;
+		#gpio-cells = <1>;
+		gpio-controller;
+	};
+
+	pmc_efuse: pmc_efuse@MM_PMC_EFUSE_CTRL {
+		doc-status = "complete";
+		compatible = "xlnx,versal-efuse";
+		#gpio-cells = <2>;
+		zynqmp-aes-key-sink-efuses = <&pmc_aes>;
+		zynqmp-aes-key-sink-efuses-user0 = <&pmc_aes>;
+		zynqmp-aes-key-sink-efuses-user1 = <&pmc_aes>;
+		reg = <0x0 MM_PMC_EFUSE_CTRL 0x0 MM_PMC_EFUSE_CTRL_SIZE 0x0>;
+		interrupts = <EFUSE_IRQ_0>;
+		efuse = <&xlnx_efuse>;
+
+		xlnx_efuse: xlnx_efuse@0 {
+			doc-ignore = <1>;
+			compatible = "xlnx,efuse";
+			efuse-nr = <3>;
+			efuse-size = <8192>;
+		};
+	};
+
+	pmc_bbram_ctrl: pmc_bbram@MM_PMC_BBRAM_CTRL {
+		doc-status = "partial";
+		doc-limitations = "Missing AES key connections.";
+		compatible = "xlnx,bbram-ctrl";
+		reg = <0x0 MM_PMC_BBRAM_CTRL 0x0 MM_PMC_BBRAM_CTRL_SIZE 0x0>;
+		interrupts = <BBRAM_APB_IRQ_0>;
+		zynqmp-aes-key-sink-bbram = <&pmc_aes>;
+		crc-zpads = <0>;
+	};
+};

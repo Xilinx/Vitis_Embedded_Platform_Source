@@ -1,0 +1,106 @@
+/*
+ * Versal APU subsystem include file
+ *
+ * Copyright (c) 2016, Xilinx Inc
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of the <organization> nor the
+ *       names of its contributors may be used to endorse or promote products
+ *       derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+#include "versal.dtsh"
+
+#define R5_CPU_COMMON(n)						\
+	compatible = "cortex-r5f-arm-cpu";				\
+	device_type = "cpu";						\
+	arm,midr=<0x411fc153>;						\
+	arm,tcmtr=<0x00010001>;						\
+	arm,ctr=<0x8003c003>;						\
+	arm,clidr=<0x09200003>;						\
+	arm,ccsidr0 = <0xf01fe019>;					\
+	arm,ccsidr1 = <0xf01fe019>;					\
+	arm,mp-affinity = <glue(0x10,n)>;				\
+	arm,id_pfr0 = <0x131>;						\
+	arm,reset-hivecs = <1>;						\
+	#interrupt-cells = <1>;						\
+	memory = < &amba_r5_ ## n >;					\
+	qemu,halt = <1>;						\
+	memattr_ns = <&rpu ## n ## _s_memattr>
+
+/ {
+	cpus {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		rpu_cpu0: rpu_cpu@0 {
+			R5_CPU_COMMON(0);
+			gdb-id = "Cortex-R5 #0";
+
+			gpios = < &crl CRL_RST_CPU_R5_0
+				  &rpu_ctrl 0
+				  &rpu_ctrl 2
+				  &rpu_ctrl 4 >;
+			gpio-names = "reset", "halt", "wfi", "vinithi";
+		};
+		rpu_cpu1: rpu_cpu@1 {
+			R5_CPU_COMMON(1);
+			gdb-id = "Cortex-R5 #1";
+
+			gpios = < &crl CRL_RST_CPU_R5_1
+				  &rpu_ctrl 1
+				  &rpu_ctrl 3
+				  &rpu_ctrl 5 >;
+			gpio-names = "reset", "halt", "wfi", "vinithi";
+		};
+	};
+
+	amba_rpu: amba_rpu@0 {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		#priority-cells = <1>;
+		compatible = "simple-bus";
+		ranges;
+
+		downstream_amba {
+			compatible = "qemu:memory-region";
+			alias = <&amba>;
+			/* Full address range with -1 priority.  */
+			reg = <0x0 0x0 0xffffffff 0xffffffff 0xffffffff >;
+		};
+
+
+		rpu_gic: interrupt-controller@R5_GIC_DIST {
+			#address-cells = <0>;
+			#interrupt-cells = <3>;
+			#size-cells = <0>;
+			compatible = "arm,gic";
+			reg = < 0x0 R5_GIC_DIST 0x0 0x1000 0x0
+				0x0 R5_GIC 0x0 0x1000 0x0>;
+			status = "disabled";
+			interrupt-controller ;
+			num-irq = <256>;
+			num-cpu = <2>;
+			interrupts-extended =
+				<&glue(RPU_GIC_INTERRUPT_TARGET_STEM, 0) 0>,
+				<&glue(RPU_GIC_INTERRUPT_TARGET_STEM, 1) 0>;
+		};
+	};
+};

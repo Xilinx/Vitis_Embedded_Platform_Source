@@ -1,0 +1,344 @@
+/*
+ * Versal PS IOU
+ *
+ * Copyright (c) 2016, Xilinx Inc
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of the <organization> nor the
+ *       names of its contributors may be used to endorse or promote products
+ *       derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+#include "versal.dtsh"
+
+#define GEM(g_name, g_base, g_size, g_dma, g_irq, rst_idx, pwr_idx)	\
+g_name: g_name@0 {							\
+	#address-cells = <1>;						\
+	#size-cells = <0>;						\
+	#priority-cells = <0>;						\
+	compatible = "cdns,gem";					\
+	interrupts = <g_irq g_irq>;					\
+	dma = <g_dma>;							\
+	memattr = <& ## g_name ## _memattr>;				\
+	reg = <0x0 g_base 0x0 g_size 0x0>;				\
+	num-priority-queues = <2>;					\
+	reset-gpios = <&crl rst_idx>;					\
+	power-gpios = <&psm_local pwr_idx>;				\
+}
+
+// FIXME: Add support for SMIDs
+#define ZDMA_CHANNEL(zname, zdomain, zbase, zirq, zbuswidth, zdma, mid, num)	\
+zname ## _mattr: zname ## mattr {					\
+	compatible = "qemu:memory-transaction-attr";			\
+	requester-id = <mid>;						\
+};									\
+									\
+zname: zname@zbase {							\
+	compatible = "xlnx,zdma";					\
+	reg = <0x0 zbase 0x0 MM_ADMA_CH0_SIZE 0x0>;			\
+	bus-width = <zbuswidth>;					\
+	interrupts = <zirq>;						\
+	#stream-id-cells = <0x1>;					\
+	dma = <zdma>;							\
+	memattr = <& ## zname ## _mattr>;				\
+	reset-gpios = < &crl CRL_RST_ADMA >;				\
+	#gpio-cells = <1>;	\
+	gpio-names = "memattr-secure";	\
+	gpios = <&lpd_slcr_secure num>;	\
+}
+
+&amba_fpd {
+	apu_ctrl: apu_ctrl@MM_FPD_FPD_APU {
+		compatible = "xlnx,versal-apu-ctrl";
+		reg = <0x0 MM_FPD_FPD_APU 0x0 MM_FPD_FPD_APU_SIZE 0x0>;
+		cpu0 = <&cpu0>;
+		cpu1 = <&cpu1>;
+		#gpio-cells = <1>;
+	};
+
+	afi_fm@MM_FPD_FPD_AFIFM0 {
+		compatible = "xlnx,versal-afi-fm";
+		reg = <0x0 MM_FPD_FPD_AFIFM0 0x0 MM_FPD_FPD_AFIFM0_SIZE 0x0>;
+	};
+
+	afi_fm@MM_FPD_FPD_AFIFM2 {
+		compatible = "xlnx,versal-afi-fm";
+		reg = <0x0 MM_FPD_FPD_AFIFM2 0x0 MM_FPD_FPD_AFIFM2_SIZE 0x0>;
+	};
+
+	cci_reg@MM_FPD_FPD_GPCCI {
+		compatible = "xlnx,cci_reg";
+		reg = <0x0 MM_FPD_FPD_GPCCI 0x0 MM_FPD_FPD_MAINCCI_SIZE 0x0>;
+	};
+
+	cci500@MM_FPD_FPD_MAINCCI {
+		compatible = "xlnx,cci500";
+		reg = <0x0 MM_FPD_FPD_MAINCCI 0x0 MM_FPD_FPD_MAINCCI_SIZE 0x0>;
+	};
+
+	cpm_crcpm@MM_CPM_CPM_CRCPM {
+		compatible = "xlnx,versal_cpm_crcpm";
+		reg = <0x0 MM_CPM_CPM_CRCPM 0x0 MM_CPM_CPM_CRCPM_SIZE 0x0>;
+	};
+
+	cpm_pcsr@MM_CPM_CPM_PCSR {
+		compatible = "xlnx,versal_cpm_pcsr";
+		reg = <0x0 MM_CPM_CPM_PCSR 0x0 MM_CPM_CPM_PCSR_SIZE 0x0>;
+	};
+
+	fpd_slcr@MM_FPD_FPD_SLCR {
+		compatible = "xlnx,versal-fpd-slcr";
+		interrupts = <SLCR_FPD_APB_IRQ_0>;
+		reg = <0x0 MM_FPD_FPD_SLCR 0x0 MM_FPD_FPD_SLCR_SIZE 0x0>;
+	};
+
+	fpd_slcr_secure@MM_FPD_FPD_SLCR {
+		compatible = "xlnx,versal-fpd-slcr-secure";
+		interrupts = <SLCR_SECURE_FPD_APB_IRQ_0>;
+		reg = <0x0 MM_FPD_FPD_SLCR_SECURE 0x0 MM_FPD_FPD_SLCR_SECURE_SIZE 0x0>;
+	};
+};
+
+&amba_lpd {
+	GEM(gem0, MM_GEM0, MM_GEM0_SIZE, &smmu_tbu0, GEM0_IRQ_0, CRL_RST_GEM0, PLR_PWR_GEM0);
+	GEM(gem1, MM_GEM1, MM_GEM1_SIZE, &smmu_tbu0, GEM1_IRQ_0, CRL_RST_GEM1, PLR_PWR_GEM1);
+
+	serial@MM_UART0 {
+		compatible = "pl011";
+		interrupts = <UART0_IRQ_0>;
+		reg = <0x0 MM_UART0 0x0 MM_UART0_SIZE 0x0 >;
+		reset-gpios = < &crl CRL_RST_UART0 >;
+		chardev = "serial2";
+	};
+	serial@MM_UART1 {
+		compatible = "pl011";
+		interrupts = <UART1_IRQ_0>;
+		reg = <0x0 MM_UART1 0x0 MM_UART1_SIZE 0x0 >;
+		reset-gpios = < &crl CRL_RST_UART1 >;
+		chardev = "serial3";
+	};
+
+	canfdbus0: canfdbus@0 {
+		compatible = "can-bus";
+	};
+
+	canfd0: can_core@MM_CANFD0 {
+		compatible = "xlnx,versal-canfd";
+		rx-fifo0 = <0x40>;
+		rx-fifo1 = <0x40>;
+		enable-rx-fifo1 = <0x1>;
+		canfdbus = <&canfdbus0>;
+		interrupts = <CAN0_IRQ_0>;
+		reg = <0x0 MM_CANFD0 0x0 MM_CANFD0_SIZE 0x0>;
+	};
+	canfd1: can_core@MM_CANFD1 {
+		compatible = "xlnx,versal-canfd";
+		rx-fifo0 = <0x40>;
+		rx-fifo1 = <0x40>;
+		enable-rx-fifo1 = <0x1>;
+		canfdbus = <&canfdbus0>;
+		interrupts = <CAN1_IRQ_0>;
+		reg = <0x0 MM_CANFD1 0x0 MM_CANFD1_SIZE 0x0>;
+	};
+
+	crl: crl@MM_CRL {
+		compatible = "xlnx,versal-crl";
+		reg = <0x0 MM_CRL 0x0 MM_CRL_SIZE 0x0>;
+		gpio-controller;
+		#gpio-cells = <1>;
+	};
+
+	lpd_iou_slcr: slcr@MM_LPD_IOU_SLCR {
+		compatible = "xlnx,versal-lpd-iou-slcr";
+		reg = <0x0 MM_LPD_IOU_SLCR 0x0 MM_LPD_IOU_SLCR_SIZE 0x0>;
+	};
+
+	rpu_ctrl: rpu_ctrl@MM_RPU {
+		compatible = "xlnx,versal-rpu";
+		reg-extended = <&amba_lpd 0x0 MM_RPU 0x0 MM_RPU_SIZE 0x0
+                                &amba_r5_0 0x0 0x0 0x0 0x80000 0x0
+                                &amba 0x0 MM_R5_0_ATCM 0x0 0x60000 0x0
+                                &amba_r5_1 0x0 0x0 0x0 0x80000 0x0
+                                &amba 0x0 0xFFE90000 0x0 0x50000 0x0>;
+		rpu0 = <&rpu_cpu0>;
+		rpu1 = <&rpu_cpu1>;
+
+		gpio-controller;
+		#gpio-cells = <1>;
+
+		gpios = < &crl CRL_RST_CPU_R5_0 &crl CRL_RST_CPU_R5_1
+			  &psm_local 42 &psm_local 43
+			>;
+	};
+
+	ipi: ipi@MM_IPI {
+		compatible = "xlnx,versal-ipi";
+		reg = <0x0 MM_IPI 0x0 MM_IPI_SIZE 0x0>;
+
+		/* Interrupt ordering here needs to match
+		 * QEMU's sysbus-irq output order.  */
+		interrupts = <IPI_PSM_IRQ_0
+			      IPI_PMC_IRQ_0
+			      IPI0_IRQ_0 IPI1_IRQ_0
+			      IPI2_IRQ_0 IPI3_IRQ_0
+			      IPI4_IRQ_0 IPI5_IRQ_0
+			      IPI6_IRQ_0
+			      IPI_PMC_NOBUF_IRQ_0
+			      IPI_APB_IRQ_0>;
+	};
+
+	ps7_spi_0: ps7-spi@MM_SPI0 {
+		compatible = "cdns,spi-r1p6";
+		interrupts = <SPI0_IRQ_0>;
+		num-ss-bits = <4>;
+		reg = <0x0 MM_SPI0 0x0 MM_SPI0_SIZE 0x0 >;
+
+		#address-cells = <1>; /* For child; must match SPI_FLASH() */
+		#size-cells = <0>;
+		#bus-cells = <1>;
+	};
+	ps7_spi_1: ps7-spi@MM_SPI1 {
+		compatible = "cdns,spi-r1p6";
+		interrupts = <SPI1_IRQ_0>;
+		num-ss-bits = <4>;
+		reg = <0x0 MM_SPI1 0x0 MM_SPI1_SIZE 0x0 >;
+
+		#address-cells = <1>; /* For child; must match SPI_FLASH() */
+		#size-cells = <0>;
+		#bus-cells = <1>;
+	};
+
+	usb2_0: usb2@USB2_0_XHCI {
+		compatible = "usb_dwc3";
+		reg = <0x0 MM_USB_DWC3_0 0x0 MM_USB_DWC3_0_SIZE 0x0 0x0 MM_USB_XHCI 0x0 MM_USB_XHCI_SIZE 0x0>;
+		interrupts = <USB2_IRQ_0 USB2_IRQ_1 USB2_IRQ_2 USB2_IRQ_3>;
+		dma = <&smmu_tbu0>;
+		memattr = <&usb0_memattr>;
+	};
+
+	ps7_ttc_0: ps7-ttc@TTC0 {
+		compatible = "xlnx,ps7-ttc-1.00.a";
+		interrupts = <TTC0_IRQ_0 TTC0_IRQ_1 TTC0_IRQ_2>;
+		reg = <0x0 MM_TTC0 0x0 MM_TTC0_SIZE 0x0>;
+		width = <32>;
+		reset-gpios = < &crl CRL_RST_TTC0 >;
+	};
+	ps7_ttc_1: ps7-ttc@TTC1 {
+		compatible = "xlnx,ps7-ttc-1.00.a";
+		interrupts = <TTC1_IRQ_0 TTC1_IRQ_1 TTC1_IRQ_2>;
+		reg = <0x0 MM_TTC1 0x0 MM_TTC1_SIZE 0x0>;
+		width = <32>;
+		reset-gpios = < &crl CRL_RST_TTC1 >;
+	};
+	ps7_ttc_2: ps7-ttc@TTC2 {
+		compatible = "xlnx,ps7-ttc-1.00.a";
+		interrupts = <TTC2_IRQ_0 TTC2_IRQ_1 TTC2_IRQ_2>;
+		reg = <0x0 MM_TTC2 0x0 MM_TTC2_SIZE 0x0>;
+		width = <32>;
+		reset-gpios = < &crl CRL_RST_TTC2 >;
+	};
+	ps7_ttc_3: ps7-ttc@TTC3 {
+		compatible = "xlnx,ps7-ttc-1.00.a";
+		interrupts = <TTC3_IRQ_0 TTC3_IRQ_1 TTC3_IRQ_2>;
+		reg = <0x0 MM_TTC3 0x0 MM_TTC3_SIZE 0x0>;
+		width = <32>;
+		reset-gpios = < &crl CRL_RST_TTC3 >;
+	};
+
+	ZDMA_CHANNEL(adma0, adma, MM_ADMA_CH0, ADMA_IRQ_0, 128, &smmu_tbu0, SMID_DMA0_CH0, 0x0);
+	ZDMA_CHANNEL(adma1, adma, MM_ADMA_CH1, ADMA_IRQ_1, 128, &smmu_tbu0, SMID_DMA0_CH1, 0x1);
+	ZDMA_CHANNEL(adma2, adma, MM_ADMA_CH2, ADMA_IRQ_2, 128, &smmu_tbu0, SMID_DMA0_CH2, 0x2);
+	ZDMA_CHANNEL(adma3, adma, MM_ADMA_CH3, ADMA_IRQ_3, 128, &smmu_tbu0, SMID_DMA0_CH3, 0x3);
+	ZDMA_CHANNEL(adma4, adma, MM_ADMA_CH4, ADMA_IRQ_4, 128, &smmu_tbu0, SMID_DMA0_CH4, 0x4);
+	ZDMA_CHANNEL(adma5, adma, MM_ADMA_CH5, ADMA_IRQ_5, 128, &smmu_tbu0, SMID_DMA0_CH5, 0x5);
+	ZDMA_CHANNEL(adma6, adma, MM_ADMA_CH6, ADMA_IRQ_6, 128, &smmu_tbu0, SMID_DMA0_CH6, 0x6);
+	ZDMA_CHANNEL(adma7, adma, MM_ADMA_CH7, ADMA_IRQ_7, 128, &smmu_tbu0, SMID_DMA0_CH7, 0x7);
+
+	afi_fm@MM_LPD_AFIFM4 {
+		compatible = "xlnx,versal-afi-fm";
+		reg = <0x0 MM_LPD_AFIFM4 0x0 MM_LPD_AFIFM4_SIZE 0x0>;
+	};
+
+	lpd_i2c_wrapper {
+		ps_i2c0: ps_i2c0@MM_PS_I2C0 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			compatible = "xlnx,ps7-i2c-1.00.a", "cdns,i2c-r1p10";
+			interrupts = <I2C0_IRQ_0>;
+			reg-extended = <&amba_lpd 0x0 MM_PS_I2C0 0x0 MM_PS_I2C0_SIZE 0x0>;
+		};
+		ps_i2c1: ps_i2c0@MM_PS_I2C1 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			compatible = "xlnx,ps7-i2c-1.00.a", "cdns,i2c-r1p10";
+			interrupts = <I2C1_IRQ_0>;
+			reg-extended = <&amba_lpd 0x0 MM_PS_I2C1 0x0 MM_PS_I2C1_SIZE 0x0>;
+		};
+	};
+
+	ocm_ctrl0: ocm_ctrl@OCM {
+		compatible = "xlnx,zynqmp-ocmc";
+		interrupts = <OCMINTR_IRQ_0>;
+		memsize = <MM_OCM_MEM_SIZE>;
+		reg = <0x0 MM_OCM 0x0 MM_OCM_SIZE 0x0>;
+	};
+
+	lpd_slcr@MM_LPD_SLCR {
+		compatible = "xlnx,versal-lpd-slcr";
+		reg = <0x0 MM_LPD_SLCR 0x0 MM_LPD_SLCR_SIZE 0x0>;
+	};
+
+	lpd_slcr_secure: lpd_slcr_secure@MM_LPD_SLCR_SECURE {
+		compatible = "xlnx,versal-lpd-slcr-secure";
+		reg = <0x0 MM_LPD_SLCR_SECURE 0x0 MM_LPD_SLCR_SECURE_SIZE 0x0>;
+		gpio-controller;
+		#gpio-cells = <1>;
+	};
+};
+
+&amba_root {
+	/* These devices need to be created before the CPUs.  */
+	crf: crf@MM_FPD_CRF {
+		compatible = "xlnx,versal-crf";
+		reg-extended = <&amba_fpd 0x0 MM_FPD_CRF 0x0 MM_FPD_CRF_SIZE 0x0>;
+		gpio-controller;
+		#gpio-cells = <1>;
+	};
+};
+
+/ {
+	/* Reset domains.  */
+	lpd_reset_domain@0 {
+		compatible = "qemu,reset-domain";
+		mr0 = <&amba_lpd>;
+		reset-gpios = < &pmc_clk_rst CRP_RST_PS_PS_SRST
+				&pmc_clk_rst CRP_RST_PS_PS_POR >;
+	};
+
+	fpd_reset_domain@0 {
+		compatible = "qemu,reset-domain";
+		mr0 = <&amba_fpd>;
+		reset-gpios = < &pmc_clk_rst CRP_RST_PS_PS_SRST
+				&pmc_clk_rst CRP_RST_PS_PS_POR
+				&crl CRL_RST_FPD_POR
+				&crl CRL_RST_FPD_SRST >;
+	};
+};
