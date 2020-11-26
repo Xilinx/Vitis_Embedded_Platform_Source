@@ -43,7 +43,7 @@ linux: xsa
 	$(MAKE) -C sw all
 
 petalinux_sysroot:
-	$(MAKE) -C sw/petalinux sysroot
+	$(MAKE) -C sw/build sysroot
 	@if [ -d $(SYSROOT) ]; then cp -rf $(SYSROOT) $(OUTPUT_PATH)/; fi
 
 .PHONY: platform
