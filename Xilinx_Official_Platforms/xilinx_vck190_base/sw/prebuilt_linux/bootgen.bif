@@ -1,7 +1,7 @@
 the_ROM_image:
 {
 image {
-	{ type=bootimage, file=xilinx_vck190_base_202020_1_presynth.pdi }
+	{ type=bootimage, file=xilinx_vck190_base_202020_1.pdi }
 }
 image {
 	id = 0x1c000000, name=apu_subsystem 

@@ -35,14 +35,14 @@ image_rootfs:
 	cp -f images/linux/rootfs.tar.gz ${SW_COMP_DIR}/platform/filesystem/rootfs.tar.gz
 	cp -f images/linux/rootfs.ext4 ${SW_COMP_DIR}/platform/filesystem/rootfs.ext4
 
-all: refresh_hw kernel_config rootfs_config linux sw_comp image_rootfs bootimage
+all: refresh_hw kernel_config rootfs_config linux sw_comp image_rootfs
 
 bootimage:
 	$(info "BOOT image for platforms")
-	@if [ -f project-spec/hw-description/$(PLATFORM_NAME)_presynth.pdi ]; then \
-		echo "INFO: BOOT image genration started...";  \
+	@if [ -f project-spec/hw-description/$(PLATFORM_NAME).pdi ]; then \
+		echo "INFO: BOOT image generation started...";  \
 		petalinux-package --boot --u-boot --plm no --psmfw no --qemu-rootfs no --force;  \
     cp -rf images/linux/BOOT.BIN ${SW_COMP_DIR}/platform/;  \
 	else  \
-		echo "WARNING: "$(PLATFORM_NAME)_presynth.pdi" file not found. Skipping BOOT image generation.";  \
+		echo "WARNING: "$(PLATFORM_NAME).pdi" file not found. Skipping BOOT image generation.";  \
 	fi

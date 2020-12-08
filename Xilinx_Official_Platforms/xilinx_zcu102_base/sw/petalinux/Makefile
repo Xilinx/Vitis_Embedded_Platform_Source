@@ -38,7 +38,7 @@ image_rootfs:
 	cp -f images/linux/rootfs.tar.gz ${SW_COMP_DIR}/platform/filesystem/rootfs.tar.gz
 	cp -f images/linux/rootfs.ext4 ${SW_COMP_DIR}/platform/filesystem/rootfs.ext4
 
-all: refresh_hw kernel_config rootfs_config linux sw_comp image_rootfs bootimage
+all: refresh_hw kernel_config rootfs_config linux sw_comp image_rootfs
 
 bootimage:
 	$(info "BOOT image for platforms")

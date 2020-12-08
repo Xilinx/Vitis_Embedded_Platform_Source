@@ -52,7 +52,7 @@ sw_comp:
 	cp -f images/linux/zynqmp_fsbl.elf ${SW_COMP_DIR}/platform/boot/fsbl.elf
 	cp -f images/linux/system.dtb ${SW_COMP_DIR}/platform/image/system.dtb
 
-all: extract_bit boot_common device-tree sw_comp bootimage
+all: extract_bit boot_common device-tree sw_comp
 
 bootimage:
 	$(info "BOOT image for platforms")

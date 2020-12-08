@@ -39,7 +39,7 @@ help::
 xsa:
 	$(MAKE) -C hw all
 
-linux: xsa
+linux: $(XSA)
 	$(MAKE) -C sw all
 
 petalinux_sysroot:
@@ -52,7 +52,7 @@ platform:
 	@if [ -d $(SW_COMP_DIR)/platform/filesystem ]; then cp -rf ${SW_COMP_DIR}/platform/filesystem $(OUTPUT_PATH)/${PLATFORM_NAME}/export/${PLATFORM_NAME}/sw/${PLATFORM_NAME}/xrt/; fi
 
 pre-built:
-	@if [ -f $(SW_COMP_DIR)/platform/BOOT.BIN ]; then mkdir $(OUTPUT_PATH)/${PLATFORM_NAME}/export/${PLATFORM_NAME}/pre-built/ && cp -rf $(SW_COMP_DIR)/platform/BOOT.BIN $(OUTPUT_PATH)/${PLATFORM_NAME}/export/${PLATFORM_NAME}/pre-built/; fi
+	@if [ -f $(SW_COMP_DIR)/platform/BOOT.BIN ]; then mkdir -p $(OUTPUT_PATH)/${PLATFORM_NAME}/export/${PLATFORM_NAME}/pre-built/ && cp -rf $(SW_COMP_DIR)/platform/BOOT.BIN $(OUTPUT_PATH)/${PLATFORM_NAME}/export/${PLATFORM_NAME}/pre-built/; fi
 
 clean:
 	$(MAKE) -C hw clean

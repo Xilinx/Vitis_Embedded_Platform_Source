@@ -53,10 +53,10 @@ all: extract_pdi boot_common device-tree sw_comp
 
 bootimage:
 	$(info "BOOT image for platforms")
-	@if [ -f $(CWD)/$(PLATFORM_NAME)_presynth.pdi ]; then \
+	@if [ -f $(CWD)/$(PLATFORM_NAME).pdi ]; then \
 		echo "INFO: BOOT image genration started...";  \
 		$(BOOTGEN) -arch versal -image $(CWD)/bootgen.bif -o images/linux/BOOT.BIN -w;  \
     cp -rf images/linux/BOOT.BIN ${SW_COMP_DIR}/platform/;  \
 	else  \
-		echo "WARNING: "$(PLATFORM_NAME)_presynth.pdi" file not found. Skipping BOOT image generation.";  \
+		echo "WARNING: "$(PLATFORM_NAME).pdi" file not found. Skipping BOOT image generation.";  \
 	fi
