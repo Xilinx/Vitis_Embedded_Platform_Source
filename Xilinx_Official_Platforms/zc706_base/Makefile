@@ -6,7 +6,6 @@ CPU_ARCH=a9
 
 .phony: all
 
-$(PLATOFORM): all
 all: $(PLATFORM)
 
 $(PLATFORM): xsa petalinux_proj pfm
