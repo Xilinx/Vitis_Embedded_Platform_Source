@@ -5,7 +5,6 @@ XSCT = $(XILINX_VITIS)/bin/xsct
 
 .phony: all
 
-$(PLATOFORM): all
 all: $(PLATFORM)
 
 $(PLATFORM): xsa petalinux_proj pfm

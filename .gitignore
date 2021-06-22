@@ -1,0 +1,167 @@
+# .gitignore
+
+# archive files
+*.bz2
+*.gz
+*.zip
+*.tar
+
+# common
+*.log
+
+# c/c++
+# prerequisites
+*.d
+# compiled object files
+*.o
+*.obj
+*.bc
+*.elf
+*.ll
+*.lo
+*.ko
+*.slo
+# precompiled headers
+*.gch
+*.pch
+# compiled static libraries
+*.a
+*.la
+*.lai
+*.lib
+# compiled dynamic libraries
+*.so
+*.so.*
+*.dll
+*.dylib
+# linker output
+*.ilk
+*.map
+*.exp
+# executables
+*.exe
+*.out
+*.app
+# debug files
+*.dSYM/
+*.idb
+*.pdb
+*.su
+
+# cmake
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+cmake-build-debug/
+cmake-build-release/
+
+# cuda
+*.i
+*.ii
+*.gpu
+*.ptx
+*.cubin
+*.fatbin
+
+# eclipse
+.metadata/
+
+# git
+patch/
+
+# jetbrains ide
+*.iml
+.idea/
+
+# jupyter notebook
+.ipynb_checkpoints/
+
+# python byte-compiled, optimized files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# latex
+## core latex/pdflatex auxiliary files:
+*.aux
+*.lof
+*.lot
+*.fls
+*.out
+*.toc
+*.fmt
+*.fot
+*.cb
+*.cb2
+.*.lb
+## intermediate documents:
+*.dvi
+*.xdv
+*-converted-to.*
+## bibliography auxiliary files (bibtex/biblatex/biber):
+*.bbl
+*.bcf
+*.blg
+*-blx.aux
+*-blx.bib
+*.run.xml
+## build tool auxiliary files:
+*.fdb_latexmk
+*.synctex
+*.synctex(busy)
+*.synctex.gz
+*.synctex.gz(busy)
+*.pdfsync
+## build tool directories for auxiliary files
+latex.out/
+
+# xilinx
+# generated folders
+*.cache
+*.gen
+*.hw
+*.ip_user_files
+*.runs
+*.sdk
+*.srcs
+.Xil
+# generated files
+*_sys.txt
+*.jou
+*.xpr
+
+# media
+video/
+
+# folders
+archive/
+backup/
+!bin
+bin/*
+build/
+build_isolated/
+checkpoint/
+devel/
+devel_isolated/
+inbox/
+logs/
+model/
+outbox/
+output/
+results/
+training_results/
+Temp/
+
+# inclusions
+!bin/setup.sh
+!bin/.aliases.sh
+
+# Operating system files
+~*.*
+.DS_Store
+Thumbs.db
