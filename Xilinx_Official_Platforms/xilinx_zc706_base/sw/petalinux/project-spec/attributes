@@ -1,0 +1,7 @@
+#Virtual Providers
+
+
+
+#defconfigs
+
+UBOOT_DEFAULT_DEFCONFIG="xilinx_zynq_virt_defconfig"
