@@ -1,5 +1,9 @@
 # Change Logs
 
+## 2022.2
+
+- Removed Petalinux based sw components generation from platform creation.
+
 ## 2022.1
 
 - VCK190 Base Platform clock frequencies updated to match the fraction of AI Engine clock frequency.

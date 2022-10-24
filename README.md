@@ -8,12 +8,11 @@ platforms][3].
 
 To build the Vitis embedded platforms from source code in this repository, you will need to have the following tools installed and follow the [build instructions](#build-instructions):
 
-- A Linux-based host OS supported by Vitis and PetaLinux
-- [Vitis][1] 2022.1
-- [Common Software Image](#installing-the-common-software) 2022.1 or [PetaLinux][2] 2022.1
+- A Linux-based host OS supported by Vitis
+- [Vitis][1] 2022.2
+- [Common Software Image](#installing-the-common-software) 2022.2
 
 [1]: https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vitis.html
-[2]: https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/embedded-design-tools.html
 
 To learn how to customize Vitis embedded platforms, please refer to [Vitis Platform Creation Tutorials](https://github.com/Xilinx/Vitis-Tutorials/tree/master/Vitis_Platform_Creation).
 
@@ -31,43 +30,48 @@ This repository is divided into two sections:
 
 ## Build Instructions
 
-  Vitis and PetaLinux environment need to be setup before building the platform.
+  Vitis environment need to be setup before building the platform.
 
   ```bash
-  source <Vitis_install_path>/Vitis/2022.1/settings64.sh
-  source <PetaLinux_install_path>/settings.sh
+  source <Vitis_install_path>/Vitis/2022.2/settings64.sh
   ```
   This package comes with sources to generate the Vitis platform with these steps:
 
   1. Generate hardware specification file (XSA) using Vivado.
-  2. Generate software components of platform (using either Petalinux or XSCT).
+  2. Generate software components of platform (using XSCT).
   3. Generate the Vitis platform by packaging hardware and software together using XSCT tool
 
 
 The following table summarizes use cases of platforms build :
 
-  |     | Build Platform with pre-built Linux | Build platform with petalinux |
-  | --- | --- | --- |
-  | *Introduction:* | This method uses pre-built software components. Time taken for building sw components can be reduced | This method builds all software components. Users can customise software components to have additional libraries, packages etc |
-  | *Requirements:* | Common Software. Use Sysroot SDK from Common Software | Petalinux Tool. Install PetaLinux generated SDK for this project |
-  | *Pre-Synth command:* | make all | make all PREBUILT_LINUX_PATH=<path/to/common_sw/dir | make all PETALINUX_BUILD=TRUE 
-  | *Post-Impl command:* | make all PRE_SYNTH=FALSE | make all PRE_SYNTH=FALSE PETALINUX_BUILD=TRUE|
+  |     | Build Platform with pre-built Linux |
+  | --- | --- |
+  | *Introduction:* | This method uses pre-built software components. Time taken for building sw components can be reduced |
+  | *Requirements:* | Common Software. Use Sysroot SDK from Common Software |
+  | *Pre-Synth command:* | make all PREBUILT_LINUX_PATH=<path/to/common_sw/dir> |
+  | *Post-Impl command:* | make all PRE_SYNTH=FALSE PREBUILT_LINUX_PATH=<path/to/common_sw/dir> |
 
 The platform hardware has two types.
 
 - **Pre-Synth XSA** : Hardware specification file (XSA) in the platform does not contain bitstream. The XSA build time is quicker than Post-Impl XSA. By default, Vitis platform Makefile generates pre-synth platforms. Pre-Synth XSA is not valid for DFX platforms.
-- **Post-Impl XSA** : XSA in this flow contains PL bitstream in it and generation time will be longer. DFX platforms require post-impl XSA.
+- **Post-Impl XSA** : XSA generation flow goes through implementation. The XSA contains PL bitstream and the platform generation time will be longer. 
+  - DFX platforms require post-impl XSA.
+  - Flat platform doesn't require post-impl XSA. If flat platform creation flow generates post-impl XSA, user can get platform resource info in platforminfo. Implementation issues may be found in early stage. It won't save time during the application v++ link phase. V++ will rerun implementation for the whole design.
+
+> Note: For Versal platforms, the PDI in XSA will always be pre-synth PDI.
 
 
 There are two methods to prepare the platform software.
 
 - Use **Pre-built Linux** components: PetaLinux provides pre-built common software images. The image for each architecture includes Linux kernel, root file system, sysroot and common boot components like u-boot. The Vitis platform can use these components directly. Users need to [download and install common images](#installing-the-common-software) before building Vitis base platforms.
-- Use **PetaLinux** to generate everything locally. Users need to install PetaLinux and setup PetaLinux environment before building Vitis base platforms.
+- Use **PetaLinux**: Users can use Petalinux to generate everything locally. Using this method users can customize and generate software components. Users need to install PetaLinux and setup PetaLinux environment before building Vitis base platforms. [Petalinux software components generation Tutorial][2]
+
+[2]: https://github.com/Xilinx/Vitis-Tutorials/tree/master/Vitis_Platform_Creation/Feature_Tutorials/02_petalinux_customization
 
 
 The Flags used in commands of above table are explained below :
 
-- *PREBUILT_LINUX_PATH*: By default, this flag is set to opt/xilinx/platform/xilinx-<arch>-common-<ver>. If platform needs to be build using package located at another directory then provide the pre-built Linux image path to skip the PetaLinux image building process. The build flow will generate device tree from XSA and run platform package with the pre-built Linux image. Common Linux components are provided as pre-built binaries by Xilinx to fullfill most evaluation requirements. Please refer to [UG1393- Using Embedded Platforms chapter][4] for more information. Set this flag to point common software components(u-boot, boot.scr, bl31.elf). These files are architecture specific. Zynq, zynqMP and Versal have different software component files. To generate linux components locally according to the PetaLinux project sources in this directory, donot set this flag.
+- *PREBUILT_LINUX_PATH*: By default, this flag is set to /opt/xilinx/platform/xilinx-<arch>-common-<ver>. If platform needs to be build using package located at another directory then provide the pre-built Linux image path to this flag. The build flow will generate device tree from XSA and run platform package with the pre-built Linux image. Common Linux components are provided as pre-built binaries by Xilinx to fullfill most evaluation requirements. Please refer to [UG1393- Using Embedded Platforms chapter][3] for more information. Set this flag to point common software components(u-boot, boot.scr, bl31.elf). These files are architecture specific. Zynq, zynqMP and Versal have different software component files.
 
     ```bash
     make all
@@ -77,7 +81,7 @@ The Flags used in commands of above table are explained below :
     # This dir should contain u-boot.elf, boot.scr and bl31.elf
     ```
 
-[4]: https://www.xilinx.com/cgi-bin/docs/rdoc?t=vitis+doc;v=latest;d=usingembeddedplatforms.html;a=mym1591997179666
+[3]: https://www.xilinx.com/cgi-bin/docs/rdoc?t=vitis+doc;v=latest;d=usingembeddedplatforms.html;a=mym1591997179666
 
 - *PRE_SYNTH*: This flag is used to specify XSA type that needs to be built. The default value is `TRUE`, which means pre-synth XSA is generated. To generate post-impl XSA, set this variable to `FALSE`. The build flow will run through implementation in Vivado and include implementation results to the post-impl XSA.
 
@@ -95,11 +99,13 @@ Notes:
 
 - Building of the base platform is supported on Linux environments **only** (although it is possible to build inside a VM or Docker container), because the platform
 building process involves cross-compiling in Linux.
-- When building PetaLinux image from source code, the build temp directory is set to **/tmp/<platform_name>**. You can update the build temp directory by modifying CONFIG_TMP_DIR_LOCATION option in **<platform_name>/sw/petalinux/project-spec/configs/config** file.
 
 ## Installing the Common Software
 
-Xilinx provides pre-built Common Software images so that user can skip PetaLinux project creation and build process for common usages. They can be downloaded from Xilinx Download Center under [Vitis Embedded Platform][3] tab or [PetaLinux tab][2]. Please refer to *Common images for Embedded Vitis platforms* section. 
+Xilinx provides pre-built Common Software images so that user can skip PetaLinux project creation and build process for common usages. They can be downloaded from Xilinx Download Center under [Vitis Embedded Platform][4] tab or [PetaLinux tab][5]. Please refer to *Common images for Embedded Vitis platforms* section. 
+
+[4]: https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/embedded-platforms.html
+[5]: https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/embedded-design-tools.html
 
 The common image packages download contains these components
 
@@ -118,7 +124,7 @@ To use the common software, download pre-built common images from https://www.xi
 
 ## Installing the Sysroot (Yocto SDK)
 
-Vitis applications require to build with libaries in sysroot (Yocto SDK). Sysroot can be installed from `sdk.sh`, which is generated by PetaLinux or included in Common Software image. Building Vitis base platforms doesn't require sysroot.
+Vitis applications require to build with libaries in sysroot (Yocto SDK). Sysroot can be installed from `sdk.sh`, which is included in Common Software images. Building Vitis base platforms doesn't require sysroot.
 
 To install sysroot from `sdk.sh`, you can run the script `sdk.sh` directly.
 
@@ -143,7 +149,5 @@ Usage: sdk.sh [-y] [-d <dir>]
   -l         list files that will be extracted
 ```
 
-
-Running the command `make sysroot` installs sysroot to **platform_repo/sysroot**. This requires PetaLinux tool to be sourced.
 
 To cross-compile with this SDK from the command line, run `source ./environment-setup-*-xilinx-linux` to set up your environment (cross-compile build tools, libraries, etc).
