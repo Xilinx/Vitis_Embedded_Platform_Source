@@ -28,10 +28,6 @@ help::
 	@echo '  make all PREBUILT_LINUX_PATH=<path/to/common_sw/dir'
 	@echo '			 Command used to generate platform with pre-built software components. By default, makefile looks for pre-built images in current directory or /opt/xilinx/platform/. Path to pre-built common images present in another dir can be passed to makefile manually using this command'
 	@echo ''
-	@echo '  make all PETALINUX_BUILD=TRUE'
-	@echo '      Command used to generate platform with petalinux. Source petalinux before running this command.'
-	@echo '      This command builds all software components.'
-	@echo ''
 	@echo '  *************************************************************************************************************'
 	@echo '  *                                                                                                           *'
 	@echo '  *  Please download Prebuilt Image using the following URL :                                                 *'
@@ -44,10 +40,6 @@ help::
 	@echo '      Command used to generate platform with post-impl xsa and pre-built software components.'
 	@echo '      By default, PRE_SYNTH=TRUE.'
 	@echo ''
-	@echo '  make all PRE_SYNTH=FALSE PETALINUX_BUILD=TRUE'
-	@echo '      Command used to generate platform with post-impl xsa using petalinux. Source petalinux before running this command.'
-	@echo '      By default, PRE_SYNTH=TRUE.'
-	@echo ''
 	@echo '  make linux XSA=/home/user/$(PLATFORM_NAME)/vivado/build/$(PLATFORM_NAME).xsa'
 	@echo '  make platform'
 	@echo '      Run these commands when XSA is already built in some other folder and no modifications are needed to it.'
@@ -57,7 +49,7 @@ help::
 	@echo '      Command to remove all the generated files.'
 	@echo ''
 
-.PHONY: all xsa linux sysroot platform clean
+.PHONY: all xsa linux platform clean
 
 xsa: $(XSA)
 
@@ -68,9 +60,6 @@ linux: $(SW_FILES)
 
 $(SW_FILES): $(XSA)
 	$(MAKE) -C sw all
-
-sysroot:
-	$(MAKE) -C sw/petalinux sysroot
 
 all platform: $(XSA) $(SW_FILES)
 	$(XSCT) -nodisp -sdx $(PLATFORM_SW_SRC)/generate_platform.tcl platform_name "${PLATFORM_NAME}" \

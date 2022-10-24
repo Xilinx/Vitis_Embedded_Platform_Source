@@ -19,3 +19,5 @@ foreach BLI_tile [get_tiles -filter TILE_TYPE=~BLI_?RAM_?OCF_T?_TILE] {
         }
     }   
 }
+#Set the clibrated dskew clock to off 
+set_property GCLK_DESKEW Off [get_nets -of [get_pins -of [get_cells -hier -filter PRIMITIVE_TYPE=~CLOCK.BUFFER.*] -filter DIRECTION==OUT]]

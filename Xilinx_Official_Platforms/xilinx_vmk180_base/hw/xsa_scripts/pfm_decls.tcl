@@ -41,7 +41,6 @@ set_property PFM.AXI_PORT {M01_AXI {memport "M_AXI_GP" sptag "" memory ""} M02_A
 
 # Platform_Properties
 set_property platform.num_compute_units 63 [current_project]
-set_property platform.default_output_type "sd_card" [current_project]
 set_property platform.design_intent.embedded "true" [current_project]
 set_property platform.extensible "true" [current_project]
 set_property platform.design_intent.server_managed "false" [current_project]

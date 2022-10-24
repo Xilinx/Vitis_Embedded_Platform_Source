@@ -353,9 +353,6 @@ proc create_hier_cell_VitisRegion { parentCell nameHier } {
     ] [get_bd_intf_pins /VitisRegion/ai_engine_0/S00_AXI]
 
 
-  # Create instance: IsoReset, and set properties
-  set IsoReset [ create_bd_cell -type ip -vlnv xilinx.com:ip:proc_sys_reset IsoReset ]
-
   # Create interface connections
   connect_bd_intf_net -intf_net AIE_CTRL_INI_1 [get_bd_intf_pins AIE_CTRL_INI] [get_bd_intf_pins ConfigNoc/S00_INI]
   connect_bd_intf_net -intf_net ConfigNoc_M00_AXI [get_bd_intf_pins ConfigNoc/M00_AXI] [get_bd_intf_pins ai_engine_0/S00_AXI]
@@ -381,7 +378,6 @@ proc create_hier_cell_VitisRegion { parentCell nameHier } {
   connect_bd_net                                        [get_bd_pins Interrupt1]                         [get_bd_pins xlconcat_2/dout]
 
   # Create port connections
-  connect_bd_net -net IsoReset_peripheral_aresetn [get_bd_pins IsoReset/peripheral_aresetn] [get_bd_pins IsoRegDynamic/aresetn]
   connect_bd_net -net PlClocks_clk_out1 [get_bd_pins clk_wizard_0/clk_out1] [get_bd_pins psr_104mhz/slowest_sync_clk] [get_bd_pins icn_ctrl_1/aclk] [get_bd_pins icn_ctrl_2/aclk] [get_bd_pins icn_ctrl_3/aclk] [get_bd_pins to_delete_kernel_ctrl_0/aclk ] [get_bd_pins to_delete_kernel_ctrl_1/aclk ] [get_bd_pins icn_ctrl_4/aclk] [get_bd_pins icn_ctrl_5/aclk] [get_bd_pins to_delete_kernel_ctrl_2/aclk ] [get_bd_pins to_delete_kernel_ctrl_3/aclk ]
   connect_bd_net -net clk_wizard_0_clk_out2 [get_bd_pins clk_wizard_0/clk_out2] [get_bd_pins psr_156mhz/slowest_sync_clk]
   connect_bd_net -net clk_wizard_0_clk_out3 [get_bd_pins clk_wizard_0/clk_out3] [get_bd_pins psr_312mhz/slowest_sync_clk]
@@ -391,8 +387,8 @@ proc create_hier_cell_VitisRegion { parentCell nameHier } {
   connect_bd_net -net clk_wizard_0_clk_out7 [get_bd_pins clk_wizard_0/clk_out7] [get_bd_pins psr_625mhz/slowest_sync_clk]
   connect_bd_net -net clk_wizard_0_locked [get_bd_pins clk_wizard_0/locked] [get_bd_pins psr_104mhz/dcm_locked] [get_bd_pins psr_156mhz/dcm_locked] [get_bd_pins psr_208mhz/dcm_locked] [get_bd_pins psr_416mhz/dcm_locked] [get_bd_pins psr_625mhz/dcm_locked] [get_bd_pins psr_78mhz/dcm_locked] [get_bd_pins psr_312mhz/dcm_locked]
   connect_bd_net -net ai_engine_0_s00_axi_aclk [get_bd_pins ConfigNoc/aclk0] [get_bd_pins ai_engine_0/s00_axi_aclk]
-  connect_bd_net -net icn_ctrl_1_aclk1 [get_bd_pins ExtClk] [get_bd_pins icn_ctrl_1/aclk1] [get_bd_pins IsoRegDynamic/aclk] [get_bd_pins IsoReset/slowest_sync_clk] [get_bd_pins clk_wizard_0/clk_in1] [get_bd_pins LPDDRNoc/aclk0] [get_bd_pins DDRNoc/aclk0]
-  connect_bd_net -net ext_aresetn_1 [get_bd_pins ExtReset] [get_bd_pins IsoReset/ext_reset_in] [get_bd_pins clk_wizard_0/resetn] [get_bd_pins psr_104mhz/ext_reset_in] [get_bd_pins psr_156mhz/ext_reset_in] [get_bd_pins psr_312mhz/ext_reset_in] [get_bd_pins psr_78mhz/ext_reset_in] [get_bd_pins psr_208mhz/ext_reset_in] [get_bd_pins psr_416mhz/ext_reset_in] [get_bd_pins psr_625mhz/ext_reset_in]
+  connect_bd_net -net icn_ctrl_1_aclk1 [get_bd_pins ExtClk] [get_bd_pins icn_ctrl_1/aclk1] [get_bd_pins IsoRegDynamic/aclk] [get_bd_pins clk_wizard_0/clk_in1] [get_bd_pins LPDDRNoc/aclk0] [get_bd_pins DDRNoc/aclk0]
+  connect_bd_net -net ext_aresetn_1 [get_bd_pins ExtReset] [get_bd_pins IsoRegDynamic/aresetn] [get_bd_pins clk_wizard_0/resetn] [get_bd_pins psr_104mhz/ext_reset_in] [get_bd_pins psr_156mhz/ext_reset_in] [get_bd_pins psr_312mhz/ext_reset_in] [get_bd_pins psr_78mhz/ext_reset_in] [get_bd_pins psr_208mhz/ext_reset_in] [get_bd_pins psr_416mhz/ext_reset_in] [get_bd_pins psr_625mhz/ext_reset_in]
   connect_bd_net -net psr_104mhz_peripheral_aresetn [get_bd_pins psr_104mhz/peripheral_aresetn] [get_bd_pins icn_ctrl_1/aresetn] [get_bd_pins icn_ctrl_2/aresetn] [get_bd_pins icn_ctrl_3/aresetn] [get_bd_pins to_delete_kernel_ctrl_0/aresetn] [get_bd_pins to_delete_kernel_ctrl_1/aresetn] [get_bd_pins icn_ctrl_4/aresetn] [get_bd_pins icn_ctrl_5/aresetn] [get_bd_pins to_delete_kernel_ctrl_3/aresetn] [get_bd_pins to_delete_kernel_ctrl_3/aresetn]
 
   set_property -dict [list APERTURES {{0xA700_0000 144M}}] [get_bd_intf_pins PL_CTRL_S_AXI]
@@ -639,10 +635,12 @@ proc create_root_design { parentCell } {
   set_property -dict [ list \
     CONFIG.C_IRQ_CONNECTION {1} \
     CONFIG.C_ASYNC_INTR  {0xFFFFFFFF} \
+    CONFIG.C_CASCADE_MASTER {1} \
+    CONFIG.C_EN_CASCADE_MODE {1} \
     ] $axi_intc_parent
 
   set dfx_decoupler [create_bd_cell -type ip -vlnv xilinx.com:ip:dfx_decoupler:1.0 dfx_decoupler]
-  set_property -dict [list CONFIG.ALL_PARAMS {HAS_SIGNAL_CONTROL 0 HAS_SIGNAL_STATUS 0 HAS_AXI_LITE 1 INTF {intf_0 {ID 0 VLNV xilinx.com:interface:aximm_rtl:1.0 MODE slave} intf_1 {ID 1 VLNV xilinx.com:signal:interrupt_rtl:1.0 MODE master} intf_2 {ID 2 VLNV xilinx.com:signal:interrupt_rtl:1.0 MODE master}}}] $dfx_decoupler
+  set_property -dict [list CONFIG.ALL_PARAMS {HAS_SIGNAL_CONTROL 0 HAS_SIGNAL_STATUS 0 HAS_AXI_LITE 1 INTF {intf_0 {ID 0 VLNV xilinx.com:interface:aximm_rtl:1.0 MODE slave} intf_1 {ID 1 VLNV xilinx.com:signal:interrupt_rtl:1.0 MODE master} intf_2 {ID 2 VLNV xilinx.com:signal:interrupt_rtl:1.0 MODE master} intf_3 {ID 3 VLNV xilinx.com:signal:clock_rtl:1.0 MODE slave} intf_4 {ID 4 VLNV xilinx.com:signal:reset_rtl:1.0 MODE slave}}}] $dfx_decoupler
 
   # Create instance: ps_noc, and set properties
   set ps_noc [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_noc ps_noc ]
@@ -785,9 +783,6 @@ proc create_root_design { parentCell } {
   create_bd_cell -type ip -vlnv xilinx.com:ip:xlconcat:2.1 xlconcat_0
   set_property -dict [list CONFIG.NUM_PORTS {2} CONFIG.IN0_WIDTH.VALUE_SRC USER CONFIG.IN0_WIDTH {31}] [get_bd_cells xlconcat_0]
 
-  create_bd_cell -type ip -vlnv xilinx.com:ip:xlconcat:2.1 xlconcat_3
-  set_property -dict [list CONFIG.NUM_PORTS {1} CONFIG.IN0_WIDTH.VALUE_SRC USER CONFIG.IN0_WIDTH {32}] [get_bd_cells xlconcat_3]
-
   # Create interface connections
   connect_bd_intf_net -intf_net ShellSide_M_AXI [get_bd_intf_pins icn_ctrl_0/S00_AXI]          [get_bd_intf_pins CIPS_0/M_AXI_FPD]
   connect_bd_intf_net -intf_net dfx_decoupler_M_AXI  [get_bd_intf_pins dfx_decoupler/rp_intf_0] [get_bd_intf_pins VitisRegion/PL_CTRL_S_AXI]
@@ -830,8 +825,7 @@ proc create_root_design { parentCell } {
   connect_bd_intf_net -intf_net ps_noc_M08_INI [get_bd_intf_pins VitisRegion/AIE_CTRL_INI] [get_bd_intf_pins ps_noc/M08_INI]
   connect_bd_net                               [get_bd_pins axi_intc_parent/irq] [get_bd_pins CIPS_0/pl_ps_irq0]
   connect_bd_net                               [get_bd_pins VitisRegion/Interrupt] [get_bd_pins dfx_decoupler/rp_intf_1_INTERRUPT]
-  connect_bd_net                               [get_bd_pins xlconcat_3/In0] [get_bd_pins dfx_decoupler/s_intf_1_INTERRUPT]
-  connect_bd_net                               [get_bd_pins xlconcat_3/dout] [get_bd_pins axi_intc_cascaded_1/intr]
+  connect_bd_net                               [get_bd_pins dfx_decoupler/s_intf_1_INTERRUPT] [get_bd_pins axi_intc_cascaded_1/intr]
   connect_bd_net                               [get_bd_pins VitisRegion/Interrupt1] [get_bd_pins dfx_decoupler/rp_intf_2_INTERRUPT]
   connect_bd_net                               [get_bd_pins dfx_decoupler/s_intf_2_INTERRUPT] [get_bd_pins xlconcat_0/In0]
   connect_bd_net -net axi_intc_cascaded_1_irq  [get_bd_pins axi_intc_cascaded_1/irq] [get_bd_pins xlconcat_0/In1]
@@ -839,18 +833,20 @@ proc create_root_design { parentCell } {
 
   # Create port connections
   connect_bd_net -net CIPS_0_pl_clk0 [get_bd_pins CIPS_0/pl0_ref_clk] [get_bd_pins clk_wizard_1/clk_in1]
-  connect_bd_net -net CtrlReset_peripheral_aresetn [get_bd_pins VitisRegion/ExtReset] [get_bd_pins IsoReset/peripheral_aresetn] [get_bd_pins axi_intc_parent/s_axi_aresetn] [get_bd_pins icn_ctrl_0/aresetn] [get_bd_pins dfx_decoupler/intf_0_arstn] [get_bd_pins dfx_decoupler/s_axi_reg_aresetn] [get_bd_pins axi_intc_cascaded_1/s_axi_aresetn]
+  connect_bd_net -net CtrlReset_peripheral_aresetn [get_bd_pins dfx_decoupler/s_intf_4_RST] [get_bd_pins IsoReset/peripheral_aresetn] [get_bd_pins axi_intc_parent/s_axi_aresetn] [get_bd_pins icn_ctrl_0/aresetn] [get_bd_pins dfx_decoupler/intf_0_arstn] [get_bd_pins dfx_decoupler/s_axi_reg_aresetn] [get_bd_pins axi_intc_cascaded_1/s_axi_aresetn]
   connect_bd_net -net ps_cips_fpd_axi_noc_axi0_clk [get_bd_pins CIPS_0/fpd_axi_noc_axi0_clk] [get_bd_pins ps_noc/aclk4]
   connect_bd_net -net ps_cips_fpd_axi_noc_axi1_clk [get_bd_pins CIPS_0/fpd_axi_noc_axi1_clk] [get_bd_pins ps_noc/aclk5]
   connect_bd_net -net ps_cips_lpd_axi_noc_clk [get_bd_pins CIPS_0/lpd_axi_noc_clk] [get_bd_pins ps_noc/aclk6]
   connect_bd_net -net ps_cips_pl0_resetn [get_bd_pins IsoReset/ext_reset_in] [get_bd_pins CIPS_0/pl0_resetn] [get_bd_pins clk_wizard_1/resetn]
   connect_bd_net -net clk_wizard_1_locked [get_bd_pins clk_wizard_1/locked] [get_bd_pins IsoReset/dcm_locked]
-  connect_bd_net -net clk_wizard_1_clk_out1 [get_bd_pins VitisRegion/ExtClk] [get_bd_pins IsoReset/slowest_sync_clk] [get_bd_pins CIPS_0/m_axi_fpd_aclk] [get_bd_pins clk_wizard_1/clk_out1] [get_bd_pins axi_intc_parent/s_axi_aclk] [get_bd_pins icn_ctrl_0/aclk] [get_bd_pins dfx_decoupler/intf_0_aclk] [get_bd_pins dfx_decoupler/aclk] [get_bd_pins axi_intc_cascaded_1/s_axi_aclk] 
+  connect_bd_net -net clk_wizard_1_clk_out1 [get_bd_pins dfx_decoupler/s_intf_3_CLK] [get_bd_pins IsoReset/slowest_sync_clk] [get_bd_pins CIPS_0/m_axi_fpd_aclk] [get_bd_pins clk_wizard_1/clk_out1] [get_bd_pins axi_intc_parent/s_axi_aclk] [get_bd_pins icn_ctrl_0/aclk] [get_bd_pins dfx_decoupler/intf_0_aclk] [get_bd_pins dfx_decoupler/aclk] [get_bd_pins axi_intc_cascaded_1/s_axi_aclk] 
   connect_bd_net -net ps_cips_pmc_axi_noc_axi0_clk [get_bd_pins CIPS_0/pmc_axi_noc_axi0_clk] [get_bd_pins ps_noc/aclk7]
   connect_bd_net -net ps_cips_ps_ps_noc_cci_axi0_clk [get_bd_pins CIPS_0/fpd_cci_noc_axi0_clk] [get_bd_pins ps_noc/aclk0]
   connect_bd_net -net ps_cips_ps_ps_noc_cci_axi1_clk [get_bd_pins CIPS_0/fpd_cci_noc_axi1_clk] [get_bd_pins ps_noc/aclk1]
   connect_bd_net -net ps_cips_ps_ps_noc_cci_axi2_clk [get_bd_pins CIPS_0/fpd_cci_noc_axi2_clk] [get_bd_pins ps_noc/aclk2]
   connect_bd_net -net ps_cips_ps_ps_noc_cci_axi3_clk [get_bd_pins CIPS_0/fpd_cci_noc_axi3_clk] [get_bd_pins ps_noc/aclk3]
+  connect_bd_net -net dfx_decoupler_clk_out [get_bd_pins dfx_decoupler/rp_intf_3_CLK] [get_bd_pins VitisRegion/ExtClk]
+  connect_bd_net -net dfx_decoupler_reset_out [get_bd_pins dfx_decoupler/rp_intf_4_RST] [get_bd_pins VitisRegion/ExtReset]
 
   # Create address segments
   assign_bd_address -offset 0xA4000000 -range 0x00010000 -target_address_space [get_bd_addr_spaces CIPS_0/M_AXI_FPD] [get_bd_addr_segs axi_intc_cascaded_1/S_AXI/Reg] -force

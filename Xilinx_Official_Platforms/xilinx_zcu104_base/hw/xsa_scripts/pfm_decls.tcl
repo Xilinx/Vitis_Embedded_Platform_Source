@@ -36,6 +36,12 @@ for {set i 1} {$i < 16} {incr i} {
 }
 set_property PFM.AXI_PORT $hpc0Val [get_bd_cells /axi_interconnect_hpc0]
 
+set lpdVal []
+for {set i 1} {$i < 16} {incr i} {
+  lappend lpdVal S[format %02d $i]_AXI {memport "S_AXI_HP" sptag "LPD" memory "ps_e LPD_DDR_LOW"}
+}
+set_property PFM.AXI_PORT $lpdVal [get_bd_cells /axi_interconnect_lpd]
+
 set_property PFM.IRQ {intr {id 0 range 32}} [get_bd_cells /axi_intc_0]
 
 #Platform Properties

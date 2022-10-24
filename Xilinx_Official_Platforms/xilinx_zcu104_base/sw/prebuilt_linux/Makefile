@@ -17,7 +17,7 @@ TOP_DIR = $(CWD)/../../
 include $(TOP_DIR)/platform.mk
 
 SYSTEM_USER_DTSI = $(CWD)/user_dts/system-user.dtsi
-SYSTEM_CONF_DTS  =  $(CWD)/user_dts/system-conf.dtsi
+#SYSTEM_CONF_DTS  =  $(CWD)/user_dts/system-conf.dtsi
 BIT_FILE         = $(SW_DIR)/hw.bit
 
 .PHONY: check-vitis check-prebuilt all sw_comp dtb bootimage clean
@@ -32,13 +32,11 @@ $(DTB_FILE): $(XSA)
 	@if [ ! -d $(BOOT_DIR) ]; then mkdir -p $(BOOT_DIR); fi
 	mkdir -p $(SW_DIR)/tmp
 	$(info "DTB generation started using XSCT")
-	$(XSCT) -eval "createdts -hw $(XSA) -git-url https://github.com/Xilinx/device-tree-xlnx.git -git-branch xlnx_rel_v2022.1 -board $(BOARD) -platform $(PLATFORM) -zocl -out $(SW_DIR)/tmp"
+	$(info $(XSCT) -eval "createdts -hw $(XSA) -git-url https://github.com/Xilinx/device-tree-xlnx.git -git-branch xlnx_rel_v2022.2 -board $(BOARD) -platform $(PLATFORM) -zocl -out $(SW_DIR)/tmp -dtsi $(SYSTEM_USER_DTSI) -compile")
+	@$(XSCT) -eval "createdts -hw $(XSA) -git-url https://github.com/Xilinx/device-tree-xlnx.git -git-branch xlnx_rel_v2022.2 -board $(BOARD) -platform $(PLATFORM) -zocl -out $(SW_DIR)/tmp -dtsi $(SYSTEM_USER_DTSI) -compile" && echo -e "\n***Device Tree generation Successful!\n" || echo -e "\n"
 	$(eval BSP_PATH = $(SW_DIR)/tmp/$(PLATFORM)/$(CORE)/device_tree_domain/bsp/)
-	cp -rf  $(SYSTEM_CONF_DTS) $(BSP_PATH)
-	cp -rf  $(SYSTEM_USER_DTSI) $(BSP_PATH)
-	@if [ -f $(SYSTEM_USER_DTSI) ]; then echo "#include \"system-user.dtsi\"" >> $(BSP_PATH)/system-top.dts; fi
-	cd $(BSP_PATH) && \
-	cpp -Iinclude -E -P -undef -D__DTS__ -x assembler-with-cpp ./system-top.dts | $(DTC) -I dts -O dtb -o $(DTB_FILE) - && cd -
+	@if [ ! -f $(BSP_PATH)/system.dtb ]; then echo -e "***Device tree generation failed\n"; exit 1; fi
+	cp $(BSP_PATH)/system.dtb $(DTB_FILE) -v
 	rm -rf $(SW_DIR)/tmp
 
 sw_comp: $(SW_FILES)

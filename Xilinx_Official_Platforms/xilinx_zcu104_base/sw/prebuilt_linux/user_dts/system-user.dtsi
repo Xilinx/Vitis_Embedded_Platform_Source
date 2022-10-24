@@ -1,3 +1,57 @@
-/include/ "system-conf.dtsi"
+/* Copyright (C) 2020-2022 Xilinx, Inc. All rights reserved.
+ * Copyright (C) 2022 Advanced Micro Devices, Inc. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/*
+ * /include/ "system-conf.dtsi"
+ * Adding directly contents of system-conf file until CR-1139794 is fixed
+ */
+/ {
+        chosen {
+                bootargs = "earlycon console=ttyPS0,115200 clk_ignore_unused root=/dev/mmcblk0p2 rw rootwait cma=1536M";
+                stdout-path = "serial0:115200n8";
+        };
+};
+
+&gem3 {
+        local-mac-address = [00 0a 35 00 22 01];
+};
+
+&qspi {
+        #address-cells = <1>;
+        #size-cells = <0>;
+        flash0: flash@0 {
+                spi-max-frequency = <108000000>;
+                /delete-node/ partition@0;
+                /delete-node/ partition@100000;
+                /delete-node/ partition@600000;
+                /delete-node/ partition@620000;
+                partition@0 {
+                        label = "boot";
+                        reg = <0x00000000 0x01e00000>;
+                };
+                partition@1 {
+                        label = "bootenv";
+                        reg = <0x01e00000 0x00040000>;
+                };
+                partition@2 {
+                        label = "kernel";
+                        reg = <0x01e40000 0x021c0000>;
+                };
+        };
+};
+
 /{
 };

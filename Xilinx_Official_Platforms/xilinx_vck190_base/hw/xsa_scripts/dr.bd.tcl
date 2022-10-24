@@ -225,7 +225,7 @@ proc create_root_design { parentCell } {
     CONFIG.INI_STRATEGY {auto} \
     ] [get_bd_intf_pins /cips_noc/M04_INI]
 
-  set_property -dict [ list \
+    set_property -dict [ list \
     CONFIG.DATA_WIDTH {128} \
     CONFIG.CONNECTIONS { M04_INI { read_bw {128} write_bw {128}} M00_INI { read_bw {128} write_bw {128}} M00_AXI { read_bw {5} write_bw {5} read_avg_burst {4} write_avg_burst {4}} } \
     CONFIG.DEST_IDS {M01_AXI:0x0} \

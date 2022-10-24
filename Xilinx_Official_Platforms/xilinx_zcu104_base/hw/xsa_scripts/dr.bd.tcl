@@ -194,6 +194,39 @@ proc create_root_design { parentCell } {
     CONFIG.NUM_MI {1} \
     ] $interconnect_axilite
 
+  # Create instance: axi_interconnect_lpd, and set properties
+  set axi_interconnect_lpd [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_interconnect axi_interconnect_lpd ]
+  set_property -dict [ list \
+    CONFIG.NUM_MI {1} \
+    ] $axi_interconnect_lpd
+  
+  # Create instance: axi_vip_2, and set properties
+  set axi_vip_2 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_vip axi_vip_2 ]
+  set_property -dict [ list \
+    CONFIG.ADDR_WIDTH {32} \
+    CONFIG.ARUSER_WIDTH {0} \
+    CONFIG.AWUSER_WIDTH {0} \
+    CONFIG.BUSER_WIDTH {0} \
+    CONFIG.DATA_WIDTH {32} \
+    CONFIG.HAS_BRESP {1} \
+    CONFIG.HAS_BURST {1} \
+    CONFIG.HAS_CACHE {1} \
+    CONFIG.HAS_LOCK {1} \
+    CONFIG.HAS_PROT {1} \
+    CONFIG.HAS_QOS {1} \
+    CONFIG.HAS_REGION {1} \
+    CONFIG.HAS_RRESP {1} \
+    CONFIG.HAS_WSTRB {1} \
+    CONFIG.ID_WIDTH {0} \
+    CONFIG.INTERFACE_MODE {MASTER} \
+    CONFIG.PROTOCOL {AXI4} \
+    CONFIG.READ_WRITE_MODE {READ_WRITE} \
+    CONFIG.RUSER_BITS_PER_BYTE {0} \
+    CONFIG.RUSER_WIDTH {0} \
+    CONFIG.SUPPORTS_NARROW {1} \
+    CONFIG.WUSER_BITS_PER_BYTE {0} \
+    CONFIG.WUSER_WIDTH {0} \
+    ] $axi_vip_2
 
   # Create instance: proc_sys_reset_0, and set properties
   set proc_sys_reset_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:proc_sys_reset proc_sys_reset_0 ]
@@ -775,7 +808,7 @@ proc create_root_design { parentCell } {
     CONFIG.PSU__SAXIGP3__DATA_WIDTH {128} \
     CONFIG.PSU__SAXIGP4__DATA_WIDTH {128} \
     CONFIG.PSU__SAXIGP5__DATA_WIDTH {128} \
-    CONFIG.PSU__SAXIGP6__DATA_WIDTH {128} \
+    CONFIG.PSU__SAXIGP6__DATA_WIDTH {32} \
     CONFIG.PSU__SD1_COHERENCY {0} \
     CONFIG.PSU__SD1_ROUTE_THROUGH_FPD {0} \
     CONFIG.PSU__SD1__DATA_TRANSFER_MODE {4Bit} \
@@ -837,16 +870,18 @@ proc create_root_design { parentCell } {
     CONFIG.PSU__USE__S_AXI_GP3 {0} \
     CONFIG.PSU__USE__S_AXI_GP4 {0} \
     CONFIG.PSU__USE__S_AXI_GP5 {1} \
-    CONFIG.PSU__USE__S_AXI_GP6 {0} \
+    CONFIG.PSU__USE__S_AXI_GP6 {1} \
     CONFIG.SUBPRESET1 {Custom} \
     ] $ps_e
 
   # Create interface connections
   connect_bd_intf_net -intf_net axi_interconnect_0_M00_AXI [get_bd_intf_pins axi_intc_0/s_axi] [get_bd_intf_pins interconnect_axilite/M00_AXI]
   connect_bd_intf_net -intf_net axi_interconnect_0_M00_AXI1 [get_bd_intf_pins axi_interconnect_hpc0/M00_AXI] [get_bd_intf_pins ps_e/S_AXI_HPC0_FPD]
+  connect_bd_intf_net -intf_net axi_interconnect_0_M00_AXI2 [get_bd_intf_pins axi_interconnect_lpd/M00_AXI] [get_bd_intf_pins ps_e/S_AXI_LPD]
   connect_bd_intf_net -intf_net axi_interconnect_1_M00_AXI [get_bd_intf_pins interconnect_axifull/M00_AXI] [get_bd_intf_pins ps_e/S_AXI_HP3_FPD]
   connect_bd_intf_net -intf_net axi_vip_0_M_AXI [get_bd_intf_pins axi_vip_0/M_AXI] [get_bd_intf_pins interconnect_axifull/S00_AXI]
   connect_bd_intf_net -intf_net axi_vip_1_M_AXI [get_bd_intf_pins axi_interconnect_hpc0/S00_AXI] [get_bd_intf_pins axi_vip_1/M_AXI]
+  connect_bd_intf_net -intf_net axi_vip_2_M_AXI [get_bd_intf_pins axi_interconnect_lpd/S00_AXI] [get_bd_intf_pins axi_vip_2/M_AXI]
   connect_bd_intf_net -intf_net interconnect_axihpm0fpd_M00_AXI [get_bd_intf_pins axi_register_slice_0/S_AXI] [get_bd_intf_pins interconnect_axihpm0fpd/M00_AXI]
   connect_bd_intf_net -intf_net ps_e_M_AXI_HPM0_FPD [get_bd_intf_pins interconnect_axihpm0fpd/S00_AXI] [get_bd_intf_pins ps_e/M_AXI_HPM0_FPD]
   connect_bd_intf_net -intf_net ps_e_M_AXI_HPM0_LPD [get_bd_intf_pins interconnect_axilite/S00_AXI] [get_bd_intf_pins ps_e/M_AXI_HPM0_LPD]
@@ -854,7 +889,7 @@ proc create_root_design { parentCell } {
   # Create port connections
   connect_bd_net -net Net [get_bd_pins clk_wiz_0/resetn] [get_bd_pins proc_sys_reset_0/ext_reset_in] [get_bd_pins proc_sys_reset_1/ext_reset_in] [get_bd_pins proc_sys_reset_2/ext_reset_in] [get_bd_pins proc_sys_reset_3/ext_reset_in] [get_bd_pins proc_sys_reset_4/ext_reset_in] [get_bd_pins proc_sys_reset_5/ext_reset_in] [get_bd_pins proc_sys_reset_6/ext_reset_in] [get_bd_pins ps_e/pl_resetn0]
   connect_bd_net -net axi_intc_0_irq [get_bd_pins axi_intc_0/irq] [get_bd_pins ps_e/pl_ps_irq0]
-  connect_bd_net -net clk_wiz_0_clk_out2 [get_bd_pins axi_interconnect_hpc0/ACLK] [get_bd_pins axi_interconnect_hpc0/M00_ACLK] [get_bd_pins axi_interconnect_hpc0/S00_ACLK] [get_bd_pins axi_register_slice_0/aclk] [get_bd_pins axi_vip_0/aclk] [get_bd_pins axi_vip_1/aclk] [get_bd_pins clk_wiz_0/clk_out2] [get_bd_pins interconnect_axifull/ACLK] [get_bd_pins interconnect_axifull/M00_ACLK] [get_bd_pins interconnect_axifull/S00_ACLK] [get_bd_pins interconnect_axihpm0fpd/ACLK] [get_bd_pins interconnect_axihpm0fpd/M00_ACLK] [get_bd_pins interconnect_axihpm0fpd/S00_ACLK] [get_bd_pins proc_sys_reset_1/slowest_sync_clk] [get_bd_pins ps_e/maxihpm0_fpd_aclk] [get_bd_pins ps_e/saxihp3_fpd_aclk] [get_bd_pins ps_e/saxihpc0_fpd_aclk]
+  connect_bd_net -net clk_wiz_0_clk_out2 [get_bd_pins axi_interconnect_lpd/ACLK] [get_bd_pins axi_interconnect_lpd/M00_ACLK] [get_bd_pins axi_interconnect_lpd/S00_ACLK] [get_bd_pins axi_interconnect_hpc0/ACLK] [get_bd_pins axi_interconnect_hpc0/M00_ACLK] [get_bd_pins axi_interconnect_hpc0/S00_ACLK] [get_bd_pins axi_register_slice_0/aclk] [get_bd_pins axi_vip_0/aclk] [get_bd_pins axi_vip_1/aclk] [get_bd_pins axi_vip_2/aclk] [get_bd_pins clk_wiz_0/clk_out2] [get_bd_pins interconnect_axifull/ACLK] [get_bd_pins interconnect_axifull/M00_ACLK] [get_bd_pins interconnect_axifull/S00_ACLK] [get_bd_pins interconnect_axihpm0fpd/ACLK] [get_bd_pins interconnect_axihpm0fpd/M00_ACLK] [get_bd_pins interconnect_axihpm0fpd/S00_ACLK] [get_bd_pins proc_sys_reset_1/slowest_sync_clk] [get_bd_pins ps_e/maxihpm0_fpd_aclk] [get_bd_pins ps_e/saxihp3_fpd_aclk] [get_bd_pins ps_e/saxi_lpd_aclk] [get_bd_pins ps_e/saxihpc0_fpd_aclk]
   connect_bd_net -net clk_wiz_0_clk_out3 [get_bd_pins axi_intc_0/s_axi_aclk] [get_bd_pins clk_wiz_0/clk_out3] [get_bd_pins interconnect_axilite/ACLK] [get_bd_pins interconnect_axilite/M00_ACLK] [get_bd_pins interconnect_axilite/S00_ACLK] [get_bd_pins proc_sys_reset_2/slowest_sync_clk] [get_bd_pins ps_e/maxihpm0_lpd_aclk]
   connect_bd_net -net clk_wiz_0_clk_out4 [get_bd_pins clk_wiz_0/clk_out1] [get_bd_pins proc_sys_reset_0/slowest_sync_clk]
   connect_bd_net -net clk_wiz_0_clk_out5 [get_bd_pins clk_wiz_0/clk_out4] [get_bd_pins proc_sys_reset_3/slowest_sync_clk]
@@ -862,7 +897,7 @@ proc create_root_design { parentCell } {
   connect_bd_net -net clk_wiz_0_clk_out7 [get_bd_pins clk_wiz_0/clk_out6] [get_bd_pins proc_sys_reset_5/slowest_sync_clk]
   connect_bd_net -net clk_wiz_0_clk_out8 [get_bd_pins clk_wiz_0/clk_out7] [get_bd_pins proc_sys_reset_6/slowest_sync_clk]
   connect_bd_net -net clk_wiz_0_locked [get_bd_pins clk_wiz_0/locked] [get_bd_pins proc_sys_reset_0/dcm_locked] [get_bd_pins proc_sys_reset_1/dcm_locked] [get_bd_pins proc_sys_reset_2/dcm_locked] [get_bd_pins proc_sys_reset_3/dcm_locked] [get_bd_pins proc_sys_reset_4/dcm_locked] [get_bd_pins proc_sys_reset_5/dcm_locked] [get_bd_pins proc_sys_reset_6/dcm_locked]
-  connect_bd_net -net proc_sys_reset_1_interconnect_aresetn [get_bd_pins axi_interconnect_hpc0/ARESETN] [get_bd_pins axi_interconnect_hpc0/M00_ARESETN] [get_bd_pins axi_interconnect_hpc0/S00_ARESETN] [get_bd_pins axi_vip_1/aresetn] [get_bd_pins interconnect_axifull/ARESETN] [get_bd_pins interconnect_axifull/M00_ARESETN] [get_bd_pins interconnect_axifull/S00_ARESETN] [get_bd_pins interconnect_axihpm0fpd/ARESETN] [get_bd_pins interconnect_axihpm0fpd/M00_ARESETN] [get_bd_pins interconnect_axihpm0fpd/S00_ARESETN] [get_bd_pins proc_sys_reset_1/interconnect_aresetn]
+  connect_bd_net -net proc_sys_reset_1_interconnect_aresetn [get_bd_pins axi_interconnect_lpd/ARESETN] [get_bd_pins axi_interconnect_lpd/M00_ARESETN] [get_bd_pins axi_interconnect_lpd/S00_ARESETN] [get_bd_pins axi_interconnect_hpc0/ARESETN] [get_bd_pins axi_interconnect_hpc0/M00_ARESETN] [get_bd_pins axi_interconnect_hpc0/S00_ARESETN] [get_bd_pins axi_vip_1/aresetn] [get_bd_pins axi_vip_2/aresetn] [get_bd_pins interconnect_axifull/ARESETN] [get_bd_pins interconnect_axifull/M00_ARESETN] [get_bd_pins interconnect_axifull/S00_ARESETN] [get_bd_pins interconnect_axihpm0fpd/ARESETN] [get_bd_pins interconnect_axihpm0fpd/M00_ARESETN] [get_bd_pins interconnect_axihpm0fpd/S00_ARESETN] [get_bd_pins proc_sys_reset_1/interconnect_aresetn]
   connect_bd_net -net proc_sys_reset_1_peripheral_aresetn [get_bd_pins axi_register_slice_0/aresetn] [get_bd_pins axi_vip_0/aresetn] [get_bd_pins proc_sys_reset_1/peripheral_aresetn]
   connect_bd_net -net proc_sys_reset_2_interconnect_aresetn [get_bd_pins axi_intc_0/s_axi_aresetn] [get_bd_pins interconnect_axilite/ARESETN] [get_bd_pins interconnect_axilite/M00_ARESETN] [get_bd_pins interconnect_axilite/S00_ARESETN] [get_bd_pins proc_sys_reset_2/interconnect_aresetn]
   connect_bd_net -net ps_e_pl_clk0 [get_bd_pins clk_wiz_0/clk_in1] [get_bd_pins ps_e/pl_clk0]
@@ -870,6 +905,7 @@ proc create_root_design { parentCell } {
   # Create address segments
   assign_bd_address -offset 0x00000000 -range 0x80000000 -target_address_space [get_bd_addr_spaces axi_vip_0/Master_AXI] [get_bd_addr_segs ps_e/SAXIGP5/HP3_DDR_LOW] -force
   assign_bd_address -offset 0x00000000 -range 0x80000000 -target_address_space [get_bd_addr_spaces axi_vip_1/Master_AXI] [get_bd_addr_segs ps_e/SAXIGP0/HPC0_DDR_LOW] -force
+  assign_bd_address -offset 0x00000000 -range 0x80000000 -target_address_space [get_bd_addr_spaces axi_vip_2/Master_AXI] [get_bd_addr_segs ps_e/SAXIGP6/LPD_DDR_LOW] -force
   assign_bd_address -offset 0x80020000 -range 0x00001000 -target_address_space [get_bd_addr_spaces ps_e/Data] [get_bd_addr_segs axi_intc_0/S_AXI/Reg] -force
 
 

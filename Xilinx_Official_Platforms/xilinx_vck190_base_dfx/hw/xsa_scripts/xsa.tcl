@@ -47,7 +47,6 @@
 # PART OF THIS FILE AT ALL TIMES.
 #
 
-set_param bd.addr.smcx_func.route_dfx_apertures true
 file mkdir build 
 cd build
 source ../xsa_scripts/project.tcl
@@ -95,6 +94,7 @@ set_property platform.platform_state "impl" [current_project]
 create_pr_configuration -name config_1 -partitions [list vitis_design_i/VitisRegion:VitisRegion_inst_0 ]
 set_property PR_CONFIGURATION config_1 [get_runs impl_1]
 
+set_property -name STEPS.PLACE_DESIGN.TCL.PRE -value [get_files -of_object [get_filesets utils_1] prohibit_select_bli_bels_for_hold.tcl] -objects [get_runs impl_1]
 launch_runs synth_1 -jobs 20
 wait_on_run synth_1
 

@@ -63,10 +63,6 @@ help::
 	@echo '  make all PREBUILT_LINUX_PATH=<path/to/common_sw/dir'
 	@echo '			 Command used to generate platform with pre-built software components. By default, makefile looks for pre-built images in current directory or /opt/xilinx/platform/. Path to pre-built common images present in another dir can be passed to makefile manually using this command'
 	@echo ''
-	@echo '  make all PETALINUX_BUILD=TRUE'
-	@echo '      Command used to generate platform with petalinux. Source petalinux before running this command.'
-	@echo '      This command builds all software components.'
-	@echo ''
 	@echo '  *************************************************************************************************************'
 	@echo '  *                                                                                                           *'
 	@echo '  *  Please download Prebuilt Image using the following URL : 																								 *'
@@ -84,7 +80,7 @@ help::
 	@echo '      Command to remove all the generated files.'
 	@echo ''
 
-.PHONY: all xsa linux sysroot platform clean
+.PHONY: all xsa linux platform clean
 
 xsa: $(STATIC_XSA)
 
@@ -95,9 +91,6 @@ linux: $(SW_FILES)
 
 $(SW_FILES): $(STATIC_XSA)
 	$(MAKE) -C sw all
-
-sysroot:
-	$(MAKE) -C sw/petalinux sysroot
 
 all platform: $(STATIC_XSA) $(RP_XSA) $(SW_FILES)
 	$(XSCT) -nodisp -sdx $(PLATFORM_SW_SRC)/generate_platform.tcl platform_name "${PLATFORM_NAME}" static_xsa_path "${STATIC_XSA}" rp_xsa_path "${RP_XSA}" emu_xsa_path "${HW_EMU_XSA}" platform_out "${PLATFORM_DIR}" boot_dir_path "${BOOT_DIR}" img_dir_path "${IMAGE_DIR}"

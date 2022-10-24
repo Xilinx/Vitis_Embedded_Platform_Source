@@ -27,8 +27,8 @@ BOARD    = zcu104-revc
 CORE     = psu_cortexa53_0
 
 #versioning
-VERSION          ?= 202210_1
-VER              ?= 202210.1
+VERSION          ?= 202220_1
+VER              ?= 202220.1
 
 #common
 TOP_DIR         ?= $(shell readlink -f .)
@@ -49,7 +49,6 @@ DTB_FILE         = $(BOOT_DIR)/system.dtb
 BOOT_IMAGE       = $(BOOT_DIR)/BOOT.BIN
 SW_FILES         = $(IMAGE_DIR)/boot.scr $(BOOT_DIR)/u-boot.elf $(BOOT_DIR)/bl31.elf
 BOOT_FILES       = u-boot.elf bl31.elf
-SYSROOT          = $(TOP_DIR)/platform_repo/sysroot
 
 #platform related
 PLATFORM_NAME    = $(PLATFORM)_$(VERSION)
@@ -57,10 +56,9 @@ PLATFORM_SW_SRC  = $(TOP_DIR)/platform
 PLATFORM_DIR      = $(TOP_DIR)/platform_repo
 
 #flow related
-PETALINUX_BUILD ?= FALSE
-PREBUILT_LINUX_PATH ?= /opt/xilinx/platform/xilinx-zynqmp-common-v2022.1
-ifneq ($(wildcard $(TOP_DIR)/xilinx-zynpmp-common-v2022.1),)
-PREBUILT_LINUX_PATH ?= $(TOP_DIR)/xilinx-zynqmp-common-v2022.1
+PREBUILT_LINUX_PATH ?= /opt/xilinx/platform/xilinx-zynqmp-common-v2022.2
+ifneq ($(wildcard $(TOP_DIR)/xilinx-zynpmp-common-v2022.2),)
+PREBUILT_LINUX_PATH ?= $(TOP_DIR)/xilinx-zynqmp-common-v2022.2
 endif
 # Getting Absolute paths
 ifneq ("$(wildcard $(XSA))","")
@@ -96,9 +94,4 @@ else
 endif
 ifeq ($(PREBUILT_LINUX_PATH),)
 	$(error ERROR: 'PREBUILT_LINUX_PATH' is not accesible, please set this flag to path containing common software)
-endif
-
-check-petalinux:
-ifeq ($(PETALINUX),)
-	$(error ERROR: 'PETALINUX' variable not set, Please install PetaLinux or use pre-built software images to build the platform. Please refer to build instructions in readme for more details.)
 endif
