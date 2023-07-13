@@ -1,5 +1,9 @@
 # Change Logs
 
+## 2023.1
+
+- Removed PetaLinux directory from source code.
+
 ## 2022.2
 
 - Removed Petalinux based sw components generation from platform creation.

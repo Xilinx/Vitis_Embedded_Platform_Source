@@ -1,6 +1,6 @@
 # Vitis Base Platform for the VMK180 Board
 
-***Version: 2022.2***
+***Version: 2023.1***
 
 This platform comes with common hardware features on the VMK180 board like GEM and PS DDR4. The platform software includes OpenCV in PetaLinux. It is useful as a base platform for exercising Vitis capabilities and topologies on the VMK180 board.
 
@@ -10,8 +10,8 @@ This platform comes with common hardware features on the VMK180 board like GEM a
 
 | Type              | Value                       |
 | ----------------- | --------------------------- |
-| Release Version   | xilinx_vmk180_base_202220_1 |
-| Vitis version     | 2022.2                      |
+| Release Version   | xilinx_vmk180_base_202310_1 |
+| Vitis version     | 2023.1                      |
 | XRT Tag version   | [202220_2.14.0_Petalinux](https://github.com/Xilinx/XRT/releases/tag/202220_2.14.0_Petalinux)     |
 | Target board      | VMK180                      |
 
@@ -37,12 +37,13 @@ This platform comes with common hardware features on the VMK180 board like GEM a
 
 ### Software Configurations
 
-The software configurations are based on [VCK190 Common Image](https://www.author.xilinx.com/member/vck190-ea.html#tools). Here is the list of configurations.
+The software configurations are based on [VCK190 BSP](https://www.author.xilinx.com/member/vck190-ea.html#tools). Here is the list of additional configurations.
 
-| Configuration                    | Details                                                       | 
-| -------------------------------- | ------------------------------------------------------------ | 
-| RootFS Components     | Please refer to the **rootfs.manifest** in the Common Image folder for components inside it. |
-| Device Tree| User DTS is added in [system-user.dtsi](sw/prebuilt_linux/user_dts/system-user.dtsi) file.|
+| Configuration                    | Values                                                       | Details |
+| -------------------------------- | ------------------------------------------------------------ | ------- |
+| Additional Kernel Configurations | CONFIG_CONSOLE_LOGLEVEL_DEFAULT=1                            |         |
+| Additional RootFS Components     | DNF<br />e2fsprogs-resize2fs<br />parted<br />xrt, xrt-dev and zocl<br />opencl-clhpp<br />opencl-headers<br />packagegroup-petalinux-opencv<br />>imagefeature-package-management<br />auto-login |         |
+| Device Tree Modifications        | Add zocl node for XRT                                       |         |
 
 ## Build Instructions
 

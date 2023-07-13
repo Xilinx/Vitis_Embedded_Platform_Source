@@ -1,16 +1,8 @@
-# Copyright 2021 Xilinx Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+#******************************************************************************
+# Copyright (C) 2020-2022 Xilinx, Inc. All rights reserved.
+# Copyright (C) 2022-2023 Advanced Micro Devices, Inc. All rights reserved.
+# SPDX-License-Identifier: MIT
+#******************************************************************************
 
 CWD = $(shell readlink -f .)
 TOP_DIR = $(CWD)/../../
@@ -27,17 +19,17 @@ $(XSA):
 
 dtb: $(DTB_FILE)
 
-$(DTB_FILE): $(XSA)
+$(DTB_FILE): check-vitis $(XSA)
 	$(info "Generating SW Artifacts...")
 	@if [ ! -d $(BOOT_DIR) ]; then mkdir -p $(BOOT_DIR); fi
-	mkdir -p $(SW_DIR)/tmp
+	@mkdir -p $(SW_DIR)/tmp
 	$(info "DTB generation started using XSCT")
-	$(info $(XSCT) -eval "createdts -hw $(XSA) -git-url https://github.com/Xilinx/device-tree-xlnx.git -git-branch xlnx_rel_v2022.2 -board $(BOARD) -platform $(PLATFORM) -out $(SW_DIR)/tmp -dtsi $(SYSTEM_USER_DTSI) -compile")
-	@$(XSCT) -eval "createdts -hw $(XSA) -git-url https://github.com/Xilinx/device-tree-xlnx.git -git-branch xlnx_rel_v2022.2 -board $(BOARD) -platform $(PLATFORM) -out $(SW_DIR)/tmp -dtsi $(SYSTEM_USER_DTSI) -compile" && echo -e "\n***Device Tree generation Successful!\n" || echo -e "\n"
+	$(info $(XSCT) -eval "createdts -hw $(XSA) -git-url https://github.com/Xilinx/device-tree-xlnx.git -git-branch xlnx_rel_v2023.1 -board $(BOARD) -platform $(PLATFORM) -out $(SW_DIR)/tmp -dtsi $(SYSTEM_USER_DTSI) -compile")
+	@$(XSCT) -eval "createdts -hw $(XSA) -git-url https://github.com/Xilinx/device-tree-xlnx.git -git-branch xlnx_rel_v2023.1 -board $(BOARD) -platform $(PLATFORM) -out $(SW_DIR)/tmp -dtsi $(SYSTEM_USER_DTSI) -compile"
 	$(eval BSP_PATH = $(SW_DIR)/tmp/$(PLATFORM)/$(CORE)/device_tree_domain/bsp/)
-	@if [ ! -f $(BSP_PATH)/system.dtb ]; then echo -e "***Device tree generation failed\n"; exit 1; fi
+	@if [ ! -f $(BSP_PATH)/system.dtb ]; then echo -e "ERROR: Device tree generation failed\n"; exit 1; fi
 	cp $(BSP_PATH)/system.dtb $(DTB_FILE) -v
-	rm -rf $(SW_DIR)/tmp
+	@rm -rf $(SW_DIR)/tmp
 
 sw_comp: $(SW_FILES)
 

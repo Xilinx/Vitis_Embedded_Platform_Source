@@ -1,16 +1,8 @@
-# Copyright 2021 Xilinx Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+#******************************************************************************
+# Copyright (C) 2020-2022 Xilinx, Inc. All rights reserved.
+# Copyright (C) 2022-2023 Advanced Micro Devices, Inc. All rights reserved.
+# SPDX-License-Identifier: MIT
+#******************************************************************************
 
 # Get current directory, used throughout script
 if {[file exists hw_emu]} {
@@ -80,7 +72,7 @@ set_property generate_synth_checkpoint 0 [get_files pfm_dynamic.bd]
 #Construct static region BD
 create_bd_design pfm_top
 source ${sourcesDir}/emulation_sources/scripts/static.tcl
-set_property SELECTED_SIM_MODEL tlm [get_bd_cells /static_region/zynq_ultra_ps_e_0]
+set_property preferred_sim_model "tlm" [current_project]
 close_bd_design [get_bd_designs pfm_top]
 open_bd_design  [get_files pfm_top.bd]
 
