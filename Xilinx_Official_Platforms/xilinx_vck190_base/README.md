@@ -38,13 +38,9 @@ This platform comes with common hardware features on the VCK190 board like AI En
 
 ### Software Configurations
 
-The software configurations are based on [VCK190 BSP](https://www.author.xilinx.com/member/vck190-ea.html#tools). Here is the list of additional configurations.
+The software configurations are based on Versal Common Image. For more details, please refer to README.txt and rootfs.manifest in Versal Common Image.
 
-| Configuration                    | Values                                                       | Details |
-| -------------------------------- | ------------------------------------------------------------ | ------- |
-| Additional Kernel Configurations | CONFIG_CONSOLE_LOGLEVEL_DEFAULT=1                            |         |
-| Additional RootFS Components     | DNF<br />e2fsprogs-resize2fs<br />parted<br />xrt, xrt-dev and zocl<br />opencl-clhpp<br />opencl-headers<br />packagegroup-petalinux-opencv<br />>imagefeature-package-management<br />auto-login |         |
-| Device Tree Modifications        | Add zocl node for XRT                                       |         |
+The device tree is generated from XSA and compiled with additional information like zocl and interrupt controllers. For more details, refer to sw/prebuilt_linux/user_dts.
 
 ## Build Instructions
 
