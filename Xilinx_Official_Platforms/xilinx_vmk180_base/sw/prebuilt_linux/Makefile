@@ -23,8 +23,8 @@ $(DTB_FILE): check-vitis $(XSA)
 	@if [ ! -d $(BOOT_DIR) ]; then mkdir -p $(BOOT_DIR); fi
 	@mkdir -p $(SW_DIR)/tmp
 	$(info "DTB generation started using XSCT")
-	$(info $(XSCT) -eval "createdts -hw $(XSA) -git-url https://github.com/Xilinx/device-tree-xlnx.git -git-branch xlnx_rel_v2023.1 -board $(BOARD) -platform $(PLATFORM) -out $(SW_DIR)/tmp -dtsi $(SYSTEM_USER_DTSI) -compile")
-	@$(XSCT) -eval "createdts -hw $(XSA) -git-url https://github.com/Xilinx/device-tree-xlnx.git -git-branch xlnx_rel_v2023.1 -board $(BOARD) -platform $(PLATFORM) -out $(SW_DIR)/tmp -dtsi $(SYSTEM_USER_DTSI) -compile"
+	$(info $(XSCT) -eval "createdts -hw $(XSA) -git-url https://gitenterprise.xilinx.com/Linux/device-tree-xlnx.git -git-branch xlnx_rel_v2023.2 -board $(BOARD) -platform $(PLATFORM) -out $(SW_DIR)/tmp -dtsi $(SYSTEM_USER_DTSI) -compile")
+	@$(XSCT) -eval "createdts -hw $(XSA) -git-url https://gitenterprise.xilinx.com/Linux/device-tree-xlnx.git -git-branch xlnx_rel_v2023.2 -board $(BOARD) -platform $(PLATFORM) -out $(SW_DIR)/tmp -dtsi $(SYSTEM_USER_DTSI) -compile"
 	$(eval BSP_PATH = $(SW_DIR)/tmp/$(PLATFORM)/$(CORE)/device_tree_domain/bsp/)
 	@if [ ! -f $(BSP_PATH)/system.dtb ]; then echo -e "ERROR: Device tree generation failed\n"; exit 1; fi
 	cp $(BSP_PATH)/system.dtb $(DTB_FILE) -v

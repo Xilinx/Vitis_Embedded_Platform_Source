@@ -1,6 +1,6 @@
 # Vitis Base DFX Platform for the ZCU102 Board
 
-***Version: 2023.1***
+***Version: 2023.2***
 
 This platform comes with common hardware features on the ZCU102 board like GEM and PS DDR4. The platform software includes OpenCV in PetaLinux. It is useful as a base platform for exercising Vitis capabilities and topologies on the ZCU102 board.
 
@@ -12,9 +12,9 @@ This platform supports Dynamic Function eXchange feature. Users can switch xclbi
 
 | Type              | Value                           |
 | ----------------- | ---------------------------     |
-| Release Version   | xilinx_zcu102_base_dfx_202310_1 |
-| Vitis version     | 2023.1                          |
-| XRT Tag version   | [202220_2.14.0_Petalinux](https://github.com/Xilinx/XRT/releases/tag/202220_2.14.0_Petalinux)              |
+| Release Version   | xilinx_zcu102_base_dfx_202320_1 |
+| Vitis version     | 2023.2                          |
+| XRT Tag version   | [202320.2.16.0_PetaLinux](https://github.com/Xilinx/XRT/releases/tag/202320.2.16.0_PetaLinux)              |
 | Target board      | ZCU102                          |
 
 ### Interfaces
@@ -37,9 +37,13 @@ This platform supports Dynamic Function eXchange feature. Users can switch xclbi
 
 ### Software Configurations
 
-The software configurations are based on ZynqMP Common Image. For more details, please refer to README.txt and rootfs.manifest in ZynqMP Common Image.
+The software configurations are based on [ZCU102 BSP](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/embedded-design-tools.html). Here is the list of additional configurations.
 
-The device tree is generated from XSA and compiled with additional information like zocl and interrupt controllers. For more details, refer to sw/prebuilt_linux/user_dts.
+| Configuration                    | Values                                                       | Details |
+| -------------------------------- | ------------------------------------------------------------ | ------- |
+| Additional Kernel Configurations | CONFIG_CONSOLE_LOGLEVEL_DEFAULT=1                            |         |
+| Additional RootFS Components     | DNF<br />e2fsprogs-resize2fs<br />parted<br />libmali-xlnx: disabled<br />xrt, xrt-dev and zocl<br />opencl-clhpp<br />opencl-headers<br />libdrm, libdrm-tests and libdrm-kms<br />packagegroup-petalinux-audio<br />packagegroup-petalinux-gstreamer<br />packagegroup-petalinux-matchbox<br />packagegroup-petalinux-opencv<br />packagegroup-petalinux-v4lutils<br />packagegroup-petalinux-vitisai<br />packagegroup-petalinux-x11<br />imagefeature-package-management<br />auto-login |         |
+| Device Tree Modifications        | Add zocl node for XRT<br />Disable default dtg generated axi intc PL node and add the custom node instead |         |
 
 ## Build Instructions
 

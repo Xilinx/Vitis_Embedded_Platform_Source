@@ -9,8 +9,8 @@ platforms][3].
 To build the Vitis embedded platforms from source code in this repository, you will need to have the following tools installed and follow the [build instructions](#build-instructions):
 
 - A Linux-based host OS supported by Vitis
-- [Vitis][1] 2023.1
-- [Common Software Image](#installing-the-common-software) 2023.1
+- [Vitis][1] 2023.2
+- [Common Software Image](#installing-the-common-software) 2023.2
 
 [1]: https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vitis.html
 
@@ -30,12 +30,10 @@ This repository is divided into two sections:
 
 ## Build Instructions
 
-### Build Environment Setup
-
   Vitis environment need to be setup before building the platform.
 
   ```bash
-  source <Vitis_install_path>/Vitis/2023.1/settings64.sh
+  source <Vitis_install_path>/Vitis/2023.2/settings64.sh
   ```
   This package comes with sources to generate the Vitis platform with these steps:
 
@@ -43,9 +41,6 @@ This repository is divided into two sections:
   2. Generate software components of platform (using XSCT).
   3. Generate the Vitis platform by packaging hardware and software together using XSCT tool
 
-  Since Vitis base platforms use pre-built common images for software, it's required to download and install common images for your target device family. Please refer to section [Installing the Common Software](#installing-the-common-software) for details
-
-### Build Types
 
 The following table summarizes use cases of platforms build :
 
@@ -66,19 +61,17 @@ The platform hardware has two types.
 > Note: For Versal platforms, the PDI in XSA will always be pre-synth PDI.
 
 
-Vitis platforms require software components so that the platform can boot into a known state. 
+There are two methods to prepare the platform software.
 
-Vitis base platforms uses pre-built common software images provided by PetaLinux. The pre-built image for each architecture includes Linux kernel, root file system, sysroot and common boot components like u-boot. Users need to [download and install common images](#installing-the-common-software) before building Vitis base platforms.
-
-Note: If users wish to customize platform software, please refer to [Petalinux software components generation Tutorial][2].
+- Use **Pre-built Linux** components: PetaLinux provides pre-built common software images. The image for each architecture includes Linux kernel, root file system, sysroot and common boot components like u-boot. The Vitis platform can use these components directly. Users need to [download and install common images](#installing-the-common-software) before building Vitis base platforms.
+- Use **PetaLinux**: Users can use Petalinux to generate everything locally. Using this method users can customize and generate software components. Users need to install PetaLinux and setup PetaLinux environment before building Vitis base platforms. [Petalinux software components generation Tutorial][2]
 
 [2]: https://github.com/Xilinx/Vitis-Tutorials/tree/master/Vitis_Platform_Creation/Feature_Tutorials/02_petalinux_customization
 
-### Build Command Flags
 
-The flags used in commands of above table are explained below :
+The Flags used in commands of above table are explained below :
 
-- *PREBUILT_LINUX_PATH*: By default, this flag is set to /opt/xilinx/platform/xilinx-<arch>-common-<ver>. If platform needs to be build using package located at another directory then provide the pre-built Linux image path to this flag. The build flow will generate device tree from XSA and run platform package with the pre-built Linux image. Common Linux components are provided as pre-built binaries by Xilinx to fullfill most evaluation requirements. Please refer to [UG1393- Using Embedded Platforms chapter][3] for more information. Set this flag to point common software components(u-boot, boot.scr, bl31.elf). These files are architecture specific. Zynq, ZynqMP and Versal have different software component files.
+- *PREBUILT_LINUX_PATH*: By default, this flag is set to /opt/xilinx/platform/xilinx-<arch>-common-<ver>. If platform needs to be build using package located at another directory then provide the pre-built Linux image path to this flag. The build flow will generate device tree from XSA and run platform package with the pre-built Linux image. Common Linux components are provided as pre-built binaries by Xilinx to fullfill most evaluation requirements. Please refer to [UG1393- Using Embedded Platforms chapter][3] for more information. Set this flag to point common software components(u-boot, boot.scr, bl31.elf). These files are architecture specific. Zynq, zynqMP and Versal have different software component files.
 
     ```bash
     make all

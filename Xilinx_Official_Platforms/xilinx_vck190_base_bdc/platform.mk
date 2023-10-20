@@ -12,7 +12,7 @@ BOOTGEN = $(XILINX_VITIS)/bin/bootgen
 XSCT    = $(XILINX_VITIS)/bin/xsct
 
 #platform specific
-PLATFORM = xilinx_vck190_base
+PLATFORM = xilinx_vck190_base_bdc
 CPU_ARCH = a72
 BOARD    = versal-vck190-reva-x-ebm-01-reva
 CORE     = psv_cortexa72_0
