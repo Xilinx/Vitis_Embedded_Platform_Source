@@ -3,6 +3,7 @@
 # Copyright (C) 2022-2023 Advanced Micro Devices, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
 #******************************************************************************
+
 CWD = $(shell readlink -f .)
 TOP_DIR = $(CWD)/../../
 include $(TOP_DIR)/platform.mk
@@ -23,8 +24,8 @@ $(DTB_FILE): check-vitis $(XSA)
 	@if [ ! -d $(BOOT_DIR) ]; then mkdir -p $(BOOT_DIR); fi
 	@mkdir -p $(SW_DIR)/tmp
 	$(info "DTB generation started using XSCT")
-	$(info $(XSCT) -eval "createdts -hw $(XSA) -git-branch xlnx_rel_v2023.2 -board $(BOARD) -platform $(PLATFORM) -out $(SW_DIR)/tmp -dtsi $(SYSTEM_USER_DTSI) -compile")
-	@$(XSCT) -eval "createdts -hw $(XSA)  -git-branch xlnx_rel_v2023.2 -board $(BOARD) -platform $(PLATFORM) -out $(SW_DIR)/tmp -dtsi $(SYSTEM_USER_DTSI) -compile"
+	$(info $(XSCT) -eval "createdts -hw $(XSA) -git-branch xlnx_rel_v2023.2 -board $(BOARD) -platform $(PLATFORM) -zocl -out $(SW_DIR)/tmp -dtsi $(SYSTEM_USER_DTSI) -compile")
+	@$(XSCT) -eval "createdts -hw $(XSA) -git-branch xlnx_rel_v2023.2 -board $(BOARD) -platform $(PLATFORM) -zocl -out $(SW_DIR)/tmp -dtsi $(SYSTEM_USER_DTSI) -compile"
 	$(eval BSP_PATH = $(SW_DIR)/tmp/$(PLATFORM)/$(CORE)/device_tree_domain/bsp/)
 	@if [ ! -f $(BSP_PATH)/system.dtb ]; then echo -e "ERROR: Device tree generation failed\n"; exit 1; fi
 	cp $(BSP_PATH)/system.dtb $(DTB_FILE) -v
