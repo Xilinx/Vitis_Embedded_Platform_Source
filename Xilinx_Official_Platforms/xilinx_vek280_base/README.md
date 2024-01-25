@@ -2,7 +2,7 @@
 
 ***Version: 2023.2***
 
-This platform comes with PetaLinux sources and includes OpenCV. It is useful as a base platform for exercising Vitis capabilities and topologies on the vek280 board.
+This platform comes with common hardware features on the VEK280 board like AI Engine ML, GEM, DDR and LPDDR. The platform software includes OpenCV in pre-built Common Image. It is useful as a base platform for exercising Vitis capabilities and topologies on the VEK280 board.
 
 # Building the Platform
 
