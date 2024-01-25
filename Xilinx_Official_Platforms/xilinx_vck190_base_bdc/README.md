@@ -2,7 +2,7 @@
 
 ***Version: 2023.2***
 
-This is a block design container (BDC) based platform. It provides the capability to export Vitis-based designs to Vivado for further customizations. It comes with common hardware features on the VCK190 board like AI Engine, GEM, DDR and LPDDR. The platform software includes OpenCV in PetaLinux. It is useful as a base platform for exercising Vitis capabilities and topologies on the VCK190 board. Besides, user could refer to the [Vitis Export to Vivado](https://github.com/Xilinx/Vitis-Tutorials/tree/2023.2/Vitis_Platform_Creation/Feature_Tutorials/03_Vitis_Export_To_Vivado) tutorial for transitioning from an existing flat design to a BDC-based design.
+This is a block design container (BDC) based platform. It provides the capability to export Vitis-based designs to Vivado for further customizations. It comes with common hardware features on the VCK190 board like AI Engine, GEM, DDR and LPDDR. The platform software includes OpenCV in pre-built Common Image. It is useful as a base platform for exercising Vitis capabilities and topologies on the VCK190 board. Besides, user could refer to the [Vitis Export to Vivado](https://github.com/Xilinx/Vitis-Tutorials/tree/2023.2/Vitis_Platform_Creation/Feature_Tutorials/03_Vitis_Export_To_Vivado) tutorial for transitioning from an existing flat design to a BDC-based design.
 
 ## Platform Specification
 

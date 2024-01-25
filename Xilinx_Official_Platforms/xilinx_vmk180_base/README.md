@@ -2,7 +2,7 @@
 
 ***Version: 2023.2***
 
-This platform comes with common hardware features on the VMK180 board like GEM and PS DDR4. The platform software includes OpenCV in PetaLinux. It is useful as a base platform for exercising Vitis capabilities and topologies on the VMK180 board.
+This platform comes with common hardware features on the VMK180 board like GEM and PS DDR4. The platform software includes OpenCV in pre-built Common Image. It is useful as a base platform for exercising Vitis capabilities and topologies on the VMK180 board.
 
 ## Platform Specification
 

@@ -2,7 +2,7 @@
 
 ***Version: 2023.2***
 
-This platform comes with common hardware features on the VCK190 board like AI Engine, GEM, DDR and LPDDR. The platform software includes OpenCV in PetaLinux. It is useful as a base platform for exercising Vitis capabilities and topologies on the VCK190 board.
+This platform comes with common hardware features on the VCK190 board like AI Engine, GEM, DDR and LPDDR. The platform software includes OpenCV in pre-built Common Image. It is useful as a base platform for exercising Vitis capabilities and topologies on the VCK190 board.
 
 This platform supports Dynamic Function eXchange feature. Users can switch xclbin (acceleration kernel container for AI Engine and PL) without rebooting the system.
 

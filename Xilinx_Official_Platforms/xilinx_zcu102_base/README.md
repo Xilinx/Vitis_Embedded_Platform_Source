@@ -2,7 +2,7 @@
 
 ***Version: 2023.2***
 
-This platform comes with common hardware features on the ZCU102 board like GEM and PS DDR4. The platform software includes OpenCV in PetaLinux. It is useful as a base platform for exercising Vitis capabilities and topologies on the ZCU102 board.
+This platform comes with common hardware features on the ZCU102 board like GEM and PS DDR4. The platform software includes OpenCV in pre-built Common Image. It is useful as a base platform for exercising Vitis capabilities and topologies on the ZCU102 board.
 
 ## Platform Specification
 
