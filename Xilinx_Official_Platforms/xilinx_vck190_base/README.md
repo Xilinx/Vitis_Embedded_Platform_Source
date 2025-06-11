@@ -1,6 +1,6 @@
 # Vitis Base Platform for the VCK190 Board 
 
-***Version: 2024.2***
+***Version: 2025.1***
 
 This platform comes with common hardware features on the VCK190 board like AI Engine, GEM, DDR and LPDDR. The platform software includes OpenCV in PetaLinux. It is useful as a base platform for exercising Vitis capabilities and topologies on the VCK190 board.
 
@@ -10,10 +10,10 @@ This platform comes with common hardware features on the VCK190 board like AI En
 
 | Type              | Value                       |
 | ----------------- | --------------------------- |
-| Release Version   | xilinx_vck190_base_202420_1 |
-| Vitis version     | 2024.2                      |
-| XRT Tag version   | [202420.2.18.0_PetaLinux](https://github.com/Xilinx/XRT/releases/tag/202420.2.18.0_Petalinux)              |
-| Target board      | VCK190                      |
+| Release Version   | xilinx_vck190_base_202510_1 |
+| Vitis version     | 2025.1                      |
+| XRT Tag version   | [202510.2.19.0_PetaLinux](https://github.com/Xilinx/XRT/releases/tag/202510.2.19.0_Petalinux)              |
+| Target board      | VCK190                      | 
 
 ### Interfaces
 
@@ -30,7 +30,7 @@ This platform comes with common hardware features on the VCK190 board like AI En
 | ----------------------------- | ----------------------------------------------------- | ------------------------------------|
 | CIPS DDR Size                 | 8GB                                                   |                                     |
 | LPDDR Size                    |  8GB                                                  |                                     |
-| Clocks for Kernels            | 156.25MHz, 104.166MHz, 312.5MHz, 78.125MHz, 208.33MHz, 416.66MHz, 625MHz | Clocks are synchronous to each other|
+| Clocks for Kernels            | 156.25MHz, 100.00MHz, 312.5MHz, 78.125MHz, 625MHz     | Clocks are synchronous to each other|
 | SP Tags supported             | DDR, LPDDR                                            | All kernels share same DDR4 and LPDDR4 |
 | Interrupts                    | 63 interrupts are enabled from PL Kernel to PS        |                                     |
 | AXI Interfaces for Kernel Control | 28 M_AXI_GP AXI interfaces are enabled            |                                     |
@@ -57,4 +57,7 @@ Please refer to the [build instructions](../../README.md#build-instructions) in 
 
 ## Test the Platform
 
-Once the Vitis platform build completes, you can use the [Vitis Acceleration examples](https://github.com/Xilinx/Vitis_Accel_Examples) to build with these platforms to test this platform.
+Once the Vitis platform build completes, Leverage  the [Vitis Template](https://github.com/Xilinx/vitis_templates/) to build a simple application such as vadd (Vector Addition) to verify platform functionality. 
+
+For step-by-step instructions on how to build, run, and validate applications on your platform, refer to [Vitis Tutorial](https://github.com/Xilinx/Vitis-Tutorials) for detailed guidance on platform validation.
+

@@ -1,6 +1,6 @@
 #******************************************************************************
 # Copyright (C) 2020-2022 Xilinx, Inc. All rights reserved.
-# Copyright (C) 2022-2024 Advanced Micro Devices, Inc. All rights reserved.
+# Copyright (C) 2022-2025 Advanced Micro Devices, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
 #******************************************************************************
 .EXPORT_ALL_VARIABLES:
@@ -18,8 +18,8 @@ BOARD    = versal-vek280-revb
 CORE     = psv_cortexa72_0
 
 #versioning
-VERSION          ?= 202420_1
-VER              ?= 202420.1
+VERSION          ?= 202510_1
+VER              ?= 202510.1
 
 #common
 TOP_DIR         ?= $(shell readlink -f .)
@@ -47,9 +47,9 @@ PLATFORM_SW_SRC  = $(TOP_DIR)/platform
 PLATFORM_DIR     = $(TOP_DIR)/platform_repo
 
 #flow related
-PREBUILT_LINUX_PATH ?= /opt/xilinx/platform/xilinx-versal-common-v2024.2
-ifneq ($(wildcard $(TOP_DIR)/xilinx-versal-common-v2024.2),)
-PREBUILT_LINUX_PATH ?= $(TOP_DIR)/xilinx-versal-common-v2024.2
+PREBUILT_LINUX_PATH ?= /opt/xilinx/platform/xilinx-versal-common-v2025.1
+ifneq ($(wildcard $(TOP_DIR)/xilinx-versal-common-v2025.1),)
+PREBUILT_LINUX_PATH ?= $(TOP_DIR)/xilinx-versal-common-v2025.1
 endif
 # Getting Absolute paths
 ifneq ("$(wildcard $(XSA))","")

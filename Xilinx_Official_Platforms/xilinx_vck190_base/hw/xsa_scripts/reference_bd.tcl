@@ -20,7 +20,7 @@ set script_folder [_tcl::get_script_folder]
 ################################################################
 # Check if script is running in correct Vivado version.
 ################################################################
-set scripts_vivado_version 2024.2
+set scripts_vivado_version 2025.1
 set current_vivado_version [version -short]
 
 if { [string first $scripts_vivado_version $current_vivado_version] == -1 } {
@@ -50,7 +50,7 @@ if { [string first $scripts_vivado_version $current_vivado_version] == -1 } {
 set list_projs [get_projects -quiet]
 if { $list_projs eq "" } {
    create_project project_1 myproj -part xcvc1902-vsva2197-2MP-e-S
-   set_property BOARD_PART xilinx.com:vck190:part0:3.3 [current_project]
+   set_property BOARD_PART xilinx.com:vck190:part0:3.4 [current_project]
 }
 
 
@@ -125,7 +125,7 @@ if { ${design_name} eq "" } {
 			\t --> BD has VIPs on the accelerator SmartConnect IPs because IPI platform can't handle export with no slaves on SmartConnect IP.
 			\t \t \t \t \t \t \t Hence VIPs are there to have at least one slave on a smart connect
 			\t --> Execute TCL command : launch_simulation -scripts_only ,to establish the sim_1 source set hierarchy after successful design creation.
-			\t --> For Next steps, Refer to README.md https://github.com/Xilinx/XilinxCEDStore/tree/2024.2/ced/Xilinx/IPI/Versal_Extensible_Embedded_Platform/README.md" [get_bd_designs $design_name]
+			\t --> For Next steps, Refer to README.md : https://github.com/Xilinx/XilinxCEDStore/tree/2024.2/ced/Xilinx/IPI/Versal_Extensible_Embedded_Platform/README.md" [get_bd_designs $design_name]
 
 common::send_gid_msg -ssname BD::TCL -id 2005 -severity "INFO" "Currently the variable <design_name> is equal to \"$design_name\"."
 
@@ -143,9 +143,9 @@ if { $bCheckIPs == 1 } {
    set list_check_ips "\ 
 xilinx.com:ip:versal_cips:3.4\
 xilinx.com:ip:axi_intc:4.1\
-xilinx.com:ip:xlconcat:2.1\
+xilinx.com:inline_hdl:ilconcat:1.0\
 xilinx.com:ip:clk_wizard:1.0\
-xilinx.com:ip:xlconstant:1.1\
+xilinx.com:inline_hdl:ilconstant:1.0\
 xilinx.com:ip:axi_noc:1.1\
 xilinx.com:ip:proc_sys_reset:5.0\
 xilinx.com:ip:ai_engine:2.0\
@@ -364,6 +364,11 @@ proc create_root_design { parentCell } {
 
 
   # Create interface ports
+  set gt_refclk0 [ create_bd_intf_port -mode Slave -vlnv xilinx.com:interface:diff_clock_rtl:1.0 gt_refclk0 ]
+  set_property -dict [ list \
+   CONFIG.FREQ_HZ {156250000} \
+   ] $gt_refclk0
+
   set ddr4_dimm1 [ create_bd_intf_port -mode Master -vlnv xilinx.com:interface:ddr4_rtl:1.0 ddr4_dimm1 ]
 
   set ddr4_dimm1_sma_clk [ create_bd_intf_port -mode Slave -vlnv xilinx.com:interface:diff_clock_rtl:1.0 ddr4_dimm1_sma_clk ]
@@ -397,11 +402,13 @@ proc create_root_design { parentCell } {
   set_property -dict [list \
     CONFIG.CLOCK_MODE {Custom} \
     CONFIG.DDR_MEMORY_MODE {Custom} \
+    CONFIG.DEBUG_MODE {Custom} \
     CONFIG.PS_BOARD_INTERFACE {ps_pmc_fixed_io} \
     CONFIG.PS_PL_CONNECTIVITY_MODE {Custom} \
     CONFIG.PS_PMC_CONFIG { \
       CLOCK_MODE {Custom} \
       DDR_MEMORY_MODE {Custom} \
+      DEBUG_MODE {Custom} \
       DESIGN_MODE {1} \
       PMC_CRP_PL0_REF_CTRL_FREQMHZ {99.999992} \
       PMC_GPIO0_MIO_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 0 .. 25}}} \
@@ -441,6 +448,8 @@ proc create_root_design { parentCell } {
       PS_GEN_IPI5_MASTER {A72} \
       PS_GEN_IPI6_ENABLE {1} \
       PS_GEN_IPI6_MASTER {A72} \
+      PS_HSDP_INGRESS_TRAFFIC {AURORA} \
+      PS_HSDP_MODE {HSDP0} \
       PS_I2C0_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 46 .. 47}}} \
       PS_I2C1_PERIPHERAL {{ENABLE 1} {IO {PMC_MIO 44 .. 45}}} \
       PS_IRQ_USAGE {{CH0 1} {CH1 0} {CH10 0} {CH11 0} {CH12 0} {CH13 0} {CH14 0} {CH15 0} {CH2 0} {CH3 0} {CH4 0} {CH5 0} {CH6 0} {CH7 0} {CH8 0} {CH9 0}} \
@@ -488,7 +497,7 @@ proc create_root_design { parentCell } {
 
 
   # Create instance: xlconcat_0, and set properties
-  set xlconcat_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlconcat:2.1 xlconcat_0 ]
+  set xlconcat_0 [ create_bd_cell -type inline_hdl -vlnv xilinx.com:inline_hdl:ilconcat:1.0 xlconcat_0 ]
   set_property -dict [list \
     CONFIG.IN0_WIDTH {1} \
     CONFIG.NUM_PORTS {32} \
@@ -504,9 +513,9 @@ proc create_root_design { parentCell } {
     CONFIG.CLKOUT_MATCHED_ROUTING {false,false,false,false,false,false,false} \
     CONFIG.CLKOUT_PORT {clk_out1,clk_out2,clk_out3,clk_out4,clk_out5,clk_out6,clk_out7} \
     CONFIG.CLKOUT_REQUESTED_DUTY_CYCLE {50.000,50.000,50.000,50.000,50.000,50.000,50.000} \
-    CONFIG.CLKOUT_REQUESTED_OUT_FREQUENCY {625.000,104.167,208.33,416.67,100.000,100.000,100.000} \
+    CONFIG.CLKOUT_REQUESTED_OUT_FREQUENCY {625.000,100,300.000,100.000,100.000,100.000,100.000} \
     CONFIG.CLKOUT_REQUESTED_PHASE {0.000,0.000,0.000,0.000,0.000,0.000,0.000} \
-    CONFIG.CLKOUT_USED {true,true,true,true,false,false,false} \
+    CONFIG.CLKOUT_USED {true,true,false,false,false,false,false} \
     CONFIG.JITTER_SEL {Min_O_Jitter} \
     CONFIG.PRIM_SOURCE {No_buffer} \
     CONFIG.RESET_TYPE {ACTIVE_LOW} \
@@ -515,7 +524,7 @@ proc create_root_design { parentCell } {
 
 
   # Create instance: xlconstant_0, and set properties
-  set xlconstant_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlconstant:1.1 xlconstant_0 ]
+  set xlconstant_0 [ create_bd_cell -type inline_hdl -vlnv xilinx.com:inline_hdl:ilconstant:1.0 xlconstant_0 ]
 
   # Create instance: cips_noc, and set properties
   set cips_noc [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_noc:1.1 cips_noc ]
@@ -678,12 +687,6 @@ proc create_root_design { parentCell } {
   # Create instance: proc_sys_reset_4, and set properties
   set proc_sys_reset_4 [ create_bd_cell -type ip -vlnv xilinx.com:ip:proc_sys_reset:5.0 proc_sys_reset_4 ]
 
-  # Create instance: proc_sys_reset_5, and set properties
-  set proc_sys_reset_5 [ create_bd_cell -type ip -vlnv xilinx.com:ip:proc_sys_reset:5.0 proc_sys_reset_5 ]
-
-  # Create instance: proc_sys_reset_6, and set properties
-  set proc_sys_reset_6 [ create_bd_cell -type ip -vlnv xilinx.com:ip:proc_sys_reset:5.0 proc_sys_reset_6 ]
-
   # Create instance: ai_engine_0, and set properties
   set ai_engine_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:ai_engine:2.0 ai_engine_0 ]
   set_property -dict [list \
@@ -762,6 +765,7 @@ proc create_root_design { parentCell } {
   connect_bd_intf_net -intf_net cips_noc_M06_INI [get_bd_intf_pins cips_noc/M06_INI] [get_bd_intf_pins noc_lpddr4/S02_INI]
   connect_bd_intf_net -intf_net cips_noc_M07_INI [get_bd_intf_pins cips_noc/M07_INI] [get_bd_intf_pins noc_lpddr4/S03_INI]
   connect_bd_intf_net -intf_net ddr4_dimm1_sma_clk_1 [get_bd_intf_ports ddr4_dimm1_sma_clk] [get_bd_intf_pins noc_ddr4/sys_clk0]
+  connect_bd_intf_net -intf_net gt_refclk0_0 [get_bd_intf_ports gt_refclk0] [get_bd_intf_pins CIPS_0/gt_refclk0]
   connect_bd_intf_net -intf_net icn_ctrl_M00_AXI [get_bd_intf_pins axi_intc_cascaded_1/s_axi] [get_bd_intf_pins axi_smc_vip_hier/M00_AXI]
   connect_bd_intf_net -intf_net icn_ctrl_M01_AXI [get_bd_intf_pins axi_intc_parent/s_axi] [get_bd_intf_pins axi_smc_vip_hier/M01_AXI]
   connect_bd_intf_net -intf_net lpddr4_sma_clk1_1 [get_bd_intf_ports lpddr4_sma_clk1] [get_bd_intf_pins noc_lpddr4/sys_clk0]
@@ -795,9 +799,7 @@ proc create_root_design { parentCell } {
   [get_bd_pins proc_sys_reset_1/ext_reset_in] \
   [get_bd_pins proc_sys_reset_2/ext_reset_in] \
   [get_bd_pins proc_sys_reset_3/ext_reset_in] \
-  [get_bd_pins proc_sys_reset_4/ext_reset_in] \
-  [get_bd_pins proc_sys_reset_5/ext_reset_in] \
-  [get_bd_pins proc_sys_reset_6/ext_reset_in]
+  [get_bd_pins proc_sys_reset_4/ext_reset_in]
   connect_bd_net -net CIPS_0_pmc_axi_noc_axi0_clk  [get_bd_pins CIPS_0/pmc_axi_noc_axi0_clk] \
   [get_bd_pins cips_noc/aclk8]
   connect_bd_net -net ai_engine_0_s00_axi_aclk  [get_bd_pins ai_engine_0/s00_axi_aclk] \
@@ -821,18 +823,12 @@ proc create_root_design { parentCell } {
   [get_bd_pins proc_sys_reset_3/slowest_sync_clk]
   connect_bd_net -net clk_wizard_0_clk_out2  [get_bd_pins clk_wizard_0/clk_out2] \
   [get_bd_pins proc_sys_reset_4/slowest_sync_clk]
-  connect_bd_net -net clk_wizard_0_clk_out3  [get_bd_pins clk_wizard_0/clk_out3] \
-  [get_bd_pins proc_sys_reset_5/slowest_sync_clk]
-  connect_bd_net -net clk_wizard_0_clk_out4  [get_bd_pins clk_wizard_0/clk_out4] \
-  [get_bd_pins proc_sys_reset_6/slowest_sync_clk]
   connect_bd_net -net clk_wizard_0_locked  [get_bd_pins clk_wizard_0/locked] \
   [get_bd_pins proc_sys_reset_0/dcm_locked] \
   [get_bd_pins proc_sys_reset_1/dcm_locked] \
   [get_bd_pins proc_sys_reset_2/dcm_locked] \
   [get_bd_pins proc_sys_reset_3/dcm_locked] \
-  [get_bd_pins proc_sys_reset_4/dcm_locked] \
-  [get_bd_pins proc_sys_reset_5/dcm_locked] \
-  [get_bd_pins proc_sys_reset_6/dcm_locked]
+  [get_bd_pins proc_sys_reset_4/dcm_locked]
   connect_bd_net -net proc_sys_reset_1_peripheral_aresetn  [get_bd_pins proc_sys_reset_1/peripheral_aresetn] \
   [get_bd_pins axi_intc_cascaded_1/s_axi_aresetn] \
   [get_bd_pins axi_intc_parent/s_axi_aresetn] \
@@ -875,9 +871,13 @@ proc create_root_design { parentCell } {
 
   # Exclude Address Segments
   exclude_bd_addr_seg -offset 0xA4000000 -range 0x00010000 -target_address_space [get_bd_addr_spaces CIPS_0/M_AXI_FPD] [get_bd_addr_segs axi_smc_vip_hier/dummy_slave_0/S_AXI/Reg]
+  exclude_bd_addr_seg -target_address_space [get_bd_addr_spaces CIPS_0/M_AXI_FPD] [get_bd_addr_segs axi_smc_vip_hier/dummy_slave_0/S_AXI/Reg]
   exclude_bd_addr_seg -offset 0xA4010000 -range 0x00010000 -target_address_space [get_bd_addr_spaces CIPS_0/M_AXI_FPD] [get_bd_addr_segs axi_smc_vip_hier/dummy_slave_1/S_AXI/Reg]
+  exclude_bd_addr_seg -target_address_space [get_bd_addr_spaces CIPS_0/M_AXI_FPD] [get_bd_addr_segs axi_smc_vip_hier/dummy_slave_1/S_AXI/Reg]
   exclude_bd_addr_seg -offset 0xA4020000 -range 0x00010000 -target_address_space [get_bd_addr_spaces CIPS_0/M_AXI_FPD] [get_bd_addr_segs axi_smc_vip_hier/dummy_slave_2/S_AXI/Reg]
+  exclude_bd_addr_seg -target_address_space [get_bd_addr_spaces CIPS_0/M_AXI_FPD] [get_bd_addr_segs axi_smc_vip_hier/dummy_slave_2/S_AXI/Reg]
   exclude_bd_addr_seg -offset 0xA4030000 -range 0x00010000 -target_address_space [get_bd_addr_spaces CIPS_0/M_AXI_FPD] [get_bd_addr_segs axi_smc_vip_hier/dummy_slave_3/S_AXI/Reg]
+  exclude_bd_addr_seg -target_address_space [get_bd_addr_spaces CIPS_0/M_AXI_FPD] [get_bd_addr_segs axi_smc_vip_hier/dummy_slave_3/S_AXI/Reg]
 
 
   # Restore current instance
@@ -887,7 +887,7 @@ proc create_root_design { parentCell } {
   set_property PFM_NAME {xilinx.com:vck190:versal_extensible_platform_base:1.0} [get_files [current_bd_design].bd]
   set_property PFM.IRQ {intr {id 0 range 32}} [get_bd_cells /axi_intc_cascaded_1]
   set_property PFM.IRQ {In0 {id 32} In1 {id 33} In2 {id 34} In3 {id 35} In4 {id 36} In5 {id 37} In6 {id 38} In7 {id 39} In8 {id 40}  In9 {id 41} In10 {id 42} In11 {id 43} In12 {id 44} In13 {id 45} In14 {id 46} In15 {id 47} In16 {id 48} In17 {id 49} In18 {id 50}  In19 {id 51} In20 {id 52} In21 {id 53} In22 {id 54} In23 {id 55} In24 {id 56} In25 {id 57} In26 {id 58} In27 {id 59} In28 {id 60}  In29 {id 61} In30 {id 62} } [get_bd_cells /xlconcat_0]
-  set_property PFM.CLOCK {clk_out1_o1 {id "6" is_default "false" proc_sys_reset "/proc_sys_reset_0" status "fixed_non_ref" freq_hz "625000000"} clk_out1_o2 {id "2" is_default "true" proc_sys_reset "/proc_sys_reset_1" status "fixed_non_ref" freq_hz "312500000"} clk_out1_o3 {id "0" is_default "false" proc_sys_reset "/proc_sys_reset_2" status "fixed_non_ref" freq_hz "156250000"} clk_out1_o4 {id "3" is_default "false" proc_sys_reset "/proc_sys_reset_3" status "fixed_non_ref" freq_hz "78125000"} clk_out2 {id "1" is_default "false" proc_sys_reset "/proc_sys_reset_4" status "fixed" freq_hz "104166666"} clk_out3 {id "4" is_default "false" proc_sys_reset "/proc_sys_reset_5" status "fixed" freq_hz "208333333"} clk_out4 {id "5" is_default "false" proc_sys_reset "/proc_sys_reset_6" status "fixed" freq_hz "416666666"}} [get_bd_cells /clk_wizard_0]
+  set_property PFM.CLOCK {clk_out1_o1 {id "0" is_default "false" proc_sys_reset "/proc_sys_reset_0" status "fixed_non_ref"} clk_out1_o2 {id "2" is_default "true" proc_sys_reset "/proc_sys_reset_1" status "fixed_non_ref"} clk_out1_o3 {id "3" is_default "false" proc_sys_reset "/proc_sys_reset_2" status "fixed_non_ref"} clk_out1_o4 {id "4" is_default "false" proc_sys_reset "/proc_sys_reset_3" status "fixed_non_ref"} clk_out2 {id "1" is_default "false" proc_sys_reset "/proc_sys_reset_4" status "fixed"}} [get_bd_cells /clk_wizard_0]
   set_property PFM.AXI_PORT {S00_AXI {memport "S_AXI_NOC" sptag "DDR"} S01_AXI {memport "S_AXI_NOC" sptag "DDR"} S02_AXI {memport "S_AXI_NOC" sptag "DDR"} S03_AXI {memport "S_AXI_NOC" sptag "DDR"} S04_AXI {memport "S_AXI_NOC" sptag "DDR"} S05_AXI {memport "S_AXI_NOC" sptag "DDR"} S06_AXI {memport "S_AXI_NOC" sptag "DDR"} S07_AXI {memport "S_AXI_NOC" sptag "DDR"} S08_AXI {memport "S_AXI_NOC" sptag "DDR"} S09_AXI {memport "S_AXI_NOC" sptag "DDR"} S10_AXI {memport "S_AXI_NOC" sptag "DDR"} S11_AXI {memport "S_AXI_NOC" sptag "DDR"} S12_AXI {memport "S_AXI_NOC" sptag "DDR"} S13_AXI {memport "S_AXI_NOC" sptag "DDR"} S14_AXI {memport "S_AXI_NOC" sptag "DDR"} S15_AXI {memport "S_AXI_NOC" sptag "DDR"} S16_AXI {memport "S_AXI_NOC" sptag "DDR"} S17_AXI {memport "S_AXI_NOC" sptag "DDR"} S18_AXI {memport "S_AXI_NOC" sptag "DDR"} S19_AXI {memport "S_AXI_NOC" sptag "DDR"} S20_AXI {memport "S_AXI_NOC" sptag "DDR"} S21_AXI {memport "S_AXI_NOC" sptag "DDR"} S22_AXI {memport "S_AXI_NOC" sptag "DDR"} S23_AXI {memport "S_AXI_NOC" sptag "DDR"} S24_AXI {memport "S_AXI_NOC" sptag "DDR"} S25_AXI {memport "S_AXI_NOC" sptag "DDR"} S26_AXI {memport "S_AXI_NOC" sptag "DDR"} S27_AXI {memport "S_AXI_NOC" sptag "DDR"}} [get_bd_cells /noc_ddr4]
   set_property PFM.AXI_PORT {S00_AXI {memport "S_AXI_NOC" sptag "LPDDR"} S01_AXI {memport "S_AXI_NOC" sptag "LPDDR"} S02_AXI {memport "S_AXI_NOC" sptag "LPDDR"} S03_AXI {memport "S_AXI_NOC" sptag "LPDDR"} S04_AXI {memport "S_AXI_NOC" sptag "LPDDR"} S05_AXI {memport "S_AXI_NOC" sptag "LPDDR"} S06_AXI {memport "S_AXI_NOC" sptag "LPDDR"} S07_AXI {memport "S_AXI_NOC" sptag "LPDDR"} S08_AXI {memport "S_AXI_NOC" sptag "LPDDR"} S09_AXI {memport "S_AXI_NOC" sptag "LPDDR"} S10_AXI {memport "S_AXI_NOC" sptag "LPDDR"} S11_AXI {memport "S_AXI_NOC" sptag "LPDDR"} S12_AXI {memport "S_AXI_NOC" sptag "LPDDR"} S13_AXI {memport "S_AXI_NOC" sptag "LPDDR"} S14_AXI {memport "S_AXI_NOC" sptag "LPDDR"} S15_AXI {memport "S_AXI_NOC" sptag "LPDDR"} S16_AXI {memport "S_AXI_NOC" sptag "LPDDR"} S17_AXI {memport "S_AXI_NOC" sptag "LPDDR"} S18_AXI {memport "S_AXI_NOC" sptag "LPDDR"} S19_AXI {memport "S_AXI_NOC" sptag "LPDDR"} S20_AXI {memport "S_AXI_NOC" sptag "LPDDR"} S21_AXI {memport "S_AXI_NOC" sptag "LPDDR"} S22_AXI {memport "S_AXI_NOC" sptag "LPDDR"} S23_AXI {memport "S_AXI_NOC" sptag "LPDDR"} S24_AXI {memport "S_AXI_NOC" sptag "LPDDR"} S25_AXI {memport "S_AXI_NOC" sptag "LPDDR"} S26_AXI {memport "S_AXI_NOC" sptag "LPDDR"} S27_AXI {memport "S_AXI_NOC" sptag "LPDDR"}} [get_bd_cells /noc_lpddr4]
   set_property PFM.AXI_PORT {M06_AXI {memport "M_AXI_GP" sptag "" memory ""} M07_AXI {memport "M_AXI_GP" sptag "" memory ""} M08_AXI {memport "M_AXI_GP" sptag "" memory ""}} [get_bd_cells /axi_smc_vip_hier/icn_ctrl]

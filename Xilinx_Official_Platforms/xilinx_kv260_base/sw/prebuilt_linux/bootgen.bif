@@ -1,0 +1,15 @@
+/******************************************************************************
+* Copyright (C) 2020-2022 Xilinx, Inc. All rights reserved.
+* Copyright (C) 2022-2025 Advanced Micro Devices, Inc. All rights reserved.
+* SPDX-License-Identifier: MIT
+******************************************************************************/
+
+the_ROM_image:
+{
+	[bootloader, destination_cpu=a53-0] ../../sw/build/platform/boot/zynqmp_fsbl.elf
+	[pmufw_image] ../../sw/build/platform/boot/pmufw.elf
+	[destination_device=pl] ../../sw/build/hw.bit
+	[destination_cpu=a53-0, exception_level=el-3, trustzone] ../../sw/build/platform/boot/bl31.elf
+	[destination_cpu=a53-0, load=0x00100000] ../../sw/build/platform/boot/system.dtb
+	[destination_cpu=a53-0, exception_level=el-2] ../../sw/build/platform/boot/u-boot.elf
+}

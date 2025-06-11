@@ -1,6 +1,6 @@
 #******************************************************************************
 # Copyright (C) 2020-2022 Xilinx, Inc. All rights reserved.
-# Copyright (C) 2022-2024 Advanced Micro Devices, Inc. All rights reserved.
+# Copyright (C) 2022-2025 Advanced Micro Devices, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
 #******************************************************************************
 import vitis
@@ -30,7 +30,7 @@ client = vitis.create_client()
 #client.update_workspace(path=os.getcwd()/test)
 
 client.update_workspace(path=platform_out)
-#client.update_workspace("/proj/xhdhdstaff3/swbhardw/platform/2024.2/sysgen_vck190_base_bdc/xilinx_vck190_base_bdc_python_cli/temp")
+#client.update_workspace("/proj/xhdhdstaff3/swbhardw/platform/2025.1/sysgen_vck190_base_bdc/xilinx_vck190_base_bdc_python_cli/temp")
 
 platform = client.create_platform_component(name = platform_name, hw_design = xsa_path, no_boot_bsp = True, emu_design = emu_xsa_path, generate_dtb = False,
  desc = " A base platform targeting VMK180 .This board includes 8GB of DDR4 UDIMM, 8GB LPDDR4 component, 1968 DSP engines, Dual-Core Arm® Cortex®-A72 and Dual-Core Cortex-R5. More information at https://www.xilinx.com/products/boards-and-kits/vmk180.html" )
