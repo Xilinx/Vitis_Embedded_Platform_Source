@@ -7,8 +7,6 @@ file mkdir build
 cd build
 source ../xsa_scripts/project.tcl
 source ../xsa_scripts/bd.tcl
-#source ../xsa_scripts/dr.bd.tcl
-#source ../xsa_scripts/pfm_decls.tcl
 
 #For Questa Simulator
 source ../data/questa_sim.tcl 
@@ -23,9 +21,6 @@ update_compile_order -fileset sources_1
 update_compile_order -fileset sim_1
 #set_property top vitis_design_wrapper [current_fileset] 
 
-# Ensure that your top of synthesis module is also set as top for simulation,  coming from CED now remove 27
-#set_property top vitis_design_wrapper [get_filesets sim_1]
-
 # Generate simulation top for your entire design which would include
 # aggregated NOC in the form of xlnoc.bd
 # <BS> # uncomment below if noc switch network is not generated verify 
@@ -33,13 +28,7 @@ update_compile_order -fileset sim_1
 #generate_switch_network_for_noc  
 update_compile_order -fileset sim_1
 
-# Set the auto-generated <rtl_top>_sim_wrapper as the sim top , , coming from CED now remove 37-39
-#set_property top vitis_design_wrapper_sim_wrapper [get_filesets sim_1]
-#import_files -fileset sim_1 -norecurse ./my_project/my_project.srcs/sources_1/common/hdl/vitis_designi_st_wrapper_sim_wrapper.v
-#update_compile_order -fileset sim_1
-
-#Generate the final simulation script which will compile
-# the <syn_top>_sim_wrapper and xlnoc.bd modules also
+#Generate the final simulation script which will compile the <syn_top>_sim_wrapper and xlnoc.bd modules also
 launch_simulation -scripts_only
 launch_simulation -step compile
 launch_simulation -step elaborate

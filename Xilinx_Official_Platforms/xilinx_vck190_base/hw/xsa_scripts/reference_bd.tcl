@@ -1,3 +1,9 @@
+#******************************************************************************
+# Copyright (C) 2020-2022 Xilinx, Inc. All rights reserved.
+# Copyright (C) 2022-2025 Advanced Micro Devices, Inc. All rights reserved.
+# SPDX-License-Identifier: MIT
+#******************************************************************************
+
 
 ################################################################
 # This is a generated script based on design: vitis_design
@@ -20,7 +26,7 @@ set script_folder [_tcl::get_script_folder]
 ################################################################
 # Check if script is running in correct Vivado version.
 ################################################################
-set scripts_vivado_version 2025.1
+set scripts_vivado_version 2025.2
 set current_vivado_version [version -short]
 
 if { [string first $scripts_vivado_version $current_vivado_version] == -1 } {
@@ -125,7 +131,7 @@ if { ${design_name} eq "" } {
 			\t --> BD has VIPs on the accelerator SmartConnect IPs because IPI platform can't handle export with no slaves on SmartConnect IP.
 			\t \t \t \t \t \t \t Hence VIPs are there to have at least one slave on a smart connect
 			\t --> Execute TCL command : launch_simulation -scripts_only ,to establish the sim_1 source set hierarchy after successful design creation.
-			\t --> For Next steps, Refer to README.md : https://github.com/Xilinx/XilinxCEDStore/tree/2024.2/ced/Xilinx/IPI/Versal_Extensible_Embedded_Platform/README.md" [get_bd_designs $design_name]
+			\t --> For Next steps, Refer to README.md : https://github.com/Xilinx/XilinxCEDStore/tree/2025.2/ced/Xilinx/IPI/Versal_Extensible_Embedded_Platform/README.md" [get_bd_designs $design_name]
 
 common::send_gid_msg -ssname BD::TCL -id 2005 -severity "INFO" "Currently the variable <design_name> is equal to \"$design_name\"."
 
@@ -543,103 +549,103 @@ proc create_root_design { parentCell } {
 
   set_property -dict [ list \
    CONFIG.CATEGORY {aie} \
- ] [get_bd_intf_pins /cips_noc/M00_AXI]
+ ] [get_bd_intf_pins $cips_noc/M00_AXI]
 
   set_property -dict [ list \
    CONFIG.CONNECTIONS {M04_INI {read_bw {128} write_bw {128}} M00_AXI {read_bw {5} write_bw {5} read_avg_burst {4} write_avg_burst {4}} M00_INI {read_bw {128} write_bw {128}}} \
    CONFIG.DEST_IDS {M00_AXI:0x0} \
    CONFIG.NOC_PARAMS {} \
    CONFIG.CATEGORY {ps_cci} \
- ] [get_bd_intf_pins /cips_noc/S00_AXI]
+ ] [get_bd_intf_pins $cips_noc/S00_AXI]
 
   set_property -dict [ list \
    CONFIG.CONNECTIONS {M01_INI {read_bw {128} write_bw {128}} M05_INI {read_bw {128} write_bw {128}} M00_AXI {read_bw {5} write_bw {5} read_avg_burst {4} write_avg_burst {4}}} \
    CONFIG.DEST_IDS {M00_AXI:0x0} \
    CONFIG.NOC_PARAMS {} \
    CONFIG.CATEGORY {ps_cci} \
- ] [get_bd_intf_pins /cips_noc/S01_AXI]
+ ] [get_bd_intf_pins $cips_noc/S01_AXI]
 
   set_property -dict [ list \
    CONFIG.CONNECTIONS {M02_INI {read_bw {128} write_bw {128}} M06_INI {read_bw {128} write_bw {128}} M00_AXI {read_bw {5} write_bw {5} read_avg_burst {4} write_avg_burst {4}}} \
    CONFIG.DEST_IDS {M00_AXI:0x0} \
    CONFIG.NOC_PARAMS {} \
    CONFIG.CATEGORY {ps_cci} \
- ] [get_bd_intf_pins /cips_noc/S02_AXI]
+ ] [get_bd_intf_pins $cips_noc/S02_AXI]
 
   set_property -dict [ list \
    CONFIG.CONNECTIONS {M07_INI {read_bw {128} write_bw {128}} M03_INI {read_bw {128} write_bw {128}} M00_AXI {read_bw {5} write_bw {5} read_avg_burst {4} write_avg_burst {4}}} \
    CONFIG.DEST_IDS {M00_AXI:0x0} \
    CONFIG.NOC_PARAMS {} \
    CONFIG.CATEGORY {ps_cci} \
- ] [get_bd_intf_pins /cips_noc/S03_AXI]
+ ] [get_bd_intf_pins $cips_noc/S03_AXI]
 
   set_property -dict [ list \
    CONFIG.CONNECTIONS {M00_INI {read_bw {5} write_bw {5}}} \
    CONFIG.DEST_IDS {} \
    CONFIG.NOC_PARAMS {} \
    CONFIG.CATEGORY {ps_nci} \
- ] [get_bd_intf_pins /cips_noc/S04_AXI]
+ ] [get_bd_intf_pins $cips_noc/S04_AXI]
 
   set_property -dict [ list \
    CONFIG.CONNECTIONS {M00_INI {read_bw {5} write_bw {5}}} \
    CONFIG.DEST_IDS {} \
    CONFIG.NOC_PARAMS {} \
    CONFIG.CATEGORY {ps_nci} \
- ] [get_bd_intf_pins /cips_noc/S05_AXI]
+ ] [get_bd_intf_pins $cips_noc/S05_AXI]
 
   set_property -dict [ list \
    CONFIG.CONNECTIONS {M00_INI {read_bw {5} write_bw {5}}} \
    CONFIG.DEST_IDS {} \
    CONFIG.NOC_PARAMS {} \
    CONFIG.CATEGORY {ps_rpu} \
- ] [get_bd_intf_pins /cips_noc/S06_AXI]
+ ] [get_bd_intf_pins $cips_noc/S06_AXI]
 
   set_property -dict [ list \
    CONFIG.CONNECTIONS {M04_INI {read_bw {5} write_bw {5}} M00_AXI {read_bw {5} write_bw {5} read_avg_burst {4} write_avg_burst {4}} M00_INI {read_bw {5} write_bw {5}}} \
    CONFIG.DEST_IDS {M00_AXI:0x0} \
    CONFIG.NOC_PARAMS {} \
    CONFIG.CATEGORY {ps_pmc} \
- ] [get_bd_intf_pins /cips_noc/S07_AXI]
+ ] [get_bd_intf_pins $cips_noc/S07_AXI]
 
   set_property -dict [ list \
    CONFIG.ASSOCIATED_BUSIF {} \
- ] [get_bd_pins /cips_noc/aclk0]
+ ] [get_bd_pins $cips_noc/aclk0]
 
   set_property -dict [ list \
    CONFIG.ASSOCIATED_BUSIF {S00_AXI} \
- ] [get_bd_pins /cips_noc/aclk1]
+ ] [get_bd_pins $cips_noc/aclk1]
 
   set_property -dict [ list \
    CONFIG.ASSOCIATED_BUSIF {S01_AXI} \
- ] [get_bd_pins /cips_noc/aclk2]
+ ] [get_bd_pins $cips_noc/aclk2]
 
   set_property -dict [ list \
    CONFIG.ASSOCIATED_BUSIF {S02_AXI} \
- ] [get_bd_pins /cips_noc/aclk3]
+ ] [get_bd_pins $cips_noc/aclk3]
 
   set_property -dict [ list \
    CONFIG.ASSOCIATED_BUSIF {S03_AXI} \
- ] [get_bd_pins /cips_noc/aclk4]
+ ] [get_bd_pins $cips_noc/aclk4]
 
   set_property -dict [ list \
    CONFIG.ASSOCIATED_BUSIF {S04_AXI} \
- ] [get_bd_pins /cips_noc/aclk5]
+ ] [get_bd_pins $cips_noc/aclk5]
 
   set_property -dict [ list \
    CONFIG.ASSOCIATED_BUSIF {S05_AXI} \
- ] [get_bd_pins /cips_noc/aclk6]
+ ] [get_bd_pins $cips_noc/aclk6]
 
   set_property -dict [ list \
    CONFIG.ASSOCIATED_BUSIF {S06_AXI} \
- ] [get_bd_pins /cips_noc/aclk7]
+ ] [get_bd_pins $cips_noc/aclk7]
 
   set_property -dict [ list \
    CONFIG.ASSOCIATED_BUSIF {S07_AXI} \
- ] [get_bd_pins /cips_noc/aclk8]
+ ] [get_bd_pins $cips_noc/aclk8]
 
   set_property -dict [ list \
    CONFIG.ASSOCIATED_BUSIF {M00_AXI} \
- ] [get_bd_pins /cips_noc/aclk9]
+ ] [get_bd_pins $cips_noc/aclk9]
 
   # Create instance: noc_ddr4, and set properties
   set noc_ddr4 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_noc:1.1 noc_ddr4 ]
@@ -658,19 +664,19 @@ proc create_root_design { parentCell } {
 
   set_property -dict [ list \
    CONFIG.CONNECTIONS {MC_0 {read_bw {5} write_bw {5} read_avg_burst {4} write_avg_burst {4}}} \
- ] [get_bd_intf_pins /noc_ddr4/S00_INI]
+ ] [get_bd_intf_pins $noc_ddr4/S00_INI]
 
   set_property -dict [ list \
    CONFIG.CONNECTIONS {MC_1 {read_bw {5} write_bw {5} read_avg_burst {4} write_avg_burst {4}}} \
- ] [get_bd_intf_pins /noc_ddr4/S01_INI]
+ ] [get_bd_intf_pins $noc_ddr4/S01_INI]
 
   set_property -dict [ list \
    CONFIG.CONNECTIONS {MC_2 {read_bw {5} write_bw {5} read_avg_burst {4} write_avg_burst {4}}} \
- ] [get_bd_intf_pins /noc_ddr4/S02_INI]
+ ] [get_bd_intf_pins $noc_ddr4/S02_INI]
 
   set_property -dict [ list \
    CONFIG.CONNECTIONS {MC_3 {read_bw {5} write_bw {5} read_avg_burst {4} write_avg_burst {4}}} \
- ] [get_bd_intf_pins /noc_ddr4/S03_INI]
+ ] [get_bd_intf_pins $noc_ddr4/S03_INI]
 
   # Create instance: proc_sys_reset_0, and set properties
   set proc_sys_reset_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:proc_sys_reset:5.0 proc_sys_reset_0 ]
@@ -705,7 +711,7 @@ proc create_root_design { parentCell } {
 
   set_property -dict [ list \
    CONFIG.CATEGORY {NOC} \
- ] [get_bd_intf_pins /ai_engine_0/S00_AXI]
+ ] [get_bd_intf_pins $ai_engine_0/S00_AXI]
 
   # Create instance: noc_lpddr4, and set properties
   set noc_lpddr4 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_noc:1.1 noc_lpddr4 ]
@@ -728,19 +734,19 @@ proc create_root_design { parentCell } {
 
   set_property -dict [ list \
    CONFIG.CONNECTIONS {MC_0 {read_bw {128} write_bw {128} read_avg_burst {4} write_avg_burst {4}}} \
- ] [get_bd_intf_pins /noc_lpddr4/S00_INI]
+ ] [get_bd_intf_pins $noc_lpddr4/S00_INI]
 
   set_property -dict [ list \
    CONFIG.CONNECTIONS {MC_1 {read_bw {5} write_bw {5} read_avg_burst {4} write_avg_burst {4}}} \
- ] [get_bd_intf_pins /noc_lpddr4/S01_INI]
+ ] [get_bd_intf_pins $noc_lpddr4/S01_INI]
 
   set_property -dict [ list \
    CONFIG.CONNECTIONS {MC_2 {read_bw {5} write_bw {5} read_avg_burst {4} write_avg_burst {4}}} \
- ] [get_bd_intf_pins /noc_lpddr4/S02_INI]
+ ] [get_bd_intf_pins $noc_lpddr4/S02_INI]
 
   set_property -dict [ list \
    CONFIG.CONNECTIONS {MC_3 {read_bw {5} write_bw {5} read_avg_burst {4} write_avg_burst {4}}} \
- ] [get_bd_intf_pins /noc_lpddr4/S03_INI]
+ ] [get_bd_intf_pins $noc_lpddr4/S03_INI]
 
   # Create instance: axi_smc_vip_hier
   create_hier_cell_axi_smc_vip_hier [current_bd_instance .] axi_smc_vip_hier
@@ -871,13 +877,9 @@ proc create_root_design { parentCell } {
 
   # Exclude Address Segments
   exclude_bd_addr_seg -offset 0xA4000000 -range 0x00010000 -target_address_space [get_bd_addr_spaces CIPS_0/M_AXI_FPD] [get_bd_addr_segs axi_smc_vip_hier/dummy_slave_0/S_AXI/Reg]
-  exclude_bd_addr_seg -target_address_space [get_bd_addr_spaces CIPS_0/M_AXI_FPD] [get_bd_addr_segs axi_smc_vip_hier/dummy_slave_0/S_AXI/Reg]
   exclude_bd_addr_seg -offset 0xA4010000 -range 0x00010000 -target_address_space [get_bd_addr_spaces CIPS_0/M_AXI_FPD] [get_bd_addr_segs axi_smc_vip_hier/dummy_slave_1/S_AXI/Reg]
-  exclude_bd_addr_seg -target_address_space [get_bd_addr_spaces CIPS_0/M_AXI_FPD] [get_bd_addr_segs axi_smc_vip_hier/dummy_slave_1/S_AXI/Reg]
   exclude_bd_addr_seg -offset 0xA4020000 -range 0x00010000 -target_address_space [get_bd_addr_spaces CIPS_0/M_AXI_FPD] [get_bd_addr_segs axi_smc_vip_hier/dummy_slave_2/S_AXI/Reg]
-  exclude_bd_addr_seg -target_address_space [get_bd_addr_spaces CIPS_0/M_AXI_FPD] [get_bd_addr_segs axi_smc_vip_hier/dummy_slave_2/S_AXI/Reg]
   exclude_bd_addr_seg -offset 0xA4030000 -range 0x00010000 -target_address_space [get_bd_addr_spaces CIPS_0/M_AXI_FPD] [get_bd_addr_segs axi_smc_vip_hier/dummy_slave_3/S_AXI/Reg]
-  exclude_bd_addr_seg -target_address_space [get_bd_addr_spaces CIPS_0/M_AXI_FPD] [get_bd_addr_segs axi_smc_vip_hier/dummy_slave_3/S_AXI/Reg]
 
 
   # Restore current instance

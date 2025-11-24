@@ -5,7 +5,7 @@
 #******************************************************************************
 
 ################################################################
-# This is a generated script based on design: xilinx_vck190_base
+# This is a generated script based on design: xilinx_vek280_base
 
 #
 # Though there are limitations about the generated script,
@@ -13,27 +13,10 @@
 # IP Integrator Tcl commands easier.
 ################################################################
 
-namespace eval _tcl {
-  proc get_script_folder {} {
-    set script_path [file normalize [info script]]
-    set script_folder [file dirname $script_path]
-    return $script_folder
-  }
-}
-variable script_folder
-set script_folder [_tcl::get_script_folder]
-
-################################################################
-# START
-################################################################
-
-# To test this script, run the following commands from Vivado Tcl console:
-
-# source xilinx_vck190_base_script.tcl
 
 # If there is no project opened, this script will create a
 # project, but make sure you do not have an existing project
-# <./xilinx_vck190_base/xilinx_vck190_base.xpr> in the current working folder.
+# <./xilinx_vek280_base/xilinx_vek280_base.xpr> in the current working folder.
 set list_projs [get_projects -quiet]
 if { $list_projs eq "" } {
     set_param board.repoPaths $::env(XILINX_VIVADO)/data/xhub/boards/XilinxBoardStore/boards/Xilinx

@@ -30,7 +30,7 @@ client = vitis.create_client()
 #client.update_workspace(path=os.getcwd()/test)
 
 client.update_workspace(path=platform_out)
-#client.update_workspace("/proj/xhdhdstaff3/swbhardw/platform/2025.1/sysgen_vck190_base_bdc/xilinx_vck190_base_bdc_python_cli/temp")
+#client.update_workspace("/proj/xhdhdstaff3/swbhardw/platform/2025.2/sysgen_vck190_base_bdc/xilinx_vck190_base_bdc_python_cli/temp")
 
 platform = client.create_platform_component(name = platform_name, hw_design = xsa_path, no_boot_bsp = True, emu_design = emu_xsa_path, generate_dtb = False,
  desc = " A base platform targeting VEK280 which is the first Versal AI Edge series evaluation kit, enabling designers to develop solutions using AI and DSP engines capable of delivering over 100X greater compute performance compared to current server class CPUs. This board includes 12GB LPDDR4 component, 304 AI engines, 1312 DSP engines, Dual-Core Arm® Cortex®-A72 and Dual-Core Cortex-R5. More information at https://www.xilinx.com/products/boards-and-kits/vek280.html" )

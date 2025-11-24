@@ -19,15 +19,15 @@ BOARD    = versal-vck190-reva-x-ebm-01-reva
 CORE     = psv_cortexa72_0
 
 #versioning
-VERSION          ?= 202510_1
-VER              ?= 202510.1
+VERSION          ?= 202520_1
+VER              ?= 202520.1
 
 #common
 TOP_DIR         ?= $(shell readlink -f .)
 
 #hw related
 XSA_DIR         ?= $(TOP_DIR)/hw/build
-XSA             ?= $(XSA_DIR)/hw.xsa
+XSA      ?= $(XSA_DIR)/hw.xsa
 RP_XSA          ?= $(XSA_DIR)/rp/rp.xsa
 STATIC_XSA      ?= $(XSA_DIR)/static.xsa
 HW_EMU_XSA      ?= $(XSA_DIR)/hw_emu/hw_emu.xsa
@@ -41,6 +41,7 @@ DTB_FILE         = $(BOOT_DIR)/system.dtb
 BOOT_IMAGE       = $(BOOT_DIR)/BOOT.BIN
 SW_FILES         = $(IMAGE_DIR)/boot.scr $(BOOT_DIR)/u-boot.elf $(BOOT_DIR)/bl31.elf
 BOOT_FILES       = u-boot.elf bl31.elf
+USER_DTSI        = $(TOP_DIR)/sw/prebuilt_linux/user_dts/system-user.dtsi
 
 #platform related
 PLATFORM_NAME    = $(PLATFORM)_$(VERSION)
@@ -48,9 +49,9 @@ PLATFORM_SW_SRC  = $(TOP_DIR)/platform
 PLATFORM_DIR      = $(TOP_DIR)/platform_repo
 
 #flow related
-PREBUILT_LINUX_PATH ?= /opt/xilinx/platform/xilinx-versal-common-v2025.1
-ifneq ($(wildcard $(TOP_DIR)/xilinx-versal-common-v2025.1),)
-PREBUILT_LINUX_PATH ?= $(TOP_DIR)/xilinx-versal-common-v2025.1
+PREBUILT_LINUX_PATH ?= /opt/xilinx/platform/xilinx-versal-common-v2025.2
+ifneq ($(wildcard $(TOP_DIR)/xilinx-versal-common-v2025.2),)
+PREBUILT_LINUX_PATH ?= $(TOP_DIR)/xilinx-versal-common-v2025.2
 endif
 # Getting Absolute paths
 ifneq ("$(wildcard $(STATIC_XSA))","")

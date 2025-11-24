@@ -50,7 +50,17 @@ $(SW_FILES): $(STATIC_XSA)
 	$(MAKE) -C sw all
 
 all platform: $(STATIC_XSA) $(RP_XSA) $(SW_FILES)
-	$(XSCT) -nodisp -sdx $(PLATFORM_SW_SRC)/generate_platform.tcl platform_name "${PLATFORM_NAME}" static_xsa_path "${STATIC_XSA}" rp_xsa_path "${RP_XSA}" emu_xsa_path "${HW_EMU_XSA}" platform_out "${PLATFORM_DIR}" boot_dir_path "${BOOT_DIR}" img_dir_path "${IMAGE_DIR}"
+
+	vitis -s $(PLATFORM_SW_SRC)/generate_platform.py --platform_name $(PLATFORM_NAME) --static_xsa_path $(STATIC_XSA) --emu_xsa_path $(HW_EMU_XSA) --boot_dir_path $(BOOT_DIR)  --platform_out $(PLATFORM_DIR) --img_dir_path $(IMAGE_DIR) --rp_xsa_path $(RP_XSA) --user_dtsi $(USER_DTSI)
+
+	$(info "Generating BOOT image for platforms")
+	cp -f $(PLATFORM_DIR)/xilinx_vck190_base_dfx_202520_1/hw/linux_dt/system.dtb $(BOOT_DIR)
+	$(BOOTGEN) -arch versal -image $(TOP_DIR)/sw/prebuilt_linux/bootgen.bif -o $(BOOT_IMAGE) -w;
+
+	@echo 'Platform build started'
+	vitis -s $(PLATFORM_SW_SRC)/build_platform.py --platform_name $(PLATFORM_NAME) --platform_out $(PLATFORM_DIR)  --boot_image $(BOOT_IMAGE)
+
+
 	@if [ -d $(SW_DIR)/platform/filesystem ]; then cp -rf ${SW_DIR}/platform/filesystem $(PLATFORM_DIR)/${PLATFORM_NAME}/export/${PLATFORM_NAME}/sw/${PLATFORM_NAME}/xrt/; fi
 	@echo 'Platform build complete'
 

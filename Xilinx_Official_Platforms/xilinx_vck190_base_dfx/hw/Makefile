@@ -17,3 +17,4 @@ $(XSA): $(TCL_SOURCE)
 
 clean:
 	$(RM) -r vivado* build .Xil *dynamic* *.log *.xpe 
+	${RM} -r $(PLATFORM_DIR)

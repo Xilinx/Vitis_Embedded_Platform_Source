@@ -18,8 +18,8 @@ BOARD    = zynqmp-smk-k26-reva
 CORE     = psu_cortexa53_0
 
 #versioning
-VERSION          ?= 202510_1
-VER              ?= 202510.1
+VERSION          ?= 202520_1
+VER              ?= 202520.1
 
 #common
 TOP_DIR         ?= $(shell readlink -f .)
@@ -49,9 +49,9 @@ PLATFORM_SW_SRC  = $(TOP_DIR)/platform
 PLATFORM_DIR      = $(TOP_DIR)/platform_repo
 
 #flow related
-PREBUILT_LINUX_PATH ?= /opt/xilinx/platform/xilinx-zynqmp-common-v2025.1
-ifneq ($(wildcard $(TOP_DIR)/xilinx-zynqmp-common-v2025.1),)
-PREBUILT_LINUX_PATH ?= $(TOP_DIR)/xilinx-zynqmp-common-v2025.1
+PREBUILT_LINUX_PATH ?= /opt/xilinx/platform/xilinx-zynqmp-common-v2025.2
+ifneq ($(wildcard $(TOP_DIR)/xilinx-zynqmp-common-v2025.2),)
+PREBUILT_LINUX_PATH ?= $(TOP_DIR)/xilinx-zynqmp-common-v2025.2
 endif
 # Getting Absolute paths
 ifneq ("$(wildcard $(XSA))","")

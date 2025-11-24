@@ -7,29 +7,17 @@ file mkdir build
 cd build
 source ../xsa_scripts/project.tcl
 source ../xsa_scripts/bd.tcl
-#source ../xsa_scripts/dr.bd.tcl
-#source ../xsa_scripts/pfm_decls.tcl
-
-
-#Generating Wrapper
-#make_wrapper -files [get_files ./my_project/my_project.srcs/sources_1/bd/vitis_design/vitis_design.bd] -top
-#add_files -norecurse ./my_project/my_project.srcs/sources_1/bd/vitis_design/hdl/vitis_design_wrapper.v
 
 #Generating Target
 generate_target all [get_files ./my_project/my_project.srcs/sources_1/bd/vitis_design/vitis_design.bd]
 update_compile_order -fileset sources_1
 update_compile_order -fileset sim_1
-#set_property top vitis_design_wrapper [current_fileset] 
 
 # Ensure that your top of synthesis module is also set as top for simulation
 #set_property top vitis_design_wrapper [get_filesets sim_1]
 
-# Generate simulation top for your entire design which would include
-# aggregated NOC in the form of xlnoc.bd
-
-
 #generate_switch_network_for_noc
-update_compile_order -fileset sim_1
+#update_compile_order -fileset sim_1
 
 # Set the auto-generated <rtl_top>_sim_wrapper as the sim top
 #set_property top vitis_design_wrapper_sim_wrapper [get_filesets sim_1]

@@ -1,4 +1,12 @@
 # Change Logs
+## 2025.2
+- New Platform: `vek385_base`. The new platforms naming convention is updated. Please refer to [UG1701](https://docs.amd.com/r/en-US/ug1701-vitis-accelerated-embedded/Pre-built-Base-Platforms) for details.
+- `xilinx_vck190_base_dfx` platform source CED updated to use MBUFGCE to generate clock for AI Engine, aligning with other Versal base platforms.
+- Remove `xilinx_zcu104_base` from Xilinx_Official_Platforms after the [deprecation announcement](https://adaptivesupport.amd.com/s/article/000037352?language=en_US). `xilinx_kv260_base` will continue to be supported.
+
+## 2025.1
+- `xilinx_vck190_base_dfx` platform updated to use CED to generate hardware platform source.
+
 ## 2024.2
 - VCK190 base platform updated to use CED to generate hardware platform source code. TCL based source code is also provieded under HW folder for reference.
 - Removed BDC platforms
