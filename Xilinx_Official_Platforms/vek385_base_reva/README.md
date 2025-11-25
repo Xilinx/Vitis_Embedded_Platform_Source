@@ -16,7 +16,7 @@ The hardware configurations are sourced from [versal_common_platform](https://gi
 | ----------------- | --------------------------- |
 | Release Version   | vek385_base_reva            |
 | Vitis version     | 2025.2                      |
-| XRT Tag version   | [202510.2.20.0_PetaLinux](https://github.com/Xilinx/XRT/tree/202520.2.20.0_Petalinux)              |
+| XRT Tag version   | [202520.2.20.0_PetaLinux](https://github.com/Xilinx/XRT/tree/202520.2.20.0_Petalinux)              |
 | Target board      | VEK385 Rev.A               |
 
 ### Interfaces
@@ -54,3 +54,6 @@ Once the Vitis platform build completes, Leverage  the [Versal™ AI Edge Gen2 D
 For step-by-step instructions on how to build, run, and validate applications on your platform, refer to [Vitis Tutorial](https://github.com/Xilinx/Vitis-Tutorials) for detailed guidance on platform validation.
 
 
+<p class="sphinxhide" align="center"><sub>Copyright © 2025 Advanced Micro Devices, Inc.</sub></p>
+
+<p class="sphinxhide" align="center"><sup><a href="https://www.amd.com/en/corporate/copyright">Terms and Conditions</a></sup></p>

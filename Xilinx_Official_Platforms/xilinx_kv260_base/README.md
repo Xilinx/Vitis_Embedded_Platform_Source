@@ -51,3 +51,7 @@ Please refer to the [build instructions](../../README.md#build-instructions) in 
 ## Test the Platform
 
 Once the Vitis platform build completes, you can use the [Vitis Template](https://github.com/Xilinx/vitis_templates/) to build the Vadd application to test this platform. You can refer to [Vitis Tutorial](https://github.com/Xilinx/Vitis-Tutorials) for detailed guidance on platform validation.
+
+<p class="sphinxhide" align="center"><sub>Copyright © 2020–2025 Advanced Micro Devices, Inc.</sub></p>
+
+<p class="sphinxhide" align="center"><sup><a href="https://www.amd.com/en/corporate/copyright">Terms and Conditions</a></sup></p>

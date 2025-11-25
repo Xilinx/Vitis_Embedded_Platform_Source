@@ -32,3 +32,7 @@
 - VCK190 Base Platform enables ECC on DDR and LPDDR; constraints become concise.
 - MPSoC base platforms increased CMA size to 1536M. All Vitis-AI models can run with this CMA size.
 - Embedded platform creation flow gets simplified: Device Tree Generator can automatically generate a ZOCL node; XSCT can generate BIF files. Base platform source files are reduced.
+
+<p class="sphinxhide" align="center"><sub>Copyright © 2020–2025 Advanced Micro Devices, Inc.</sub></p>
+
+<p class="sphinxhide" align="center"><sup><a href="https://www.amd.com/en/corporate/copyright">Terms and Conditions</a></sup></p>

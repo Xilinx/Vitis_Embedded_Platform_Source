@@ -56,6 +56,6 @@ The software configurations are based on [VCK190 BSP](https://www.author.xilinx.
 
 Please refer to the [build instructions](../../README.md#build-instructions) in the top README.
 
-## Test the Platform
+<p class="sphinxhide" align="center"><sub>Copyright © 2020–2025 Advanced Micro Devices, Inc.</sub></p>
 
-Once the Vitis platform build completes, you can use the [Vitis Acceleration examples](https://github.com/Xilinx/Vitis_Accel_Examples) to build with these platforms to test this platform.
+<p class="sphinxhide" align="center"><sup><a href="https://www.amd.com/en/corporate/copyright">Terms and Conditions</a></sup></p>

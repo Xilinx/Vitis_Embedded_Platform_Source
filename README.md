@@ -149,3 +149,7 @@ To cross-compile with this SDK from the command line, run `source ./environment-
 
 The newly introduced Vitis Base Platforms, such as `vek385_base`, are now compatible with EDF pre-built images. Unlike the traditional PetaLinux common image flow, the EDF pre-built image for VEK385 enables *Segmented Configuration*, eliminating the need for Vitis workflows to assemble a flash image.
 To deploy Vitis applications, simply copy the Vitis-generated PDI, DTBO, XCLBIN and host application files to the running target. Using `fpgautil` to load the PDI and update DTBO, and execute the XRT host application with XCLBIN.
+
+<p class="sphinxhide" align="center"><sub>Copyright © 2020–2025 Advanced Micro Devices, Inc.</sub></p>
+
+<p class="sphinxhide" align="center"><sup><a href="https://www.amd.com/en/corporate/copyright">Terms and Conditions</a></sup></p>

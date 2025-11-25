@@ -68,5 +68,6 @@ The software configurations are based on [vek280 BSP](https://www.author.xilinx.
 
 Use the V++ -p option to generate the sd_card.img file that consists rootfs.ext4 provided by petalinux along with the Image,BOOT.BIN and system.dtb from platform, v++ generated xclbin and host.exe files.
 
-Once the Vitis platform is ready, some example applications to build with these platforms can be found here:
-https://github.com/Xilinx/Vitis_Accel_Examples
+<p class="sphinxhide" align="center"><sub>Copyright © 2020–2025 Advanced Micro Devices, Inc.</sub></p>
+
+<p class="sphinxhide" align="center"><sup><a href="https://www.amd.com/en/corporate/copyright">Terms and Conditions</a></sup></p>

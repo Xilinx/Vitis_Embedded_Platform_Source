@@ -16,7 +16,7 @@ The platform includes pre-configured PS interfaces, multiple high-speed AXI and 
 | ----------------- | --------------------------- |
 | Release Version   | vek385_base                 |
 | Vitis version     | 2025.2                      |
-| XRT Tag version   | [202510.2.20.0_PetaLinux](https://github.com/Xilinx/XRT/releases/tag/202510.2.20.0_Petalinux)             |
+| XRT Tag version   | [202520.2.20.0_PetaLinux](https://github.com/Xilinx/XRT/releases/tag/202520.2.20.0_Petalinux)             |
 | Target board      | VEK385 Rev.B                |
 
 ### Interfaces
@@ -54,5 +54,10 @@ Please refer to the [build instructions](../../README.md#build-instructions) in 
 Once the Vitis platform build completes, Leverage  the [Versal™ AI Edge Gen2 Design Flow Tutorial](https://account.amd.com/en/member/vek385-board-ea.html) to build a simple application such as vadd (Vector Addition) to verify platform functionality. 
 
 For step-by-step instructions on how to build, run, and validate applications on your platform, refer to [Vitis Tutorial](https://github.com/Xilinx/Vitis-Tutorials) for detailed guidance on platform validation.
+
+<p class="sphinxhide" align="center"><sub>Copyright © 2025 Advanced Micro Devices, Inc.</sub></p>
+
+<p class="sphinxhide" align="center"><sup><a href="https://www.amd.com/en/corporate/copyright">Terms and Conditions</a></sup></p>
+
 
 
