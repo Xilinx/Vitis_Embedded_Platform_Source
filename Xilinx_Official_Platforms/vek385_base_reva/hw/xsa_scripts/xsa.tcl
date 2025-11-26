@@ -1,25 +1,21 @@
-#******************************************************************************
-# Copyright (C) 2020-2022 Xilinx, Inc. All rights reserved.
-# Copyright (C) 2022-2025 Advanced Micro Devices, Inc. All rights reserved.
-# SPDX-License-Identifier: MIT
-#******************************************************************************
-
 file mkdir build 
 cd build
 source ../xsa_scripts/project.tcl
-source ../xsa_scripts/dr.bd.tcl
-source ../xsa_scripts/pfm_decls.tcl
+source ../xsa_scripts/bd.tcl
 
-#Generating Wrapper
-make_wrapper -files [get_files ./my_project/my_project.srcs/sources_1/bd/vitis_design/vitis_design.bd] -top
-add_files -norecurse ./my_project/my_project.srcs/sources_1/bd/vitis_design/hdl/vitis_design_wrapper.v
+#custom_platform.tcl to be used to update bd over top of CED based bd for custom platform flow
+##For creating a non-CED based custom platform, user can comment "source ../xsa_scripts/create_bd.tcl" and update custom_platform.tcl
+source ../xsa_scripts/custom_platform.tcl
 
 #Generating Target
 generate_target all [get_files ./my_project/my_project.srcs/sources_1/bd/vitis_design/vitis_design.bd]
 update_compile_order -fileset sources_1
 update_compile_order -fileset sim_1
 
+# Ensure that your top of synthesis module is also set as top for simulation
+
 #Generate the final simulation script which will compile
+# the <syn_top>_sim_wrapper and xlnoc.bd modules also
 launch_simulation -scripts_only
 launch_simulation -step compile
 launch_simulation -step elaborate
@@ -27,24 +23,39 @@ launch_simulation -step elaborate
 #Generating Emulation XSA
 file mkdir hw_emu
 write_hw_platform -hw_emu -file hw_emu/hw_emu.xsa
-
-#Generating Pre-Synth HW XSA
 set pre_synth ""
-
 if { $argc > 1} {
   set pre_synth [lindex $argv 2]
 }
+
+#Pre_synth Platform Flow
 if {$pre_synth} {
   set_property platform.platform_state "pre_synth" [current_project]
   write_hw_platform -hw -force -file hw.xsa
+
 } else {
-  launch_runs impl_1 -to_step write_bitstream -jobs 16
+
+  #Post_implememtation Platform
+  # Synthesis Run
+  launch_runs synth_1 -jobs 20
+  wait_on_run synth_1
+
+  set_param noc.enableNOCClockGating false
+
+#Implementation Run
+  launch_runs impl_1 -to_step write_device_image
   wait_on_run impl_1
-  file mkdir hw
-  write_hw_platform -hw -force -include_bit -file hw.xsa
+
+  open_run impl_1
+  
+  
+# Generating dynamic reload extensible XSA as default hardware platform
+  write_hw_platform -hw -force -include_bit -file hw.xsa 
+
 }
+
 #generate README.hw
-set board zcu104
+set board vek385
 
 set fd [open README.hw w] 
 
@@ -73,4 +84,5 @@ foreach ip [get_ips] {
 }
 close $fd
 
-cd ..
+	
+cd ..	

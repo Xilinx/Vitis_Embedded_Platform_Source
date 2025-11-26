@@ -1,4 +1,4 @@
-export XILINX_VITIS=/proj/xbuilds/2025.1_daily_latest/installs/lin64/Vitis/2025.1
+export XILINX_VITIS=/proj/xbuilds/2025.2_daily_latest/installs/lin64/Vitis/2025.2
 
 export PYTHON_VER="python-3.8.3"
 export CMAKE_VER="cmake-3.24.2"

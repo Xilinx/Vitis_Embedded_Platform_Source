@@ -11,9 +11,10 @@ TCL_SOURCE=xsa_scripts/xsa.tcl
 .PHONY: all xsa
 
 all xsa : $(XSA)
-
+#for both flat (hw.xsa) and segmented (hw_segmented.xsa) xsa
 $(XSA): $(TCL_SOURCE)
-	$(VIVADO) -mode batch -notrace -source $(TCL_SOURCE) -tclargs $(PLATFORM_NAME) $(VER) $(PRE_SYNTH)
+	$(VIVADO) -mode batch -notrace -source $(TCL_SOURCE) -tclargs $(PLATFORM_NAME) $(VER) $(PRE_SYNTH) "dynamic_reload"
 
 clean:
-	$(RM) -r vivado* build .Xil *dynamic* *.log *.xpe 
+	$(RM) -r vivado* build .Xil *dynamic* *.log *.xpe *.xsa XilinxCEDStore
+	${RM} -r $(PLATFORM_DIR)

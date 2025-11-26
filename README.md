@@ -1,4 +1,4 @@
-# Vitis Embedded Platform Source Repository
+## Vitis Embedded Platform Source Repository
 
 Welcome to the Vitis embedded platform source repository. This repository contains the
 source code needed to recreate, modify, and extend the [Xilinx-provided Vitis embedded
@@ -9,26 +9,15 @@ platforms][3].
 To build the Vitis embedded platforms from source code in this repository, you will need to have the following tools installed and follow the [build instructions](#build-instructions):
 
 - A Linux-based host OS supported by Vitis
-- [Vitis][1] 
-- [Common Software Image](#installing-the-common-software) 
+- [Vitis][1] 2025.2
+- [Common Software Image](#installing-the-common-software) 2025.2
 
 [1]: https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vitis.html
 
 To learn how to customize Vitis embedded platforms, please refer to [Vitis Platform Creation Tutorials](https://github.com/Xilinx/Vitis-Tutorials/tree/master/Vitis_Platform_Creation).
 
-This repository is divided into two sections:
 
-- The **Xilinx_Official_Platforms** directory contains official platform source provided by
-  Xilinx. These official platforms are fully tested with all official Vitis examples, tutorials,
-  etc.
-
-- The **Xilinx_Reference_Platforms** directory contains "unofficial" platform source. These
-  platforms generally exist to illustrate particular concepts, provide specific I/O interfaces
-  (e.g. MIPI and HDMI), etc. They are tested with the particular examples delivered for those
-  platforms and Xilinx makes an effort to ensure compatibility, but they are not regressed
-  and tested to the same degree as the official platforms.
-
-## Build Instructions
+### Build Instructions
 
   Vitis environment need to be setup before building the platform.
 
@@ -71,7 +60,7 @@ There are two methods to prepare the platform software.
 
 The Flags used in commands of above table are explained below :
 
-- *PREBUILT_LINUX_PATH*: By default, this flag is set to /opt/xilinx/platform/xilinx-<arch>-common-<ver>. If platform needs to be build using package located at another directory then provide the pre-built Linux image path to this flag. The build flow will generate device tree from XSA and run platform package with the pre-built Linux image. Common Linux components are provided as pre-built binaries by Xilinx to fullfill most evaluation requirements. Please refer to [UG1701- Using Embedded Platforms chapter][3] for more information. Set this flag to point common software components(u-boot, boot.scr, bl31.elf). These files are architecture specific. Zynq, zynqMP and Versal have different software component files.
+- *PREBUILT_LINUX_PATH*: By default, this flag is set to `/opt/xilinx/platform/xilinx-<arch>-common-<ver>`. If platform needs to be build using package located at another directory then provide the pre-built Linux image path to this flag. The build flow will generate device tree from XSA and run platform package with the pre-built Linux image. Common Linux components are provided as pre-built binaries by Xilinx to fullfill most evaluation requirements. Please refer to [UG1701- Using Embedded Platforms chapter][3] for more information. Set this flag to point common software components(u-boot, boot.scr, bl31.elf). These files are architecture specific. Zynq, zynqMP and Versal have different software component files.
 
     ```bash
     make all
@@ -122,6 +111,8 @@ tar -xzf xilinx-<arch>-common-<version>.tar.gz
 
 To use the common software, download pre-built common images from https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/embedded-platforms.html and extract the common images to /opt/xilinx/platform/ or pass it as PREBUILT_LINUX_PATH parameter make command.
 
+>Note: Users targeting Ubuntu OS for application development need to download the [Ubuntu](https://ubuntu.com/download/amd) from Canonical.
+
 ## Installing the Sysroot (Yocto SDK)
 
 Vitis applications require to build with libaries in sysroot (Yocto SDK). Sysroot can be installed from `sdk.sh`, which is included in Common Software images. Building Vitis base platforms doesn't require sysroot.
@@ -151,3 +142,14 @@ Usage: sdk.sh [-y] [-d <dir>]
 
 
 To cross-compile with this SDK from the command line, run `source ./environment-setup-*-xilinx-linux` to set up your environment (cross-compile build tools, libraries, etc).
+
+>Note: Users targeting Ubuntu OS for application development need to download the [sysroot](https://ubuntu.com/download/amd) from Canonical.
+
+## Using AMD Embedded Development Framework (EDF) with Vitis Base Platforms
+
+The newly introduced Vitis Base Platforms, such as `vek385_base`, are now compatible with EDF pre-built images. Unlike the traditional PetaLinux common image flow, the EDF pre-built image for VEK385 enables *Segmented Configuration*, eliminating the need for Vitis workflows to assemble a flash image.
+To deploy Vitis applications, simply copy the Vitis-generated PDI, DTBO, XCLBIN and host application files to the running target. Using `fpgautil` to load the PDI and update DTBO, and execute the XRT host application with XCLBIN.
+
+<p class="sphinxhide" align="center"><sub>Copyright © 2020–2025 Advanced Micro Devices, Inc.</sub></p>
+
+<p class="sphinxhide" align="center"><sup><a href="https://www.amd.com/en/corporate/copyright">Terms and Conditions</a></sup></p>

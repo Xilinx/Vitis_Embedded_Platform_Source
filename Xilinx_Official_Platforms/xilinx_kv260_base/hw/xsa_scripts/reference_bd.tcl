@@ -1,3 +1,9 @@
+#******************************************************************************
+# Copyright (C) 2020-2022 Xilinx, Inc. All rights reserved.
+# Copyright (C) 2022-2025 Advanced Micro Devices, Inc. All rights reserved.
+# SPDX-License-Identifier: MIT
+#******************************************************************************
+
 
 ################################################################
 # This is a generated script based on design: MPSoC_ext_platform
@@ -20,7 +26,7 @@ set script_folder [_tcl::get_script_folder]
 ################################################################
 # Check if script is running in correct Vivado version.
 ################################################################
-set scripts_vivado_version 2025.1
+set scripts_vivado_version 2025.2
 set current_vivado_version [version -short]
 
 if { [string first $scripts_vivado_version $current_vivado_version] == -1 } {
@@ -51,6 +57,7 @@ set list_projs [get_projects -quiet]
 if { $list_projs eq "" } {
    create_project project_1 myproj -part xck26-sfvc784-2LV-c
    set_property BOARD_PART xilinx.com:kv260_som:part0:1.4 [current_project]
+  set_property BOARD_CONNECTIONS { som240_1_connector xilinx.com:kv260_carrier:som240_1_connector:1.3} [current_project]
 }
 
 
@@ -130,7 +137,7 @@ set bCheckIPsPassed 1
 set bCheckIPs 1
 if { $bCheckIPs == 1 } {
    set list_check_ips "\ 
-xilinx.com:ip:axi_register_slice:2.1\
+xilinx.com:ip:smartconnect:1.0\
 xilinx.com:ip:axi_vip:1.1\
 xilinx.com:ip:zynq_ultra_ps_e:3.5\
 xilinx.com:ip:clk_wiz:6.0\
@@ -202,14 +209,17 @@ proc create_root_design { parentCell } {
 
   # Create ports
 
-  # Create instance: axi_interconnect_lpd, and set properties
-  set axi_interconnect_lpd [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_interconnect:2.1 axi_interconnect_lpd ]
-  set_property CONFIG.NUM_MI {1} $axi_interconnect_lpd
+  # Create instance: axi_smartconnect_lpd, and set properties
+  set axi_smartconnect_lpd [ create_bd_cell -type ip -vlnv xilinx.com:ip:smartconnect:1.0 axi_smartconnect_lpd ]
+  set_property -dict [list \
+    CONFIG.NUM_MI {1} \
+    CONFIG.NUM_SI {1} \
+  ] $axi_smartconnect_lpd
 
 
-  # Create instance: axi_register_slice_0, and set properties
-  set axi_register_slice_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_register_slice:2.1 axi_register_slice_0 ]
-  set_property CONFIG.DATA_WIDTH {128} $axi_register_slice_0
+  # Create instance: axi_vip_pltf, and set properties
+  set axi_vip_pltf [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_vip:1.1 axi_vip_pltf ]
+  set_property CONFIG.INTERFACE_MODE {SLAVE} $axi_vip_pltf
 
 
   # Create instance: axi_vip_0, and set properties
@@ -283,7 +293,6 @@ proc create_root_design { parentCell } {
     CONFIG.PSU_MIO_11_DRIVE_STRENGTH {4} \
     CONFIG.PSU_MIO_11_SLEW {slow} \
     CONFIG.PSU_MIO_12_DRIVE_STRENGTH {4} \
-    CONFIG.PSU_MIO_12_INPUT_TYPE {cmos} \
     CONFIG.PSU_MIO_12_POLARITY {Default} \
     CONFIG.PSU_MIO_12_SLEW {slow} \
     CONFIG.PSU_MIO_13_DRIVE_STRENGTH {4} \
@@ -418,7 +427,6 @@ proc create_root_design { parentCell } {
     CONFIG.PSU_MIO_77_DRIVE_STRENGTH {4} \
     CONFIG.PSU_MIO_77_SLEW {slow} \
     CONFIG.PSU_MIO_7_DRIVE_STRENGTH {4} \
-    CONFIG.PSU_MIO_7_INPUT_TYPE {cmos} \
     CONFIG.PSU_MIO_7_POLARITY {Default} \
     CONFIG.PSU_MIO_7_SLEW {slow} \
     CONFIG.PSU_MIO_8_DRIVE_STRENGTH {4} \
@@ -446,7 +454,7 @@ MIO#GPIO0 MIO#GPIO0 MIO#GPIO0 MIO#GPIO0 MIO#GPIO0 MIO#GPIO0 MIO#GPIO0 MIO#GPIO0 
     CONFIG.PSU__CRF_APB__DBG_FPD_CTRL__ACT_FREQMHZ {249.997498} \
     CONFIG.PSU__CRF_APB__DBG_FPD_CTRL__FREQMHZ {250} \
     CONFIG.PSU__CRF_APB__DBG_FPD_CTRL__SRCSEL {IOPLL} \
-    CONFIG.PSU__CRF_APB__DBG_TRACE_CTRL__FREQMHZ {125} \
+    CONFIG.PSU__CRF_APB__DBG_TRACE_CTRL__FREQMHZ {250} \
     CONFIG.PSU__CRF_APB__DBG_TRACE_CTRL__SRCSEL {IOPLL} \
     CONFIG.PSU__CRF_APB__DBG_TSTMP_CTRL__ACT_FREQMHZ {249.997498} \
     CONFIG.PSU__CRF_APB__DBG_TSTMP_CTRL__FREQMHZ {250} \
@@ -648,12 +656,6 @@ MIO#GPIO0 MIO#GPIO0 MIO#GPIO0 MIO#GPIO0 MIO#GPIO0 MIO#GPIO0 MIO#GPIO0 MIO#GPIO0 
     CONFIG.PSU__PMU__PERIPHERAL__ENABLE {1} \
     CONFIG.PSU__PMU__PLERROR__ENABLE {0} \
     CONFIG.PSU__PRESET_APPLIED {1} \
-    CONFIG.PSU__PROTECTION__FPD_SEGMENTS {SA:0xFD1A0000; SIZE:1280; UNIT:KB; RegionTZ:Secure; WrAllowed:Read/Write; subsystemId:PMU Firmware |  SA:0xFD000000; SIZE:64; UNIT:KB; RegionTZ:Secure; WrAllowed:Read/Write;\
-subsystemId:PMU Firmware |  SA:0xFD010000; SIZE:64; UNIT:KB; RegionTZ:Secure; WrAllowed:Read/Write; subsystemId:PMU Firmware |  SA:0xFD020000; SIZE:64; UNIT:KB; RegionTZ:Secure; WrAllowed:Read/Write; subsystemId:PMU\
-Firmware |  SA:0xFD030000; SIZE:64; UNIT:KB; RegionTZ:Secure; WrAllowed:Read/Write; subsystemId:PMU Firmware |  SA:0xFD040000; SIZE:64; UNIT:KB; RegionTZ:Secure; WrAllowed:Read/Write; subsystemId:PMU Firmware\
-|  SA:0xFD050000; SIZE:64; UNIT:KB; RegionTZ:Secure; WrAllowed:Read/Write; subsystemId:PMU Firmware |  SA:0xFD610000; SIZE:512; UNIT:KB; RegionTZ:Secure; WrAllowed:Read/Write; subsystemId:PMU Firmware\
-|  SA:0xFD5D0000; SIZE:64; UNIT:KB; RegionTZ:Secure; WrAllowed:Read/Write; subsystemId:PMU Firmware | SA:0xFD1A0000 ; SIZE:1280; UNIT:KB; RegionTZ:Secure ; WrAllowed:Read/Write; subsystemId:Secure Subsystem}\
-\
     CONFIG.PSU__PROTECTION__MASTERS {USB1:NonSecure;0|USB0:NonSecure;1|S_AXI_LPD:NA;1|S_AXI_HPC1_FPD:NA;0|S_AXI_HPC0_FPD:NA;0|S_AXI_HP3_FPD:NA;1|S_AXI_HP2_FPD:NA;0|S_AXI_HP1_FPD:NA;0|S_AXI_HP0_FPD:NA;0|S_AXI_ACP:NA;0|S_AXI_ACE:NA;0|SD1:NonSecure;1|SD0:NonSecure;0|SATA1:NonSecure;0|SATA0:NonSecure;0|RPU1:Secure;1|RPU0:Secure;1|QSPI:NonSecure;1|PMU:NA;1|PCIe:NonSecure;0|NAND:NonSecure;0|LDMA:NonSecure;1|GPU:NonSecure;1|GEM3:NonSecure;1|GEM2:NonSecure;0|GEM1:NonSecure;0|GEM0:NonSecure;0|FDMA:NonSecure;1|DP:NonSecure;1|DAP:NA;1|Coresight:NA;1|CSU:NA;1|APU:NA;1}\
 \
     CONFIG.PSU__PROTECTION__SLAVES {LPD;USB3_1_XHCI;FE300000;FE3FFFFF;0|LPD;USB3_1;FF9E0000;FF9EFFFF;0|LPD;USB3_0_XHCI;FE200000;FE2FFFFF;1|LPD;USB3_0;FF9D0000;FF9DFFFF;1|LPD;UART1;FF010000;FF01FFFF;1|LPD;UART0;FF000000;FF00FFFF;0|LPD;TTC3;FF140000;FF14FFFF;1|LPD;TTC2;FF130000;FF13FFFF;1|LPD;TTC1;FF120000;FF12FFFF;1|LPD;TTC0;FF110000;FF11FFFF;1|FPD;SWDT1;FD4D0000;FD4DFFFF;1|LPD;SWDT0;FF150000;FF15FFFF;1|LPD;SPI1;FF050000;FF05FFFF;1|LPD;SPI0;FF040000;FF04FFFF;0|FPD;SMMU_REG;FD5F0000;FD5FFFFF;1|FPD;SMMU;FD800000;FDFFFFFF;1|FPD;SIOU;FD3D0000;FD3DFFFF;1|FPD;SERDES;FD400000;FD47FFFF;1|LPD;SD1;FF170000;FF17FFFF;1|LPD;SD0;FF160000;FF16FFFF;0|FPD;SATA;FD0C0000;FD0CFFFF;0|LPD;RTC;FFA60000;FFA6FFFF;1|LPD;RSA_CORE;FFCE0000;FFCEFFFF;1|LPD;RPU;FF9A0000;FF9AFFFF;1|LPD;R5_TCM_RAM_GLOBAL;FFE00000;FFE3FFFF;1|LPD;R5_1_Instruction_Cache;FFEC0000;FFECFFFF;1|LPD;R5_1_Data_Cache;FFED0000;FFEDFFFF;1|LPD;R5_1_BTCM_GLOBAL;FFEB0000;FFEBFFFF;1|LPD;R5_1_ATCM_GLOBAL;FFE90000;FFE9FFFF;1|LPD;R5_0_Instruction_Cache;FFE40000;FFE4FFFF;1|LPD;R5_0_Data_Cache;FFE50000;FFE5FFFF;1|LPD;R5_0_BTCM_GLOBAL;FFE20000;FFE2FFFF;1|LPD;R5_0_ATCM_GLOBAL;FFE00000;FFE0FFFF;1|LPD;QSPI_Linear_Address;C0000000;DFFFFFFF;1|LPD;QSPI;FF0F0000;FF0FFFFF;1|LPD;PMU_RAM;FFDC0000;FFDDFFFF;1|LPD;PMU_GLOBAL;FFD80000;FFDBFFFF;1|FPD;PCIE_MAIN;FD0E0000;FD0EFFFF;0|FPD;PCIE_LOW;E0000000;EFFFFFFF;0|FPD;PCIE_HIGH2;8000000000;BFFFFFFFFF;0|FPD;PCIE_HIGH1;600000000;7FFFFFFFF;0|FPD;PCIE_DMA;FD0F0000;FD0FFFFF;0|FPD;PCIE_ATTRIB;FD480000;FD48FFFF;0|LPD;OCM_XMPU_CFG;FFA70000;FFA7FFFF;1|LPD;OCM_SLCR;FF960000;FF96FFFF;1|OCM;OCM;FFFC0000;FFFFFFFF;1|LPD;NAND;FF100000;FF10FFFF;0|LPD;MBISTJTAG;FFCF0000;FFCFFFFF;1|LPD;LPD_XPPU_SINK;FF9C0000;FF9CFFFF;1|LPD;LPD_XPPU;FF980000;FF98FFFF;1|LPD;LPD_SLCR_SECURE;FF4B0000;FF4DFFFF;1|LPD;LPD_SLCR;FF410000;FF4AFFFF;1|LPD;LPD_GPV;FE100000;FE1FFFFF;1|LPD;LPD_DMA_7;FFAF0000;FFAFFFFF;1|LPD;LPD_DMA_6;FFAE0000;FFAEFFFF;1|LPD;LPD_DMA_5;FFAD0000;FFADFFFF;1|LPD;LPD_DMA_4;FFAC0000;FFACFFFF;1|LPD;LPD_DMA_3;FFAB0000;FFABFFFF;1|LPD;LPD_DMA_2;FFAA0000;FFAAFFFF;1|LPD;LPD_DMA_1;FFA90000;FFA9FFFF;1|LPD;LPD_DMA_0;FFA80000;FFA8FFFF;1|LPD;IPI_CTRL;FF380000;FF3FFFFF;1|LPD;IOU_SLCR;FF180000;FF23FFFF;1|LPD;IOU_SECURE_SLCR;FF240000;FF24FFFF;1|LPD;IOU_SCNTRS;FF260000;FF26FFFF;1|LPD;IOU_SCNTR;FF250000;FF25FFFF;1|LPD;IOU_GPV;FE000000;FE0FFFFF;1|LPD;I2C1;FF030000;FF03FFFF;1|LPD;I2C0;FF020000;FF02FFFF;0|FPD;GPU;FD4B0000;FD4BFFFF;1|LPD;GPIO;FF0A0000;FF0AFFFF;1|LPD;GEM3;FF0E0000;FF0EFFFF;1|LPD;GEM2;FF0D0000;FF0DFFFF;0|LPD;GEM1;FF0C0000;FF0CFFFF;0|LPD;GEM0;FF0B0000;FF0BFFFF;0|FPD;FPD_XMPU_SINK;FD4F0000;FD4FFFFF;1|FPD;FPD_XMPU_CFG;FD5D0000;FD5DFFFF;1|FPD;FPD_SLCR_SECURE;FD690000;FD6CFFFF;1|FPD;FPD_SLCR;FD610000;FD68FFFF;1|FPD;FPD_DMA_CH7;FD570000;FD57FFFF;1|FPD;FPD_DMA_CH6;FD560000;FD56FFFF;1|FPD;FPD_DMA_CH5;FD550000;FD55FFFF;1|FPD;FPD_DMA_CH4;FD540000;FD54FFFF;1|FPD;FPD_DMA_CH3;FD530000;FD53FFFF;1|FPD;FPD_DMA_CH2;FD520000;FD52FFFF;1|FPD;FPD_DMA_CH1;FD510000;FD51FFFF;1|FPD;FPD_DMA_CH0;FD500000;FD50FFFF;1|LPD;EFUSE;FFCC0000;FFCCFFFF;1|FPD;Display\
@@ -737,20 +739,19 @@ Port;FD4A0000;FD4AFFFF;1|FPD;DPDMA;FD4C0000;FD4CFFFF;1|FPD;DDR_XMPU5_CFG;FD05000
   # Create instance: clk_wiz_0, and set properties
   set clk_wiz_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:clk_wiz:6.0 clk_wiz_0 ]
   set_property -dict [list \
-    CONFIG.CLKOUT1_JITTER {115.833} \
-    CONFIG.CLKOUT1_PHASE_ERROR {87.181} \
-    CONFIG.CLKOUT1_REQUESTED_OUT_FREQ {100.000} \
-    CONFIG.CLKOUT2_JITTER {102.087} \
-    CONFIG.CLKOUT2_PHASE_ERROR {87.181} \
-    CONFIG.CLKOUT2_REQUESTED_OUT_FREQ {200.000} \
+    CONFIG.CLKOUT1_REQUESTED_OUT_FREQ {150.000} \
+    CONFIG.CLKOUT2_REQUESTED_OUT_FREQ {300.000} \
     CONFIG.CLKOUT2_USED {true} \
-    CONFIG.CLKOUT3_JITTER {90.075} \
-    CONFIG.CLKOUT3_PHASE_ERROR {87.181} \
-    CONFIG.CLKOUT3_REQUESTED_OUT_FREQ {400.000} \
+    CONFIG.CLKOUT3_REQUESTED_OUT_FREQ {75.000} \
     CONFIG.CLKOUT3_USED {true} \
-    CONFIG.MMCM_CLKOUT1_DIVIDE {6} \
-    CONFIG.MMCM_CLKOUT2_DIVIDE {3} \
-    CONFIG.NUM_OUT_CLKS {3} \
+    CONFIG.CLKOUT4_REQUESTED_OUT_FREQ {100.000} \
+    CONFIG.CLKOUT4_USED {true} \
+    CONFIG.CLKOUT5_REQUESTED_OUT_FREQ {200.000} \
+    CONFIG.CLKOUT5_USED {true} \
+    CONFIG.CLKOUT6_REQUESTED_OUT_FREQ {400.000} \
+    CONFIG.CLKOUT6_USED {true} \
+    CONFIG.CLKOUT7_REQUESTED_OUT_FREQ {600.000} \
+    CONFIG.CLKOUT7_USED {true} \
     CONFIG.PRIM_SOURCE {No_buffer} \
     CONFIG.RESET_PORT {resetn} \
     CONFIG.RESET_TYPE {ACTIVE_LOW} \
@@ -766,23 +767,44 @@ Port;FD4A0000;FD4AFFFF;1|FPD;DPDMA;FD4C0000;FD4CFFFF;1|FPD;DDR_XMPU5_CFG;FD05000
   # Create instance: proc_sys_reset_2, and set properties
   set proc_sys_reset_2 [ create_bd_cell -type ip -vlnv xilinx.com:ip:proc_sys_reset:5.0 proc_sys_reset_2 ]
 
-  # Create instance: interconnect_axifull, and set properties
-  set interconnect_axifull [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_interconnect:2.1 interconnect_axifull ]
-  set_property CONFIG.NUM_MI {1} $interconnect_axifull
+  # Create instance: proc_sys_reset_3, and set properties
+  set proc_sys_reset_3 [ create_bd_cell -type ip -vlnv xilinx.com:ip:proc_sys_reset:5.0 proc_sys_reset_3 ]
 
-  set_property HDL_ATTRIBUTE.DPA_TRACE_SLAVE {true} [get_bd_cells interconnect_axifull]
+  # Create instance: proc_sys_reset_4, and set properties
+  set proc_sys_reset_4 [ create_bd_cell -type ip -vlnv xilinx.com:ip:proc_sys_reset:5.0 proc_sys_reset_4 ]
 
-  # Create instance: interconnect_axihpm0fpd, and set properties
-  set interconnect_axihpm0fpd [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_interconnect:2.1 interconnect_axihpm0fpd ]
-  set_property CONFIG.NUM_MI {1} $interconnect_axihpm0fpd
+  # Create instance: proc_sys_reset_5, and set properties
+  set proc_sys_reset_5 [ create_bd_cell -type ip -vlnv xilinx.com:ip:proc_sys_reset:5.0 proc_sys_reset_5 ]
 
-  set_property HDL_ATTRIBUTE.DPA_TRACE_MASTER {true} [get_bd_cells interconnect_axihpm0fpd]
+  # Create instance: proc_sys_reset_6, and set properties
+  set proc_sys_reset_6 [ create_bd_cell -type ip -vlnv xilinx.com:ip:proc_sys_reset:5.0 proc_sys_reset_6 ]
 
-  # Create instance: interconnect_axilite, and set properties
-  set interconnect_axilite [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_interconnect:2.1 interconnect_axilite ]
-  set_property CONFIG.NUM_MI {1} $interconnect_axilite
+  # Create instance: smartconnect_axifull, and set properties
+  set smartconnect_axifull [ create_bd_cell -type ip -vlnv xilinx.com:ip:smartconnect:1.0 smartconnect_axifull ]
+  set_property -dict [list \
+    CONFIG.NUM_MI {1} \
+    CONFIG.NUM_SI {1} \
+  ] $smartconnect_axifull
 
-  set_property HDL_ATTRIBUTE.DPA_AXILITE_MASTER {fallback} [get_bd_cells interconnect_axilite]
+  set_property HDL_ATTRIBUTE.DPA_TRACE_SLAVE {true} [get_bd_cells smartconnect_axifull]
+
+  # Create instance: smartconnect_axihpm0fpd, and set properties
+  set smartconnect_axihpm0fpd [ create_bd_cell -type ip -vlnv xilinx.com:ip:smartconnect:1.0 smartconnect_axihpm0fpd ]
+  set_property -dict [list \
+    CONFIG.NUM_MI {1} \
+    CONFIG.NUM_SI {1} \
+  ] $smartconnect_axihpm0fpd
+
+  set_property HDL_ATTRIBUTE.DPA_TRACE_MASTER {true} [get_bd_cells smartconnect_axihpm0fpd]
+
+  # Create instance: smartconnect_axilite, and set properties
+  set smartconnect_axilite [ create_bd_cell -type ip -vlnv xilinx.com:ip:smartconnect:1.0 smartconnect_axilite ]
+  set_property -dict [list \
+    CONFIG.NUM_MI {1} \
+    CONFIG.NUM_SI {1} \
+  ] $smartconnect_axilite
+
+  set_property HDL_ATTRIBUTE.DPA_AXILITE_MASTER {fallback} [get_bd_cells smartconnect_axilite]
 
   # Create instance: axi_intc_0, and set properties
   set axi_intc_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_intc:4.1 axi_intc_0 ]
@@ -794,70 +816,70 @@ Port;FD4A0000;FD4AFFFF;1|FPD;DPDMA;FD4C0000;FD4CFFFF;1|FPD;DDR_XMPU5_CFG;FD05000
 
 
   # Create interface connections
-  connect_bd_intf_net -intf_net axi_interconnect_0_M00_AXI [get_bd_intf_pins axi_intc_0/s_axi] [get_bd_intf_pins interconnect_axilite/M00_AXI]
-  connect_bd_intf_net -intf_net axi_interconnect_0_M00_AXI1 [get_bd_intf_pins axi_interconnect_lpd/M00_AXI] [get_bd_intf_pins ps_e/S_AXI_LPD]
-  connect_bd_intf_net -intf_net axi_interconnect_1_M00_AXI [get_bd_intf_pins interconnect_axifull/M00_AXI] [get_bd_intf_pins ps_e/S_AXI_HP3_FPD]
-  connect_bd_intf_net -intf_net axi_vip_0_M_AXI [get_bd_intf_pins axi_vip_0/M_AXI] [get_bd_intf_pins interconnect_axifull/S00_AXI]
-  connect_bd_intf_net -intf_net axi_vip_1_M_AXI [get_bd_intf_pins axi_interconnect_lpd/S00_AXI] [get_bd_intf_pins axi_vip_1/M_AXI]
-  connect_bd_intf_net -intf_net interconnect_axihpm0fpd_M00_AXI [get_bd_intf_pins axi_register_slice_0/S_AXI] [get_bd_intf_pins interconnect_axihpm0fpd/M00_AXI]
-  connect_bd_intf_net -intf_net ps_e_M_AXI_HPM0_FPD [get_bd_intf_pins interconnect_axihpm0fpd/S00_AXI] [get_bd_intf_pins ps_e/M_AXI_HPM0_FPD]
-  connect_bd_intf_net -intf_net ps_e_M_AXI_HPM0_LPD [get_bd_intf_pins interconnect_axilite/S00_AXI] [get_bd_intf_pins ps_e/M_AXI_HPM0_LPD]
+  connect_bd_intf_net -intf_net axi_smartconnect_0_M00_AXI [get_bd_intf_pins axi_intc_0/s_axi] [get_bd_intf_pins smartconnect_axilite/M00_AXI]
+  connect_bd_intf_net -intf_net axi_smartconnect_0_M00_AXI1 [get_bd_intf_pins axi_smartconnect_lpd/M00_AXI] [get_bd_intf_pins ps_e/S_AXI_LPD]
+  connect_bd_intf_net -intf_net axi_smartconnect_1_M00_AXI [get_bd_intf_pins smartconnect_axifull/M00_AXI] [get_bd_intf_pins ps_e/S_AXI_HP3_FPD]
+  connect_bd_intf_net -intf_net axi_vip_0_M_AXI [get_bd_intf_pins axi_vip_0/M_AXI] [get_bd_intf_pins smartconnect_axifull/S00_AXI]
+  connect_bd_intf_net -intf_net axi_vip_1_M_AXI [get_bd_intf_pins axi_smartconnect_lpd/S00_AXI] [get_bd_intf_pins axi_vip_1/M_AXI]
+  connect_bd_intf_net -intf_net ps_e_M_AXI_HPM0_FPD [get_bd_intf_pins smartconnect_axihpm0fpd/S00_AXI] [get_bd_intf_pins ps_e/M_AXI_HPM0_FPD]
+  connect_bd_intf_net -intf_net ps_e_M_AXI_HPM0_LPD [get_bd_intf_pins smartconnect_axilite/S00_AXI] [get_bd_intf_pins ps_e/M_AXI_HPM0_LPD]
+  connect_bd_intf_net -intf_net smartconnect_axihpm0fpd_M00_AXI [get_bd_intf_pins axi_vip_pltf/S_AXI] [get_bd_intf_pins smartconnect_axihpm0fpd/M00_AXI]
 
   # Create port connections
   connect_bd_net -net Net  [get_bd_pins ps_e/pl_resetn0] \
   [get_bd_pins clk_wiz_0/resetn] \
   [get_bd_pins proc_sys_reset_0/ext_reset_in] \
   [get_bd_pins proc_sys_reset_1/ext_reset_in] \
-  [get_bd_pins proc_sys_reset_2/ext_reset_in]
+  [get_bd_pins proc_sys_reset_2/ext_reset_in] \
+  [get_bd_pins proc_sys_reset_3/ext_reset_in] \
+  [get_bd_pins proc_sys_reset_4/ext_reset_in] \
+  [get_bd_pins proc_sys_reset_5/ext_reset_in] \
+  [get_bd_pins proc_sys_reset_6/ext_reset_in]
   connect_bd_net -net axi_intc_0_irq  [get_bd_pins axi_intc_0/irq] \
   [get_bd_pins ps_e/pl_ps_irq0]
   connect_bd_net -net clk_wiz_0_clk_out1  [get_bd_pins clk_wiz_0/clk_out1] \
-  [get_bd_pins proc_sys_reset_0/slowest_sync_clk]
-  connect_bd_net -net clk_wiz_0_clk_out2  [get_bd_pins clk_wiz_0/clk_out2] \
-  [get_bd_pins axi_interconnect_lpd/ACLK] \
-  [get_bd_pins axi_interconnect_lpd/S00_ACLK] \
-  [get_bd_pins axi_interconnect_lpd/M00_ACLK] \
-  [get_bd_pins interconnect_axifull/ACLK] \
-  [get_bd_pins interconnect_axifull/S00_ACLK] \
-  [get_bd_pins interconnect_axifull/M00_ACLK] \
-  [get_bd_pins interconnect_axihpm0fpd/ACLK] \
-  [get_bd_pins interconnect_axihpm0fpd/S00_ACLK] \
-  [get_bd_pins interconnect_axihpm0fpd/M00_ACLK] \
-  [get_bd_pins interconnect_axilite/ACLK] \
-  [get_bd_pins interconnect_axilite/S00_ACLK] \
-  [get_bd_pins interconnect_axilite/M00_ACLK] \
+  [get_bd_pins proc_sys_reset_0/slowest_sync_clk] \
+  [get_bd_pins smartconnect_axilite/aclk] \
   [get_bd_pins axi_intc_0/s_axi_aclk] \
-  [get_bd_pins axi_register_slice_0/aclk] \
+  [get_bd_pins axi_smartconnect_lpd/aclk] \
+  [get_bd_pins axi_vip_pltf/aclk] \
   [get_bd_pins axi_vip_0/aclk] \
   [get_bd_pins axi_vip_1/aclk] \
-  [get_bd_pins proc_sys_reset_1/slowest_sync_clk] \
+  [get_bd_pins smartconnect_axifull/aclk] \
   [get_bd_pins ps_e/maxihpm0_fpd_aclk] \
   [get_bd_pins ps_e/maxihpm0_lpd_aclk] \
+  [get_bd_pins ps_e/saxi_lpd_aclk] \
   [get_bd_pins ps_e/saxihp3_fpd_aclk] \
-  [get_bd_pins ps_e/saxi_lpd_aclk]
+  [get_bd_pins smartconnect_axihpm0fpd/aclk]
+  connect_bd_net -net clk_wiz_0_clk_out2  [get_bd_pins clk_wiz_0/clk_out2] \
+  [get_bd_pins proc_sys_reset_1/slowest_sync_clk]
   connect_bd_net -net clk_wiz_0_clk_out3  [get_bd_pins clk_wiz_0/clk_out3] \
   [get_bd_pins proc_sys_reset_2/slowest_sync_clk]
+  connect_bd_net -net clk_wiz_0_clk_out4  [get_bd_pins clk_wiz_0/clk_out4] \
+  [get_bd_pins proc_sys_reset_3/slowest_sync_clk]
+  connect_bd_net -net clk_wiz_0_clk_out5  [get_bd_pins clk_wiz_0/clk_out5] \
+  [get_bd_pins proc_sys_reset_4/slowest_sync_clk]
+  connect_bd_net -net clk_wiz_0_clk_out6  [get_bd_pins clk_wiz_0/clk_out6] \
+  [get_bd_pins proc_sys_reset_5/slowest_sync_clk]
+  connect_bd_net -net clk_wiz_0_clk_out7  [get_bd_pins clk_wiz_0/clk_out7] \
+  [get_bd_pins proc_sys_reset_6/slowest_sync_clk]
   connect_bd_net -net clk_wiz_0_locked  [get_bd_pins clk_wiz_0/locked] \
   [get_bd_pins proc_sys_reset_0/dcm_locked] \
   [get_bd_pins proc_sys_reset_1/dcm_locked] \
-  [get_bd_pins proc_sys_reset_2/dcm_locked]
-  connect_bd_net -net proc_sys_reset_1_interconnect_aresetn  [get_bd_pins proc_sys_reset_1/interconnect_aresetn] \
-  [get_bd_pins axi_interconnect_lpd/ARESETN] \
-  [get_bd_pins axi_interconnect_lpd/S00_ARESETN] \
-  [get_bd_pins axi_interconnect_lpd/M00_ARESETN] \
-  [get_bd_pins interconnect_axifull/ARESETN] \
-  [get_bd_pins interconnect_axifull/S00_ARESETN] \
-  [get_bd_pins interconnect_axifull/M00_ARESETN] \
-  [get_bd_pins interconnect_axihpm0fpd/ARESETN] \
-  [get_bd_pins interconnect_axihpm0fpd/S00_ARESETN] \
-  [get_bd_pins interconnect_axihpm0fpd/M00_ARESETN] \
-  [get_bd_pins interconnect_axilite/ARESETN] \
-  [get_bd_pins interconnect_axilite/S00_ARESETN] \
-  [get_bd_pins interconnect_axilite/M00_ARESETN] \
+  [get_bd_pins proc_sys_reset_2/dcm_locked] \
+  [get_bd_pins proc_sys_reset_3/dcm_locked] \
+  [get_bd_pins proc_sys_reset_4/dcm_locked] \
+  [get_bd_pins proc_sys_reset_5/dcm_locked] \
+  [get_bd_pins proc_sys_reset_6/dcm_locked]
+  connect_bd_net -net proc_sys_reset_0_interconnect_aresetn  [get_bd_pins proc_sys_reset_0/interconnect_aresetn] \
+  [get_bd_pins smartconnect_axilite/aresetn] \
   [get_bd_pins axi_intc_0/s_axi_aresetn] \
-  [get_bd_pins axi_vip_1/aresetn]
-  connect_bd_net -net proc_sys_reset_2_peripheral_aresetn  [get_bd_pins proc_sys_reset_1/peripheral_aresetn] \
-  [get_bd_pins axi_register_slice_0/aresetn] \
+  [get_bd_pins axi_smartconnect_lpd/aresetn] \
+  [get_bd_pins axi_vip_1/aresetn] \
+  [get_bd_pins smartconnect_axifull/aresetn] \
+  [get_bd_pins smartconnect_axihpm0fpd/aresetn]
+  connect_bd_net -net proc_sys_reset_2_peripheral_aresetn  [get_bd_pins proc_sys_reset_0/peripheral_aresetn] \
+  [get_bd_pins axi_vip_pltf/aresetn] \
   [get_bd_pins axi_vip_0/aresetn]
   connect_bd_net -net ps_e_pl_clk0  [get_bd_pins ps_e/pl_clk0] \
   [get_bd_pins clk_wiz_0/clk_in1]
@@ -870,25 +892,27 @@ Port;FD4A0000;FD4AFFFF;1|FPD;DPDMA;FD4C0000;FD4CFFFF;1|FPD;DDR_XMPU5_CFG;FD05000
   assign_bd_address -offset 0xFF000000 -range 0x01000000 -target_address_space [get_bd_addr_spaces axi_vip_1/Master_AXI] [get_bd_addr_segs ps_e/SAXIGP6/LPD_LPS_OCM] -force
   assign_bd_address -offset 0xC0000000 -range 0x20000000 -target_address_space [get_bd_addr_spaces axi_vip_1/Master_AXI] [get_bd_addr_segs ps_e/SAXIGP6/LPD_QSPI] -force
   assign_bd_address -offset 0x80020000 -range 0x00001000 -target_address_space [get_bd_addr_spaces ps_e/Data] [get_bd_addr_segs axi_intc_0/S_AXI/Reg] -force
+  assign_bd_address -offset 0xA0000000 -range 0x00010000 -target_address_space [get_bd_addr_spaces ps_e/Data] [get_bd_addr_segs axi_vip_pltf/S_AXI/Reg] -force
 
   # Exclude Address Segments
-  exclude_bd_addr_seg -offset 0x000800000000 -range 0x000100000000 -target_address_space [get_bd_addr_spaces axi_vip_0/Master_AXI] [get_bd_addr_segs ps_e/SAXIGP5/HP3_DDR_HIGH]
-  exclude_bd_addr_seg -offset 0x000800000000 -range 0x000100000000 -target_address_space [get_bd_addr_spaces axi_vip_1/Master_AXI] [get_bd_addr_segs ps_e/SAXIGP6/LPD_DDR_HIGH]
+  exclude_bd_addr_seg -target_address_space [get_bd_addr_spaces axi_vip_0/Master_AXI] [get_bd_addr_segs ps_e/SAXIGP5/HP3_DDR_HIGH]
+  exclude_bd_addr_seg -target_address_space [get_bd_addr_spaces axi_vip_1/Master_AXI] [get_bd_addr_segs ps_e/SAXIGP6/LPD_DDR_HIGH]
 
 
   # Restore current instance
   current_bd_instance $oldCurInst
 
   # Create PFM attributes
-  set_property PFM_NAME {xilinx.com:xd:kv260_som_som240_1_connector_kv260_carrier_som240_1_connector:1.0} [get_files [current_bd_design].bd]
-  set_property PFM.AXI_PORT {S01_AXI {memport "S_AXI_HP" sptag "LPD" memory "ps_e LPD_DDR_LOW"} S02_AXI {memport "S_AXI_HP" sptag "LPD" memory "ps_e LPD_DDR_LOW"} S03_AXI {memport "S_AXI_HP" sptag "LPD" memory "ps_e LPD_DDR_LOW"} S04_AXI {memport "S_AXI_HP" sptag "LPD" memory "ps_e LPD_DDR_LOW"} S05_AXI {memport "S_AXI_HP" sptag "LPD" memory "ps_e LPD_DDR_LOW"} S06_AXI {memport "S_AXI_HP" sptag "LPD" memory "ps_e LPD_DDR_LOW"} S07_AXI {memport "S_AXI_HP" sptag "LPD" memory "ps_e LPD_DDR_LOW"} S08_AXI {memport "S_AXI_HP" sptag "LPD" memory "ps_e LPD_DDR_LOW"} S09_AXI {memport "S_AXI_HP" sptag "LPD" memory "ps_e LPD_DDR_LOW"} S10_AXI {memport "S_AXI_HP" sptag "LPD" memory "ps_e LPD_DDR_LOW"} S11_AXI {memport "S_AXI_HP" sptag "LPD" memory "ps_e LPD_DDR_LOW"} S12_AXI {memport "S_AXI_HP" sptag "LPD" memory "ps_e LPD_DDR_LOW"} S13_AXI {memport "S_AXI_HP" sptag "LPD" memory "ps_e LPD_DDR_LOW"} S14_AXI {memport "S_AXI_HP" sptag "LPD" memory "ps_e LPD_DDR_LOW"} S15_AXI {memport "S_AXI_HP" sptag "LPD" memory "ps_e LPD_DDR_LOW"}} [get_bd_cells /axi_interconnect_lpd]
+  set_property PFM_NAME {xilinx.com:kv260_som_som240_1_connector_kv260_carrier_som240_1_connector:kv260_som_som240_1_connector_kv260_carrier_som240_1_connector_base:1.0} [get_files [current_bd_design].bd]
+  set_property PFM.AXI_PORT {S01_AXI {memport "S_AXI_HP" sptag "LPD" memory "ps_e LPD_DDR_LOW"} S02_AXI {memport "S_AXI_HP" sptag "LPD" memory "ps_e LPD_DDR_LOW"} S03_AXI {memport "S_AXI_HP" sptag "LPD" memory "ps_e LPD_DDR_LOW"} S04_AXI {memport "S_AXI_HP" sptag "LPD" memory "ps_e LPD_DDR_LOW"} S05_AXI {memport "S_AXI_HP" sptag "LPD" memory "ps_e LPD_DDR_LOW"} S06_AXI {memport "S_AXI_HP" sptag "LPD" memory "ps_e LPD_DDR_LOW"} S07_AXI {memport "S_AXI_HP" sptag "LPD" memory "ps_e LPD_DDR_LOW"} S08_AXI {memport "S_AXI_HP" sptag "LPD" memory "ps_e LPD_DDR_LOW"} S09_AXI {memport "S_AXI_HP" sptag "LPD" memory "ps_e LPD_DDR_LOW"} S10_AXI {memport "S_AXI_HP" sptag "LPD" memory "ps_e LPD_DDR_LOW"} S11_AXI {memport "S_AXI_HP" sptag "LPD" memory "ps_e LPD_DDR_LOW"} S12_AXI {memport "S_AXI_HP" sptag "LPD" memory "ps_e LPD_DDR_LOW"} S13_AXI {memport "S_AXI_HP" sptag "LPD" memory "ps_e LPD_DDR_LOW"} S14_AXI {memport "S_AXI_HP" sptag "LPD" memory "ps_e LPD_DDR_LOW"} S15_AXI {memport "S_AXI_HP" sptag "LPD" memory "ps_e LPD_DDR_LOW"}} [get_bd_cells /axi_smartconnect_lpd]
   set_property PFM.AXI_PORT {M_AXI_HPM1_FPD {memport "M_AXI_GP"} S_AXI_HPC0_FPD {memport "S_AXI_HPC" sptag "HPC0" memory "ps_e HPC0_DDR_LOW"}  S_AXI_HPC1_FPD {memport "S_AXI_HPC" sptag "HPC1" memory "ps_e HPC1_DDR_LOW"}  S_AXI_HP0_FPD {memport "S_AXI_HP" sptag "HP0" memory "ps_e HP0_DDR_LOW"}  S_AXI_HP1_FPD {memport "S_AXI_HP" sptag "HP1" memory "ps_e HP1_DDR_LOW"}  S_AXI_HP2_FPD {memport "S_AXI_HP" sptag "HP2" memory "ps_e HP2_DDR_LOW"}} [get_bd_cells /ps_e]
-  set_property PFM.CLOCK {clk_out1 {id "0" is_default "false" proc_sys_reset "/proc_sys_reset_0" status "fixed"} clk_out2 {id "1" is_default "true" proc_sys_reset "/proc_sys_reset_1" status "fixed"} clk_out3 {id "2" is_default "false" proc_sys_reset "/proc_sys_reset_2" status "fixed"}} [get_bd_cells /clk_wiz_0]
-  set_property PFM.AXI_PORT {S01_AXI {memport "S_AXI_HP" sptag "HP3" memory "ps_e HP3_DDR_LOW"} S02_AXI {memport "S_AXI_HP" sptag "HP3" memory "ps_e HP3_DDR_LOW"} S03_AXI {memport "S_AXI_HP" sptag "HP3" memory "ps_e HP3_DDR_LOW"} S04_AXI {memport "S_AXI_HP" sptag "HP3" memory "ps_e HP3_DDR_LOW"} S05_AXI {memport "S_AXI_HP" sptag "HP3" memory "ps_e HP3_DDR_LOW"} S06_AXI {memport "S_AXI_HP" sptag "HP3" memory "ps_e HP3_DDR_LOW"} S07_AXI {memport "S_AXI_HP" sptag "HP3" memory "ps_e HP3_DDR_LOW"} S08_AXI {memport "S_AXI_HP" sptag "HP3" memory "ps_e HP3_DDR_LOW"} S09_AXI {memport "S_AXI_HP" sptag "HP3" memory "ps_e HP3_DDR_LOW"} S10_AXI {memport "S_AXI_HP" sptag "HP3" memory "ps_e HP3_DDR_LOW"} S11_AXI {memport "S_AXI_HP" sptag "HP3" memory "ps_e HP3_DDR_LOW"} S12_AXI {memport "S_AXI_HP" sptag "HP3" memory "ps_e HP3_DDR_LOW"} S13_AXI {memport "S_AXI_HP" sptag "HP3" memory "ps_e HP3_DDR_LOW"} S14_AXI {memport "S_AXI_HP" sptag "HP3" memory "ps_e HP3_DDR_LOW"} S15_AXI {memport "S_AXI_HP" sptag "HP3" memory "ps_e HP3_DDR_LOW"}} [get_bd_cells /interconnect_axifull]
-  set_property PFM.AXI_PORT {M01_AXI {memport "M_AXI_GP"} M02_AXI {memport "M_AXI_GP"} M03_AXI {memport "M_AXI_GP"} M04_AXI {memport "M_AXI_GP"} M05_AXI {memport "M_AXI_GP"} M06_AXI {memport "M_AXI_GP"} M07_AXI {memport "M_AXI_GP"} M08_AXI {memport "M_AXI_GP"} M09_AXI {memport "M_AXI_GP"} M10_AXI {memport "M_AXI_GP"} M11_AXI {memport "M_AXI_GP"} M12_AXI {memport "M_AXI_GP"} M13_AXI {memport "M_AXI_GP"} M14_AXI {memport "M_AXI_GP"} M15_AXI {memport "M_AXI_GP"} M16_AXI {memport "M_AXI_GP"} M17_AXI {memport "M_AXI_GP"} M18_AXI {memport "M_AXI_GP"} M19_AXI {memport "M_AXI_GP"} M20_AXI {memport "M_AXI_GP"} M21_AXI {memport "M_AXI_GP"} M22_AXI {memport "M_AXI_GP"} M23_AXI {memport "M_AXI_GP"} M24_AXI {memport "M_AXI_GP"} M25_AXI {memport "M_AXI_GP"} M26_AXI {memport "M_AXI_GP"} M27_AXI {memport "M_AXI_GP"} M28_AXI {memport "M_AXI_GP"} M29_AXI {memport "M_AXI_GP"} M30_AXI {memport "M_AXI_GP"} M31_AXI {memport "M_AXI_GP"} M32_AXI {memport "M_AXI_GP"} M33_AXI {memport "M_AXI_GP"} M34_AXI {memport "M_AXI_GP"} M35_AXI {memport "M_AXI_GP"} M36_AXI {memport "M_AXI_GP"} M37_AXI {memport "M_AXI_GP"} M38_AXI {memport "M_AXI_GP"} M39_AXI {memport "M_AXI_GP"} M40_AXI {memport "M_AXI_GP"} M41_AXI {memport "M_AXI_GP"} M42_AXI {memport "M_AXI_GP"} M43_AXI {memport "M_AXI_GP"} M44_AXI {memport "M_AXI_GP"} M45_AXI {memport "M_AXI_GP"} M46_AXI {memport "M_AXI_GP"} M47_AXI {memport "M_AXI_GP"} M48_AXI {memport "M_AXI_GP"} M49_AXI {memport "M_AXI_GP"} M50_AXI {memport "M_AXI_GP"} M51_AXI {memport "M_AXI_GP"} M52_AXI {memport "M_AXI_GP"} M53_AXI {memport "M_AXI_GP"} M54_AXI {memport "M_AXI_GP"} M55_AXI {memport "M_AXI_GP"} M56_AXI {memport "M_AXI_GP"} M57_AXI {memport "M_AXI_GP"} M58_AXI {memport "M_AXI_GP"} M59_AXI {memport "M_AXI_GP"} M60_AXI {memport "M_AXI_GP"} M61_AXI {memport "M_AXI_GP"} M62_AXI {memport "M_AXI_GP"} M63_AXI {memport "M_AXI_GP"}} [get_bd_cells /interconnect_axilite]
+  set_property PFM.CLOCK {clk_out1 {id "0" is_default "true" proc_sys_reset "/proc_sys_reset_0" status "fixed"} clk_out2 {id "1" is_default "false" proc_sys_reset "/proc_sys_reset_1" status "fixed"} clk_out3 {id "2" is_default "false" proc_sys_reset "/proc_sys_reset_2" status "fixed"} clk_out4 {id "3" is_default "false" proc_sys_reset "/proc_sys_reset_3" status "fixed"} clk_out5 {id "4" is_default "false" proc_sys_reset "/proc_sys_reset_4" status "fixed"} clk_out6 {id "5" is_default "false" proc_sys_reset "/proc_sys_reset_5" status "fixed"} clk_out7 {id "6" is_default "false" proc_sys_reset "/proc_sys_reset_6" status "fixed"}} [get_bd_cells /clk_wiz_0]
+  set_property PFM.AXI_PORT {S01_AXI {memport "S_AXI_HP" sptag "HP3" memory "ps_e HP3_DDR_LOW"} S02_AXI {memport "S_AXI_HP" sptag "HP3" memory "ps_e HP3_DDR_LOW"} S03_AXI {memport "S_AXI_HP" sptag "HP3" memory "ps_e HP3_DDR_LOW"} S04_AXI {memport "S_AXI_HP" sptag "HP3" memory "ps_e HP3_DDR_LOW"} S05_AXI {memport "S_AXI_HP" sptag "HP3" memory "ps_e HP3_DDR_LOW"} S06_AXI {memport "S_AXI_HP" sptag "HP3" memory "ps_e HP3_DDR_LOW"} S07_AXI {memport "S_AXI_HP" sptag "HP3" memory "ps_e HP3_DDR_LOW"} S08_AXI {memport "S_AXI_HP" sptag "HP3" memory "ps_e HP3_DDR_LOW"} S09_AXI {memport "S_AXI_HP" sptag "HP3" memory "ps_e HP3_DDR_LOW"} S10_AXI {memport "S_AXI_HP" sptag "HP3" memory "ps_e HP3_DDR_LOW"} S11_AXI {memport "S_AXI_HP" sptag "HP3" memory "ps_e HP3_DDR_LOW"} S12_AXI {memport "S_AXI_HP" sptag "HP3" memory "ps_e HP3_DDR_LOW"} S13_AXI {memport "S_AXI_HP" sptag "HP3" memory "ps_e HP3_DDR_LOW"} S14_AXI {memport "S_AXI_HP" sptag "HP3" memory "ps_e HP3_DDR_LOW"} S15_AXI {memport "S_AXI_HP" sptag "HP3" memory "ps_e HP3_DDR_LOW"}} [get_bd_cells /smartconnect_axifull]
+  set_property PFM.AXI_PORT {M01_AXI {memport "M_AXI_GP"} M02_AXI {memport "M_AXI_GP"} M03_AXI {memport "M_AXI_GP"} M04_AXI {memport "M_AXI_GP"} M05_AXI {memport "M_AXI_GP"} M06_AXI {memport "M_AXI_GP"} M07_AXI {memport "M_AXI_GP"} M08_AXI {memport "M_AXI_GP"} M09_AXI {memport "M_AXI_GP"} M10_AXI {memport "M_AXI_GP"} M11_AXI {memport "M_AXI_GP"} M12_AXI {memport "M_AXI_GP"} M13_AXI {memport "M_AXI_GP"} M14_AXI {memport "M_AXI_GP"} M15_AXI {memport "M_AXI_GP"}} [get_bd_cells /smartconnect_axilite]
   set_property PFM.IRQ {intr {id 0 range 32}} [get_bd_cells /axi_intc_0]
 
 
+  validate_bd_design
   save_bd_design
 }
 # End of create_root_design()
@@ -900,6 +924,4 @@ Port;FD4A0000;FD4AFFFF;1|FPD;DPDMA;FD4C0000;FD4CFFFF;1|FPD;DDR_XMPU5_CFG;FD05000
 
 create_root_design ""
 
-
-common::send_gid_msg -ssname BD::TCL -id 2053 -severity "WARNING" "This Tcl script was generated from a block design that has not been validated. It is possible that design <$design_name> may result in errors during validation."
 

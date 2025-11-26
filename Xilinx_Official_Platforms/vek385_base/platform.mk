@@ -3,7 +3,6 @@
 # Copyright (C) 2022-2025 Advanced Micro Devices, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
 #******************************************************************************
-
 .EXPORT_ALL_VARIABLES:
 
 #tools
@@ -13,14 +12,14 @@ BOOTGEN = $(XILINX_VITIS)/bin/bootgen
 XSCT    = $(XILINX_VITIS)/bin/xsct
 
 #platform specific
-PLATFORM = xilinx_zcu104_base
-CPU_ARCH = a53
-BOARD    = zcu104-revc
-CORE     = psu_cortexa53_0
+PLATFORM = vek385_base
+CPU_ARCH = a78
+BOARD    = xc2ve3858-ssva2112-2MP-e-S
+CORE     = psv_cortexa78_0
 
 #versioning
-VERSION          ?= 202510_1
-VER              ?= 202510.1
+VERSION          ?= 202520_1
+VER              ?= 202520.1
 
 #common
 TOP_DIR         ?= $(shell readlink -f .)
@@ -28,10 +27,10 @@ TOP_DIR         ?= $(shell readlink -f .)
 #hw related
 XSA_DIR         ?= $(TOP_DIR)/hw/build
 XSA             ?= $(XSA_DIR)/hw.xsa
-RP_XSA          ?= $(XSA_DIR)/rp/rp.xsa
+FIXED_XSA       ?= $(XSA_DIR)/hw_fixed.xsa
 STATIC_XSA      ?= $(XSA_DIR)/static.xsa
 HW_EMU_XSA      ?= $(XSA_DIR)/hw_emu/hw_emu.xsa
-PRE_SYNTH       ?= TRUE
+PRE_SYNTH       ?= FALSE
 
 #sw related
 SW_DIR           = $(TOP_DIR)/sw/build
@@ -43,15 +42,17 @@ SW_FILES         = $(IMAGE_DIR)/boot.scr $(BOOT_DIR)/u-boot.elf $(BOOT_DIR)/bl31
 BOOT_FILES       = u-boot.elf bl31.elf
 
 #platform related
-PLATFORM_NAME    = $(PLATFORM)_$(VERSION)
+PLATFORM_NAME    = $(PLATFORM)
 PLATFORM_SW_SRC  = $(TOP_DIR)/platform
 PLATFORM_DIR      = $(TOP_DIR)/platform_repo
 
 #flow related
-PREBUILT_LINUX_PATH ?= /opt/xilinx/platform/xilinx-zynqmp-common-v2025.1
-ifneq ($(wildcard $(TOP_DIR)/xilinx-zynpmp-common-v2025.1),)
-PREBUILT_LINUX_PATH ?= $(TOP_DIR)/xilinx-zynqmp-common-v2025.1
+PREBUILT_LINUX_PATH ?= /opt/xilinx/platform/xilinx-versal-common-v2025.2
+ifneq ($(wildcard $(TOP_DIR)/xilinx-versal-common-v2025.2),)
+	PREBUILT_LINUX_PATH ?= $(TOP_DIR)/xilinx-versal-common-v2025.2
 endif
+
+#Absolute paths
 # Getting Absolute paths
 ifneq ("$(wildcard $(XSA))","")
   XSA_ABS ?= $(realpath $(XSA))
@@ -72,18 +73,18 @@ ifeq ($(XILINX_VITIS),)
 	$(error ERROR: 'XILINX_VITIS' variable not set, please set correctly and rerun)
 endif
 
-check-prebuilt:
-ifeq (,$(wildcard $(PREBUILT_LINUX_PATH)))
-	$(info )
-	$(info PREBUILT common images cannot be found at $(PREBUILT_LINUX_PATH))
-	$(info If PREBUILT common images are present in another directory, Please specify the path to images as follows :)
-	$(info make all PREBUILT_LINUX_PATH=/path/to/boot_files/dir)
-	$(info else)
-	$(info Please download PREBUILT common images from https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/embedded-platforms.html and extract them to /opt/xilinx/platform)
-	$(error )
-else
-	$(info Found Platform Images at $(PREBUILT_LINUX_PATH))
-endif
-ifeq ($(PREBUILT_LINUX_PATH),)
-	$(error ERROR: 'PREBUILT_LINUX_PATH' is not accesible, please set this flag to path containing common software)
-endif
+#check-prebuilt:
+#ifeq (,$(wildcard $(PREBUILT_LINUX_PATH)))
+#	$(info )
+#	$(info PREBUILT common images cannot be found at $(PREBUILT_LINUX_PATH))
+#	$(info If PREBUILT common images are present in another directory, Please specify the path to images as follows :)
+#	$(info make all PREBUILT_LINUX_PATH=/path/to/boot_files/dir)
+#	$(info else)
+#	$(info Please download PREBUILT common images from https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/embedded-platforms.html and extract them to /opt/xilinx/platform)
+#	$(error )
+#else
+#	$(info Found Platform Images at $(PREBUILT_LINUX_PATH))
+#endif
+#ifeq ($(PREBUILT_LINUX_PATH),)
+#	$(error ERROR: 'PREBUILT_LINUX_PATH' is not accesible, please set this flag to path containing common software)
+#endif
