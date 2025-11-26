@@ -8,7 +8,7 @@
 - `xilinx_vck190_base_dfx` platform updated to use CED to generate hardware platform source.
 
 ## 2024.2
-- VCK190 base platform updated to use CED to generate hardware platform source code. TCL based source code is also provieded under HW folder for reference.
+- VCK190 base platform updated to use Vivado CED (Customizable Example Design) to generate hardware platform source code. TCL based source code is also provided under HW folder for reference.
 - Removed BDC platforms
 - All Versal platforms updated the dtb generation scripts to make use of newly introduced system device tree flow. 
 

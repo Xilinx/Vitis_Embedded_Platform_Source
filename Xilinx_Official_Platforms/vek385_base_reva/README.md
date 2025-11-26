@@ -8,7 +8,7 @@ The platform includes pre-configured PS interfaces, multiple high-speed AXI and 
 
 ## Platform Specification
 
-The hardware configurations are sourced from [versal_common_platform](https://github.com/Xilinx/XilinxCEDStore/tree/2025.2/ced/Xilinx/IPI/versal_common_platform/2.0) Vivado Customizable Example Design (CED), so that the PS configurations are compatbile with EDF pre-built image setup.
+The hardware configurations are sourced from [versal_common_platform](https://github.com/Xilinx/XilinxCEDStore/tree/2025.2/ced/Xilinx/IPI/versal_common_platform/2.0) Vivado Customizable Example Design (CED), so that the PS configurations are compatible with EDF pre-built image setup.
 
 ### General Information 
 
@@ -21,7 +21,7 @@ The hardware configurations are sourced from [versal_common_platform](https://gi
 
 ### Interfaces
 
-For more details on VEK385 board-specific interfaces, please refer to the [VEK385 board Specific INterfaces](https://xilinx-wiki.atlassian.net/wiki/spaces/A/pages/3250586284/AMD+EDF+-+Board+specific+specifications+and+information#VEK385) on the AMD Wike.
+For more details on VEK385 board-specific interfaces, please refer to the [VEK385 board Specific interfaces](https://xilinx-wiki.atlassian.net/wiki/spaces/A/pages/3250586284/AMD+EDF+-+Board+specific+specifications+and+information#VEK385) on the AMD Wike.
 
 ### Hardware Configurations
 

@@ -13,7 +13,7 @@
 
 set_property board_part xilinx.com:vmk180:part0:* [current_project]
 
-instantiate_example_design -template xilinx.com:design:ext_platform:1.0 -design vitis_design -options { Clock_Options.VALUE {clk_out1 100.000 0 false clk_out2 156.250 1 false clk_out3 312.500 2 true clk_out4 78.125 3 false clk_out5 200.000 4 false clk_out6 400.000 5 false clk_out7 625.000 6 false} clude_AIE.VALUE false Include_BDC.VALUE false IRQS.VALUE 63}
+instantiate_example_design -template xilinx.com:design:ext_platform:1.0 -design vitis_design -options { Clock_Options.VALUE {clk_out1 100.000 0 false clk_out2 156.250 1 false clk_out3 312.500 2 true clk_out4 78.125 3 false clk_out5 200.000 4 false clk_out6 400.000 5 false clk_out7 625.000 6 false} Include_AIE.VALUE false Include_BDC.VALUE false IRQS.VALUE 63}
 
 validate_bd_design
 save_bd_design

@@ -25,7 +25,7 @@ For more details on VEK385 board-specific interfaces, please refer to the [VEK38
 
 ### Hardware Configurations
 
-The hardware configurations are sourced from [versal_common_platform](https://github.com/Xilinx/XilinxCEDStore/tree/2025.2/ced/Xilinx/IPI/versal_common_platform/2.0) Vivado Customizable Example Design (CED), so that the PS configurations are compatbile with EDF pre-built image setup.
+The hardware configurations are sourced from [versal_common_platform](https://github.com/Xilinx/XilinxCEDStore/tree/2025.2/ced/Xilinx/IPI/versal_common_platform/2.0) Vivado Customizable Example Design (CED), so that the PS configurations are compatible with EDF pre-built image setup.
 
 | Configuration                 | Values                                                | Details                             |
 | ----------------------------- | ----------------------------------------------------- | ------------------------------------|
