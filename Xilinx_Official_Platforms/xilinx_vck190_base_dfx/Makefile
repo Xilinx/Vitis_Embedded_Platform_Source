@@ -1,6 +1,6 @@
 #******************************************************************************
 # Copyright (C) 2020-2022 Xilinx, Inc. All rights reserved.
-# Copyright (C) 2022-2025 Advanced Micro Devices, Inc. All rights reserved.
+# Copyright (C) 2022-2026 Advanced Micro Devices, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
 #******************************************************************************
 
@@ -54,7 +54,7 @@ all platform: $(STATIC_XSA) $(RP_XSA) $(SW_FILES)
 	vitis -s $(PLATFORM_SW_SRC)/generate_platform.py --platform_name $(PLATFORM_NAME) --static_xsa_path $(STATIC_XSA) --emu_xsa_path $(HW_EMU_XSA) --boot_dir_path $(BOOT_DIR)  --platform_out $(PLATFORM_DIR) --img_dir_path $(IMAGE_DIR) --rp_xsa_path $(RP_XSA) --user_dtsi $(USER_DTSI)
 
 	$(info "Generating BOOT image for platforms")
-	cp -f $(PLATFORM_DIR)/xilinx_vck190_base_dfx_202520_1/hw/linux_dt/system.dtb $(BOOT_DIR)
+	cp -f $(PLATFORM_DIR)/xilinx_vck190_base_dfx_202610_1/hw/linux_dt/system.dtb $(BOOT_DIR)
 	$(BOOTGEN) -arch versal -image $(TOP_DIR)/sw/prebuilt_linux/bootgen.bif -o $(BOOT_IMAGE) -w;
 
 	@echo 'Platform build started'

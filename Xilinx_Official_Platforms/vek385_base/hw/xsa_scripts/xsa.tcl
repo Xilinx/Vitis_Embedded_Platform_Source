@@ -1,16 +1,20 @@
 #******************************************************************************
 # Copyright (C) 2020-2022 Xilinx, Inc. All rights reserved.
-# Copyright (C) 2022-2025 Advanced Micro Devices, Inc. All rights reserved.
+# Copyright (C) 2022-2026 Advanced Micro Devices, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
 #******************************************************************************
 file mkdir build 
 cd build
 source ../xsa_scripts/project.tcl
 source ../xsa_scripts/bd.tcl
+source ../xsa_scripts/update_bd.tcl
 
 #custom_platform.tcl to be used to update bd over top of CED based bd for custom platform flow
 ##For creating a non-CED based custom platform, user can comment "source ../xsa_scripts/create_bd.tcl" and update custom_platform.tcl
 source ../xsa_scripts/custom_platform.tcl
+
+# write reference_bd.tcl for tcl based platfrom sources
+#write_bd_tcl -f ../xsa_scripts/reference_bd.tcl
 
 #Generating Target
 generate_target all [get_files ./my_project/my_project.srcs/sources_1/bd/vitis_design/vitis_design.bd]
@@ -18,9 +22,8 @@ update_compile_order -fileset sources_1
 update_compile_order -fileset sim_1
 
 # Ensure that your top of synthesis module is also set as top for simulation
+#Generate the final simulation script which will compile the <syn_top>_sim_wrapper and xlnoc.bd modules 
 
-#Generate the final simulation script which will compile
-# the <syn_top>_sim_wrapper and xlnoc.bd modules also
 launch_simulation -scripts_only
 launch_simulation -step compile
 launch_simulation -step elaborate
@@ -45,7 +48,7 @@ if {$pre_synth} {
   launch_runs synth_1 -jobs 20
   wait_on_run synth_1
 
- set_param noc.enableNOCClockGating false
+  set_param noc.enableNOCClockGating false
 
 #Implementation Run
   launch_runs impl_1 -to_step write_device_image
@@ -53,10 +56,8 @@ if {$pre_synth} {
 
   open_run impl_1
   
-  
 # Generating dynamic reload extensible XSA as default hardware platform
   write_hw_platform -hw -force -include_bit -file hw.xsa 
-
 }
 
 #generate README.hw

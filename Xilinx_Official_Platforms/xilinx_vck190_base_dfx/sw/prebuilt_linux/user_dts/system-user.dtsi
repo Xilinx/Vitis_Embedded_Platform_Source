@@ -1,11 +1,10 @@
 /******************************************************************************
 * Copyright (C) 2020-2022 Xilinx, Inc. All rights reserved.
-* Copyright (C) 2022-2025 Advanced Micro Devices, Inc. All rights reserved.
+* Copyright (C) 2022-2026 Advanced Micro Devices, Inc. All rights reserved.
 * SPDX-License-Identifier: MIT
 ******************************************************************************/
 /*
  * /include/ "system-conf.dtsi"
- * Adding directly contents of system-conf file until CR-1139794 is fixed
  */
 / {
         chosen {
@@ -41,7 +40,7 @@
 		clock-names = "aclk0";
 		clocks = <0x13>;
 		compatible = "xlnx,ai-engine-2.0\0xlnx,ai-engine-v2.0";
-		power-domains = <0x8d 0x18800000>;
+		power-domains = <&versal_firmware 0x18800000>;
 		ranges;
 		reg = <0x200 0x00 0x01 0x00>;
 		xlnx,aie-gen = [01];
@@ -55,7 +54,7 @@
 			interrupt-names = "interrupt1\0interrupt2\0interrupt3";
 			interrupt-parent = <0x05>;
 			interrupts = <0x00 0x94 0x04 0x00 0x95 0x04 0x00 0x96 0x04>;
-			power-domains = <0x8d 0x18800000>;
+			power-domains = <&versal_firmware 0x18800000>;
 			reg = <0x200 0x00 0x01 0x00>;
 			xlnx,columns = <0x00 0x32>;
 			xlnx,node-id = <0x18800000>;

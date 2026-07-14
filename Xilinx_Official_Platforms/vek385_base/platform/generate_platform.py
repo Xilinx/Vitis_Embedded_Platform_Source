@@ -1,6 +1,6 @@
 #*******************************************************************************
 # Copyright (C) 2020-2022 Xilinx, Inc. All rights reserved.
-# Copyright (C) 2022-2025 Advanced Micro Devices, Inc. All rights reserved.
+# Copyright (C) 2022-2026 Advanced Micro Devices, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
 #*******************************************************************************
 import vitis
@@ -44,7 +44,7 @@ platform = client.get_component(name=platform_name)
 domain = platform.add_domain(cpu = "ai_engine",os = "aie_runtime",name = "aiengine",display_name = "aiengine")  
 domain = platform.get_domain(name="aiengine")  
 #linux domain
-domain = platform.add_domain(os = "linux",cpu = "cortexa78",name = "xrt",display_name = "xrt")
+domain = platform.add_domain(os = "linux",cpu = "cortexa78",name = "xrt",display_name = "xrt", generate_dtb = False)
 
 status = platform.build()
 

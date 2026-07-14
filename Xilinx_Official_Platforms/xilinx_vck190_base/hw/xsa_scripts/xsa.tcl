@@ -1,15 +1,19 @@
 #******************************************************************************
 # Copyright (C) 2020-2022 Xilinx, Inc. All rights reserved.
-# Copyright (C) 2022-2025 Advanced Micro Devices, Inc. All rights reserved.
+# Copyright (C) 2022-2026 Advanced Micro Devices, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
 #******************************************************************************
 file mkdir build 
 cd build
 source ../xsa_scripts/project.tcl
 source ../xsa_scripts/bd.tcl
+source ../xsa_scripts/update_bd.tcl
 
 #For Questa Simulator
 source ../data/questa_sim.tcl 
+
+# write reference_bd.tcl for tcl based platfrom sources
+#write_bd_tcl -f ../xsa_scripts/reference_bd.tcl
 
 #Generating Wrapper
 #make_wrapper -files [get_files ./my_project/my_project.srcs/sources_1/bd/vitis_design/vitis_design.bd] -top
