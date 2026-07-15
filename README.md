@@ -17,7 +17,8 @@ This repository contains the source code to recreate, modify, and extend the
 
 | Platform | Board | Description |
 |---|---|---|
-| `vek385_base` | VEK385 | Versal AI Edge Gen2 base platform |
+| `vek385_base` | VEK385 Rev B| Versal AI Edge Gen2 base platform|
+| `vek385_base_reva` | VEK385 Rev A | Versal AI Edge Gen2 base platform|
 | `vrk160_base` | VRK160 | Versal AI RF base platform |
 | `vck190_base` | VCK190 | Versal AI Core base platform |
 | `vek280_base` | VEK280 | Versal AI Edge base platform |
