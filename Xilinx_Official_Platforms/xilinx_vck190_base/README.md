@@ -30,7 +30,7 @@ The hardware configurations are sourced from [Versal Extensible Embedded Platfor
 
 | Configuration                 | Values                                                | Details                             |
 | ----------------------------- | ----------------------------------------------------- | ------------------------------------|
-| CIPS DDR Size                 | 8GB                                                   |                                     |
+| DDR Size                 | 8GB                                                   |                                     |
 | LPDDR Size                    | 8GB                                                  |                                     |
 | Clocks for Kernels            | 625 MHz, 312.5MHz, 156.25MHz, 78.125MHz, 100.00MHz    | Clocks are synchronous to each other|
 | SP Tags supported             | DDR, LPDDR                                            | All kernels share same DDR4 and LPDDR4 |

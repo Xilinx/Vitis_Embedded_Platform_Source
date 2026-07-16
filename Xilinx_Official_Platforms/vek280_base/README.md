@@ -2,7 +2,7 @@
 
 ***Version: 2026.1***
 
-This platform is a new EDF(Yacto based) platform introduced in 2026.1. It comes with common hardware features on the VEK280 board like AI Engine, GEM, DDR and LPDDR. It is useful as a base platform for exercising Vitis capabilities and topologies on the VEK280 board. For any hardware customization on the platfrom please follow the tutorial. For any hardware customization on the platform, please follow the custom platform tutorial in the [Vitis Tutorials](https://github.com/Xilinx/Vitis-Tutorials) repository.
+This platform is a new EDF(Yocto based) platform introduced in 2026.1. It comes with common hardware features on the VEK280 board like AI Engine, GEM, DDR and LPDDR. It is useful as a base platform for exercising Vitis capabilities and topologies on the VEK280 board. For any hardware customization on the platfrom please follow the tutorial. For any hardware customization on the platform, please follow the custom platform tutorial in the [Vitis Tutorials](https://github.com/Xilinx/Vitis-Tutorials) repository.
 
 ## Platform Specification
 

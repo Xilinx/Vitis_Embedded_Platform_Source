@@ -2,7 +2,7 @@
 
 ***Version: 2026.1***
 
-This platform is a new EDF(Yacto based) platform introduced in 2026.1. It comes with common hardware features on the VCK190 board like AI Engine, GEM, DDR and LPDDR. The platform software includes OpenCV in PetaLinux. It is useful as a base platform for exercising Vitis capabilities and topologies on the VCK190 board. For any hardware customization on the platform, please follow the custom platform tutorial in the [Vitis Tutorials](https://github.com/Xilinx/Vitis-Tutorials) repository.
+This platform is a new EDF(Yocto based) platform introduced in 2026.1. It comes with common hardware features on the VCK190 board like AI Engine, GEM, DDR and LPDDR. The platform software includes OpenCV. It is useful as a base platform for exercising Vitis capabilities and topologies on the VCK190 board. For any hardware customization on the platform, please follow the custom platform tutorial in the [Vitis Tutorials](https://github.com/Xilinx/Vitis-Tutorials) repository.
 
 ## Platform Specification
 
@@ -25,7 +25,7 @@ The PS side hardware configurations are sourced from [Versal Embedded Common Pla
 
 | Configuration                 | Values                                                | Details                             |
 | ----------------------------- | ----------------------------------------------------- | ------------------------------------|
-| CIPS DDR Size                 | 8GB                                                   |                                     |
+| DDR Size                 | 8GB                                                   |                                     |
 | LPDDR Size                    |  8GB                                                  |                                     |
 | Clocks for Kernels            | 625 MHz, 312.5MHz, 156.25MHz, 78.125MHz, 100.00MHz    | Clocks are synchronous to each other|
 | SP Tags supported             | DDR, LPDDR                                            | All kernels share same DDR4 and LPDDR4 |

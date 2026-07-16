@@ -5,8 +5,8 @@ This repository contains the source code to recreate, modify, and extend the
 
 ## Prerequisites
 
-- Linux host OS [supported by Vitis](https://docs.amd.com/r/en-US/ug1393-vitis-application-acceleration/Installation-Requirements)
-- [Vitis 2026.1](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vitis.html)
+- Linux host [OS](https://docs.amd.com/r/en-US/ug1742-vitis-release-notes/Installation-Requirements) supported by Vitis
+- [Vitis](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vitis.html) 2026.1
 - [Common Software Image 2026.1](#installing-the-common-software) (PetaLinux flow only)
 
 > By using these platform sources you agree to the [AMD End User License Agreement](https://account.amd.com/content/dam/account/en/licenses/download/amd-end-user-license-agreement.pdf).
@@ -37,7 +37,7 @@ This repository contains the source code to recreate, modify, and extend the
 Set up the Vitis environment before building any platform:
 
 ```bash
-source <Vitis_install_path>/Vitis/2026.1/settings64.sh
+source <Vitis_install_path>/Vitis/settings64.sh
 ```
 
 > **Note:** Platform builds are supported on Linux **only** (VM or Docker container is acceptable).
@@ -53,8 +53,8 @@ For EDF-based platforms, refer to the [Vitis Tutorials](https://github.com/Xilin
 The build flow generates a Vitis platform in three steps:
 
 1. Generate hardware specification file (XSA) using Vivado
-2. Generate software components (using XSCT)
-3. Package hardware and software into a Vitis platform (using XSCT)
+2. Generate software components (using Python)
+3. Package hardware and software into a Vitis platform (using Python)
 
 #### Quick Start
 
