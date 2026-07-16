@@ -3,7 +3,6 @@
 # Copyright (C) 2022-2024 Advanced Micro Devices, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
 #******************************************************************************
-export XILINX_VITIS=/proj/xbuilds/2024.2_daily_latest/installs/lin64/Vitis/2024.2
 
 export PYTHON_VER="python-3.8.3"
 export CMAKE_VER="cmake-3.24.2"

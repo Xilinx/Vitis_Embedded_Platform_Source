@@ -7,9 +7,6 @@
 
 SHELL := /bin/bash
 VER_MAIN ?= 2024
-VER_MIN ?= 2
-VERSION1 ?= $(VER_MAIN).$(VER_MIN)
-TOOLS ?= /proj/xbuilds/$(VERSION1)_daily_latest/installs/lin64/Vitis/$(VERSION1)/
 XSA ?= ../../../hw/build/hw.xsa
 SDT_OUT ?= sdt_out
 USER_DTSI ?= ../user_dts/system-user.dtsi 
@@ -26,7 +23,7 @@ get_sources:
 gen_sdt:
 	$(RM) -rf $(SDT_OUT)
 	$(info "DTB generation started using stdgen+lopper")
-	$(TOOLS)/bin/xsct -eval "sdtgen set_dt_param -dir $(SDT_OUT) -xsa $(XSA) -board_dts versal-vck190-rev1.1 -zocl enable -include_dts $(USER_DTSI); sdtgen generate_sdt"
+	$(XSCT) -eval "sdtgen set_dt_param -dir $(SDT_OUT) -xsa $(XSA) -board_dts versal-vck190-rev1.1 -zocl enable -include_dts $(USER_DTSI); sdtgen generate_sdt"
  
 gen_dtb:
 	$(RM) -rf system.dtb
