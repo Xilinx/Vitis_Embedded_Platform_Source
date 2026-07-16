@@ -7,8 +7,6 @@
 
 SHELL := /bin/bash
 VER_MAIN ?= 2024
-VER_MIN ?= 2
-VERSION1 ?= $(VER_MAIN).$(VER_MIN)
 XSA ?= ../../../hw/build/hw.xsa
 SDT_OUT ?= sdt_out
 USER_DTSI ?= ../user_dts/system-user.dtsi 
