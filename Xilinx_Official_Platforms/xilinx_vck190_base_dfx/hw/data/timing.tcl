@@ -1,0 +1,1 @@
+set_false_path -to [get_pins vitis_design_i/VitisRegion/clk_wizard_0/inst/clock_primitive_inst/MBUFGCE_CE_1_DLY_inst/clr_rise_det_reg/PRE]

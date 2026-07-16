@@ -1,6 +1,6 @@
 #******************************************************************************
 # Copyright (C) 2020-2022 Xilinx, Inc. All rights reserved.
-# Copyright (C) 2022-2025 Advanced Micro Devices, Inc. All rights reserved.
+# Copyright (C) 2022-2026 Advanced Micro Devices, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
 #******************************************************************************
 
@@ -57,8 +57,6 @@ all platform: $(XSA) $(SW_FILES)
 	@echo "INFO: Creating Platform $(PLATFORM_NAME)"
 
 	vitis -s $(PLATFORM_SW_SRC)/generate_platform.py --platform_name $(PLATFORM_NAME) --xsa_path $(XSA) --emu_xsa_path $(HW_EMU_XSA) --boot_dir_path $(BOOT_DIR)  --platform_out $(PLATFORM_DIR) --img_dir_path $(IMAGE_DIR) --dtb $(DTB_FILE)
-
-#	${RM} -r $(PLATFORM_DIR)/_ide/
 	
 	@if [ -d $(SW_DIR)/platform/filesystem ]; then cp -rf ${SW_DIR}/platform/filesystem $(PLATFORM_DIR)/${PLATFORM_NAME}/export/${PLATFORM_NAME}/sw/${PLATFORM_NAME}/xrt/; fi
 	@echo "INFO: Checking created platforms:" && find . -name "*.xpfm"

@@ -1,4 +1,12 @@
 # Change Logs
+## 2026.1
+- New PLatform
+  -  Added EDF development flow support platform: `vck190_base`,  `vek280_base`
+
+- Renamed `xilinx_kv260_base` to `kv260_base`.  The new platforms naming convention is updated. Please refer to [UG1701](https://docs.amd.com/r/en-US/ug1701-vitis-accelerated-embedded/Pre-built-Base-Platforms) for details.
+- Removed the `xilinx_vmk180_base` platform.
+- Updated all Versal flat platforms to use the Vivado CED: **Versal Embedded Common Platform - NO PL**.
+
 ## 2025.2
 - New Platform: `vek385_base`. The new platforms naming convention is updated. Please refer to [UG1701](https://docs.amd.com/r/en-US/ug1701-vitis-accelerated-embedded/Pre-built-Base-Platforms) for details.
 - `xilinx_vck190_base_dfx` platform source CED updated to use MBUFGCE to generate clock for AI Engine, aligning with other Versal base platforms.

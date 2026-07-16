@@ -1,11 +1,10 @@
 /******************************************************************************
 * Copyright (C) 2020-2022 Xilinx, Inc. All rights reserved.
-* Copyright (C) 2022-2025 Advanced Micro Devices, Inc. All rights reserved.
+* Copyright (C) 2022-2026 Advanced Micro Devices, Inc. All rights reserved.
 * SPDX-License-Identifier: MIT
 ******************************************************************************/
 /*
  * /include/ "system-conf.dtsi"
- * Adding directly contents of system-conf file until CR-1139794 is fixed
  */
 / {
         chosen {
@@ -27,44 +26,14 @@
                         no-map;
                         reg = <0x08 0x00 0x01 0x80000000>;
                 };
-                lpddr_memory: buffer@1 {
+                lpddr_memory_0: buffer@1 {
                         no-map;
-                        reg = <0x500 0x0 0x2 0x0>;
+                        reg = <0x500 0x0 0x1 0x0>;
+                };
+		lpddr_memory_1: buffer@2 {
+                        no-map;
+                        reg = <0x600 0x0 0x1 0x0>;
                 };
         }; 
-};
-
-&amba_pl {
-	/delete-node/ interrupt-controller@a4040000;
-	/delete-node/ interrupt-controller@a4050000;
-};
-
-&amba {
-axi_intc_cascaded_1: interrupt-controller@a4040000 {
-			#interrupt-cells = <2>;
-			clock-names = "s_axi_aclk";
-			clocks = <&misc_clk_0>;
-			compatible = "xlnx,axi-intc-4.1", "xlnx,xps-intc-1.00.a";
-			interrupt-controller ;
-			interrupt-names = "irq";
-			interrupt-parent = <&axi_intc_parent>;
-			interrupts = <31 2>;
-			reg = <0x0 0xa4040000 0x0 0x10000>;
-			xlnx,kind-of-intr = <0x00>;
-			xlnx,num-intr-inputs = <0x20>;
-		};
-		axi_intc_parent: interrupt-controller@a4050000 {
-			#interrupt-cells = <2>;
-			clock-names = "s_axi_aclk";
-			clocks = <&misc_clk_0>;
-			compatible = "xlnx,axi-intc-4.1", "xlnx,xps-intc-1.00.a";
-			interrupt-controller ;
-			interrupt-names = "irq";
-			interrupt-parent = <&gic_a72>;
-			interrupts = <0 84 4>;
-			reg = <0x0 0xa4050000 0x0 0x10000>;
-			xlnx,kind-of-intr = <0x0>;
-			xlnx,num-intr-inputs = <0x20>;
-		};
 };
 

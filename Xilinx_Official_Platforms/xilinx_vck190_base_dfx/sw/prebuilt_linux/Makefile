@@ -1,6 +1,6 @@
 #******************************************************************************
 # Copyright (C) 2020-2022 Xilinx, Inc. All rights reserved.
-# Copyright (C) 2022-2025 Advanced Micro Devices, Inc. All rights reserved.
+# Copyright (C) 2022-2026 Advanced Micro Devices, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
 #******************************************************************************
 CWD = $(shell readlink -f .)
@@ -37,7 +37,7 @@ $(SW_FILES): $(DTB_FILE)
 	cp -f $(PREBUILT_LINUX_PATH)/boot.scr ${IMAGE_DIR}/boot.scr
 	$(foreach BOOT_FILE,$(BOOT_FILES),cp -f $(PREBUILT_LINUX_PATH)/$(BOOT_FILE) $(BOOT_DIR) ;)
 #	cp -f $(CWD)/bootgen.bif $(BOOT_DIR)
-#	cp -f $(PLATFORM_DIR)/xilinx_vck190_base_dfx_202520_1/hw/linux_dt/system.dtb $(BOOT_DIR)
+#	cp -f $(PLATFORM_DIR)/xilinx_vck190_base_dfx_202610_1/hw/linux_dt/system.dtb $(BOOT_DIR)
 
 all: check-vitis check-prebuilt $(SW_FILES) $(PDI_FILE)
 
